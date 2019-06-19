@@ -26,4 +26,41 @@ class UbikeJson{
             }
         }
     }
+    
+    static func getNewTaipeiUbikeData() -> [UbikeStation]? {
+        guard let url = URL(string: "http://data.ntpc.gov.tw/api/v1/rest/datastore/382000000A-000352-001") else{
+            assertionFailure("urlError")
+            return nil
+        }
+        guard let ubData = try? Data(contentsOf: url) else{
+            assertionFailure("ubDataError")
+            return nil
+        }
+        let data = try? JSONSerialization.jsonObject(with: ubData, options: []) as? Dictionary<String,Any>
+        
+        var stations: [UbikeStation] = []
+        if let result = data?["result"] as? Dictionary<String,Any>,let recordsResults = result["records"] as? [Dictionary<String,String>]{
+            for i in 0..<recordsResults.count{
+                let stationData = recordsResults[i]
+                guard
+                    let stationLng = stationData["lng"],
+                    let stationLat = stationData["lat"],
+                    let currentLng = Double(stationLng.trimmingCharacters(in: .whitespaces)),
+                    let currentLat = Double(stationLat.trimmingCharacters(in: .whitespaces)),
+                    let stationSna = stationData["sna"],
+                    let stationSno = stationData["sno"] else{
+                        assertionFailure("ubData save error!")
+                        return nil
+                }
+                
+                let station = UbikeStation();
+                station.no = stationSno;
+                station.name = stationSna;
+                station.latitude = currentLat;
+                station.longitude = currentLng;
+                stations.append(station)
+            }
+        }
+        return stations;
+    }
 }
