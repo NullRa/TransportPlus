@@ -11,4 +11,11 @@ class UbikeData: NSManagedObject{
     override func awakeFromInsert() {
         
     }
+    
+    public func load(station: UbikeStation) {
+        self.sno = station.no!
+        self.sna = station.name!
+        self.lat = station.latitude!
+        self.lng = station.longitude!
+    }
 }

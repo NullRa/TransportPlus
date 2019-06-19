@@ -109,44 +109,14 @@ class BikeAndBusViewController: UIViewController {
     }
     //build ubikeData
     func getUbikeData(){
-        getNewTaipeiUbikeData()
+        if let stations = UbikeJson.getNewTaipeiUbikeData(){
+            CoreDataHelper.shared.saveUbikes(stations: stations)
+        }
+        
+        
         getTaipeiUbikeData()
     }
     
-    func getNewTaipeiUbikeData(){
-        guard let url = URL(string: "http://data.ntpc.gov.tw/api/v1/rest/datastore/382000000A-000352-001") else{
-            assertionFailure("urlError")
-            return
-        }
-        guard let ubData = try? Data(contentsOf: url) else{
-            assertionFailure("ubDataError")
-            return
-        }
-        let data = try? JSONSerialization.jsonObject(with: ubData, options: []) as? Dictionary<String,Any>
-        
-        if let result = data?["result"] as? Dictionary<String,Any>,let recordsResults = result["records"] as? [Dictionary<String,String>]{
-            for i in 0..<recordsResults.count{
-                let stationData = recordsResults[i]
-                guard
-                    let stationLng = stationData["lng"],
-                    let stationLat = stationData["lat"],
-                    let currentLng = Double(stationLng.trimmingCharacters(in: .whitespaces)),
-                    let currentLat = Double(stationLat.trimmingCharacters(in: .whitespaces)),
-                    let stationSna = stationData["sna"],
-                    let stationSno = stationData["sno"] else{
-                        assertionFailure("ubData save error!")
-                        return
-                }
-                let moc = CoreDataHelper.shared.managedObjectContext()
-                let ubData = UbikeData(context: moc)
-                ubData.sna = stationSna
-                ubData.sno = stationSno
-                ubData.lng = currentLng
-                ubData.lat = currentLat
-                saveToCoreData()
-            }
-        }
-    }
     func getTaipeiUbikeData(){
         guard let url = URL(string: "https://tcgbusfs.blob.core.windows.net/blobyoubike/YouBikeTP.gz") else{
             assertionFailure("urlError")
