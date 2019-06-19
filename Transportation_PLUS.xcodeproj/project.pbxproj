@@ -81,16 +81,48 @@
 		690A84CA22AFC2B4009F4EC5 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				690A84C422AFC0C2009F4EC5 /* MainViewController.swift */,
-				690A84C622AFC0D9009F4EC5 /* BikeAndBusViewController.swift */,
-				690A84F822B0A7B9009F4EC5 /* UbikeData.swift */,
-				690A84EB22B0A40D009F4EC5 /* CoreDataHelper.swift */,
-				690A84F522B0A548009F4EC5 /* MapManager.swift */,
-				690A84F422B0A548009F4EC5 /* UbikeJson.swift */,
+				6950B18222BA6D9000581822 /* View */,
+				6950B18122BA6D4900581822 /* Model */,
+				6950B18022BA6C5E00581822 /* Module */,
+				6950B17F22BA6BC000581822 /* Map */,
 				690A84ED22B0A438009F4EC5 /* TransportationPlus.xcdatamodeld */,
 				690A84B622AFBE03009F4EC5 /* Main.storyboard */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		6950B17F22BA6BC000581822 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		6950B18022BA6C5E00581822 /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				690A84F422B0A548009F4EC5 /* UbikeJson.swift */,
+				690A84F522B0A548009F4EC5 /* MapManager.swift */,
+				690A84EB22B0A40D009F4EC5 /* CoreDataHelper.swift */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+		6950B18122BA6D4900581822 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				690A84F822B0A7B9009F4EC5 /* UbikeData.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		6950B18222BA6D9000581822 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				690A84C622AFC0D9009F4EC5 /* BikeAndBusViewController.swift */,
+				690A84C422AFC0C2009F4EC5 /* MainViewController.swift */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
