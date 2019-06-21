@@ -1,66 +1,73 @@
 import Foundation
+
 class UbikeJson{
-    static func getData(){
-        print("getData!!!!!!!!!!!!!!!!!!")
-        guard let url = URL(string: "http://data.ntpc.gov.tw/api/v1/rest/datastore/382000000A-000352-001") else{
-            assertionFailure("urlError")
-            return
-        }
-        
-        guard let ubData = try? Data(contentsOf: url) else{
-            assertionFailure("ubDataError")
-            return
-        }
-        
-        let data = try? JSONSerialization.jsonObject(with: ubData, options: []) as? Dictionary<String,Any>
-        
-        if let result = data?["result"] as? Dictionary<String,Any>,let recordsResults = result["records"] as? [Dictionary<String,Any>]{
-            for i in 0..<recordsResults.count{
-                let firstData = recordsResults[i]
-                let firstSno = firstData["sno"]
-                let firstSna = firstData["sna"]
-                print("站點編號:\(firstSno!),站點名稱:\(firstSna!)")
-                let firstLng = firstData["lng"]
-                let firstLat = firstData["lat"]
-                print("精度:\(firstLng!),緯度:\(firstLat!)")
-            }
-        }
-    }
-    
-    static func getNewTaipeiUbikeData() -> [UbikeStation]? {
-        guard let url = URL(string: "http://data.ntpc.gov.tw/api/v1/rest/datastore/382000000A-000352-001") else{
-            assertionFailure("urlError")
-            return nil
-        }
-        guard let ubData = try? Data(contentsOf: url) else{
-            assertionFailure("ubDataError")
-            return nil
-        }
-        let data = try? JSONSerialization.jsonObject(with: ubData, options: []) as? Dictionary<String,Any>
-        
+    static func getNewTaipeiUbikeData2() -> [UbikeStation]? {
         var stations: [UbikeStation] = []
-        if let result = data?["result"] as? Dictionary<String,Any>,let recordsResults = result["records"] as? [Dictionary<String,String>]{
-            for i in 0..<recordsResults.count{
-                let stationData = recordsResults[i]
-                guard
-                    let stationLng = stationData["lng"],
-                    let stationLat = stationData["lat"],
-                    let currentLng = Double(stationLng.trimmingCharacters(in: .whitespaces)),
-                    let currentLat = Double(stationLat.trimmingCharacters(in: .whitespaces)),
-                    let stationSna = stationData["sna"],
-                    let stationSno = stationData["sno"] else{
-                        assertionFailure("ubData save error!")
-                        return nil
-                }
-                
-                let station = UbikeStation();
-                station.no = stationSno;
-                station.name = stationSna;
-                station.latitude = currentLat;
-                station.longitude = currentLng;
-                stations.append(station)
-            }
+        guard let url = URL(string: "https://data.ntpc.gov.tw/api/v1/rest/datastore/382000000A-000352-001") else{
+            assertionFailure("123")
+            return nil
         }
-        return stations;
+        let request = URLRequest(url: url)
+        let semaphore = DispatchSemaphore(value: 0)
+        let dataTask = URLSession.shared.dataTask(with: request, completionHandler: {(data, response, error) -> Void in
+            let decoder = JSONDecoder()
+            if let data = data, let dataList = try? decoder.decode(NewTaipeiBikeJson.self, from: data) {
+                for stationData in dataList.result.records {
+                    let station = UbikeStation()
+                    station.longitude = Double(stationData.lng.trimmingCharacters(in: .whitespaces))
+                    station.latitude = Double(stationData.lat.trimmingCharacters(in: .whitespaces))
+                    station.name = stationData.sna
+                    station.no = stationData.sno
+                    stations.append(station)
+                }
+            } else {
+                print("Error...")
+            }
+            CoreDataHelper.shared.saveUbikes(stations: stations)
+            
+            semaphore.signal()
+        }) as URLSessionTask
+        dataTask.resume()
+        _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+        return stations
     }
+    //    static func getTaipeiUbikeData() -> [UbikeStation]? {
+    //        guard let url = URL(string: "https://tcgbusfs.blob.core.windows.net/blobyoubike/YouBikeTP.gz") else{
+    //            assertionFailure("urlError")
+    //            return nil
+    //        }
+    //        guard let ubData = try? Data(contentsOf: url) else{
+    //            assertionFailure("ubDataError")
+    //            return nil
+    //        }
+    //        let data = try? JSONSerialization.jsonObject(with: ubData, options: []) as? Dictionary<String,Any>
+    //
+    //        var stations: [UbikeStation] = []
+    //
+    //                let stationData = recordsResults[i]
+    //        if let retVal = data?["retVal"] as? Dictionary<String,Any>{//0001...0404
+    //            for i in 1 ... 404{//這邊hen奇怪
+    //                let str = i < 10 ? "000\(i)" : ( i<100 ? "00\(i)" : "0\(i)" )
+    //                if let stationData = retVal[str] as? Dictionary<String,String>{
+    //                    guard
+    //                        let stationLng = stationData["lng"],
+    //                        let stationLat = stationData["lat"],
+    //                        let currentLng = Double(stationLng.trimmingCharacters(in: .whitespaces)),
+    //                        let currentLat = Double(stationLat.trimmingCharacters(in: .whitespaces)),
+    //                        let stationSna = stationData["sna"],
+    //                        let stationSno = stationData["sno"] else{
+    //                            assertionFailure("ubData save error!")
+    //                            return
+    //                    }
+    //                    let moc = CoreDataHelper.shared.managedObjectContext()
+    //                    let ubData = UbikeData(context: moc)
+    //                    ubData.sna = stationSna
+    //                    ubData.sno = stationSno
+    //                    ubData.lng = currentLng
+    //                    ubData.lat = currentLat
+    //                    saveToCoreData()
+    //                }
+    //            }
+    //        }
+    //    }
 }

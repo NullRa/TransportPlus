@@ -14,11 +14,10 @@ class BikeAndBusViewController: UIViewController {
     @IBOutlet weak var mainMapView: MKMapView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var autoSwitchBtn: UISwitch!
-    //    let controller: UIViewController;
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        //        cleanUbData()
-        //        getUbikeData()
+        cleanUbData()
+        getUbikeData()
         queryFromCoreData()
     }
     override func viewDidLoad() {
@@ -26,13 +25,12 @@ class BikeAndBusViewController: UIViewController {
         guard CLLocationManager.locationServicesEnabled() else{
             return
         }
-        setDefaultView()
+        uploadDefaultView()
         MapManager.shared.managerSetting()
         mainMapView.delegate = self
-        
     }
     //控制載入的範圍&畫面
-    func setDefaultView(){
+    func uploadDefaultView(){
         //Get current location
         guard let location = MapManager.shared.manager.location else{
             assertionFailure("Location is not ready")
@@ -107,14 +105,13 @@ class BikeAndBusViewController: UIViewController {
             fatalError("Failed to fetch data: \(error)")
         }
     }
+    
     //build ubikeData
     func getUbikeData(){
-        if let stations = UbikeJson.getNewTaipeiUbikeData(){
-            CoreDataHelper.shared.saveUbikes(stations: stations)
-        }
+//        UbikeJson.getNewTaipeiUbikeData()
+        CoreDataHelper.shared.saveUbikes(stations: UbikeJson.getNewTaipeiUbikeData2()!)
         
         
-        getTaipeiUbikeData()
     }
     
     func getTaipeiUbikeData(){
@@ -234,18 +231,18 @@ extension BikeAndBusViewController : MKMapViewDelegate{
     
     // 移動結束才會執行
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        print("就決定是你了")
+        print("就決定是你了")//移動玩過兩秒
         showBikeStation()
-//        geocode(latitude: 25.029264, longitude: 121.499358) { (placemark, error) in
-//            //25.029264, 121.499358
-//            print("Start")
-//            guard let placemark = placemark, error == nil else {
-//
-//                return
-//
-//            }
-//            let str = placemark.subAdministrativeArea
-//        }
+        //        geocode(latitude: 25.029264, longitude: 121.499358) { (placemark, error) in
+        //            //25.029264, 121.499358
+        //            print("Start")
+        //            guard let placemark = placemark, error == nil else {
+        //
+        //                return
+        //
+        //            }
+        //            let str = placemark.subAdministrativeArea
+        //        }
     }
 }
 
