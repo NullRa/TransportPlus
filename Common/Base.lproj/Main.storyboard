@@ -90,7 +90,7 @@
             </objects>
             <point key="canvasLocation" x="2001" y="129"/>
         </scene>
-        <!--Bike And Bus View Controller-->
+        <!--UBike-->
         <scene sceneID="fFg-57-yT2">
             <objects>
                 <viewController id="AXg-Cj-T36" customClass="BikeAndBusViewController" customModule="Transportation_PLUS" customModuleProvider="target" sceneMemberID="viewController">
@@ -139,6 +139,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="uNs-jw-rCA"/>
                     </view>
+                    <navigationItem key="navigationItem" title="UBike" id="Ff9-Rt-SiV">
+                        <barButtonItem key="rightBarButtonItem" title="Location" id="iCA-3u-go5">
+                            <connections>
+                                <action selector="locationBtnPressed:" destination="AXg-Cj-T36" id="WLM-k7-ehz"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="autoSwitchBtn" destination="oYG-Y0-x6y" id="30X-kI-YTa"/>
                         <outlet property="mainMapView" destination="IcK-op-qVO" id="YxH-Tv-HK2"/>

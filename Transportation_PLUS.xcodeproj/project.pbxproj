@@ -19,8 +19,8 @@
 		690A84F622B0A548009F4EC5 /* UbikeJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690A84F422B0A548009F4EC5 /* UbikeJson.swift */; };
 		690A84F722B0A548009F4EC5 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690A84F522B0A548009F4EC5 /* MapManager.swift */; };
 		690A84F922B0A7B9009F4EC5 /* UbikeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690A84F822B0A7B9009F4EC5 /* UbikeData.swift */; };
-		6948697A22BBAC2200914A42 /* NewTaipeiBikeJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6948697922BBAC2200914A42 /* NewTaipeiBikeJson.swift */; };
 		6950B18422BA719A00581822 /* UbikeStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6950B18322BA719A00581822 /* UbikeStation.swift */; };
+		69C3A6AD22C2099700738EAA /* StationAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C3A6AC22C2099700738EAA /* StationAnnotation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,8 +38,8 @@
 		690A84F422B0A548009F4EC5 /* UbikeJson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UbikeJson.swift; sourceTree = "<group>"; };
 		690A84F522B0A548009F4EC5 /* MapManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
 		690A84F822B0A7B9009F4EC5 /* UbikeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbikeData.swift; sourceTree = "<group>"; };
-		6948697922BBAC2200914A42 /* NewTaipeiBikeJson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaipeiBikeJson.swift; sourceTree = "<group>"; };
 		6950B18322BA719A00581822 /* UbikeStation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbikeStation.swift; sourceTree = "<group>"; };
+		69C3A6AC22C2099700738EAA /* StationAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationAnnotation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,7 +99,6 @@
 		6948697B22BC693F00914A42 /* test */ = {
 			isa = PBXGroup;
 			children = (
-				6948697922BBAC2200914A42 /* NewTaipeiBikeJson.swift */,
 			);
 			path = test;
 			sourceTree = "<group>";
@@ -126,6 +125,7 @@
 			children = (
 				690A84F822B0A7B9009F4EC5 /* UbikeData.swift */,
 				6950B18322BA719A00581822 /* UbikeStation.swift */,
+				69C3A6AC22C2099700738EAA /* StationAnnotation.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -217,10 +217,10 @@
 				690A84F922B0A7B9009F4EC5 /* UbikeData.swift in Sources */,
 				690A84F722B0A548009F4EC5 /* MapManager.swift in Sources */,
 				690A84EC22B0A40D009F4EC5 /* CoreDataHelper.swift in Sources */,
+				69C3A6AD22C2099700738EAA /* StationAnnotation.swift in Sources */,
 				690A84B522AFBE03009F4EC5 /* ViewController.swift in Sources */,
 				6950B18422BA719A00581822 /* UbikeStation.swift in Sources */,
 				690A84B322AFBE03009F4EC5 /* AppDelegate.swift in Sources */,
-				6948697A22BBAC2200914A42 /* NewTaipeiBikeJson.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

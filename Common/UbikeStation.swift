@@ -13,10 +13,10 @@ import CoreData
 import UIKit
 
 class UbikeStation {
-    public var no : String?
-    public var name : String?
-    public var latitude : Double?
-    public var longitude : Double?
-    
+    public var no : String = ""
+    public var name : String = ""
+    public var latitude : Double = 0
+    public var longitude : Double = 0
+    public var cityName : String = ""
     init() {}
 }
