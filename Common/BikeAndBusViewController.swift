@@ -11,9 +11,9 @@ class BikeAndBusViewController: UIViewController {
     @IBOutlet weak var autoSwitchBtn: UISwitch!
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-//        cleanUbData()
-//        print(NSHomeDirectory())
-//        getUbikeData()
+        cleanUbData()
+        print(NSHomeDirectory())
+        getUbikeData()
         queryFromCoreData()
     }
     override func viewDidLoad() {
@@ -102,12 +102,15 @@ class BikeAndBusViewController: UIViewController {
     
     //build ubikeData
     func getUbikeData(){
-        guard let stations1 = UbikeJson.shared.getNewTaipeiUbikeData(),let stations2 = UbikeJson.shared.getTaipeiUbikeData() else{
-            assertionFailure("can not get stations")
-            return
+        let tmp = UbikeJson()
+        
+        do {
+            let TPEStation = try tmp.fetchStationList(type: .Taipei)
+            let NWTStation = try tmp.fetchStationList(type: .NewTaipei)
+            CoreDataHelper.shared.saveUbikes(stations:(TPEStation + NWTStation))
+        } catch {
+            assertionFailure("Error")
         }
-        let stations = stations1 + stations2
-        CoreDataHelper.shared.saveUbikes(stations: stations)
     }
     
     @IBAction func autoSwitchBtnPressed(_ sender: Any) {
@@ -125,16 +128,23 @@ class BikeAndBusViewController: UIViewController {
 extension BikeAndBusViewController : MKMapViewDelegate{
     //點擊圖標的動作,思考新增判斷網路
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        guard let annotation = view.annotation as? StationAnnotation,
-            let result = UbikeJson.shared.getUbikeStationState(cityName: annotation.cityName, stationID: annotation.stationID) else {
-                assertionFailure("urlError")
-                return
+        
+        let tmp = UbikeJson()
+        guard let annotation = view.annotation as? StationAnnotation else {
+            
+            return
         }
-        annotation.subtitle = result["act"]  == "0" ? "未營運" : "可借\(result["sbi"]!)台,可還\(result["bemp"]!)台"
+        do{
+            let ubState = try tmp.fetchStationStatus(stationAnnotation: annotation)
+            annotation.subtitle = ubState.ServieAvailable == 0 ? "未營運" : "可借\(ubState.AvailableRentBikes)台,可還\(ubState.AvailableReturnBikes)台"
+        }catch{
+            assertionFailure("Error")
+        }
+       
     }
     // 移動結束才會執行
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        print("就決定是你了")//移動玩過兩秒
+        //移動玩過兩秒
         showBikeStation()
     }
 }
