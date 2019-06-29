@@ -20,7 +20,10 @@
 		690A84F722B0A548009F4EC5 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690A84F522B0A548009F4EC5 /* MapManager.swift */; };
 		690A84F922B0A7B9009F4EC5 /* UbikeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690A84F822B0A7B9009F4EC5 /* UbikeData.swift */; };
 		6950B18422BA719A00581822 /* UbikeStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6950B18322BA719A00581822 /* UbikeStation.swift */; };
+		69BAC56122C725B200CA8CB3 /* StationAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BAC56022C725B200CA8CB3 /* StationAPI.swift */; };
+		69BAC56322C7382400CA8CB3 /* SationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BAC56222C7382400CA8CB3 /* SationType.swift */; };
 		69C3A6AD22C2099700738EAA /* StationAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C3A6AC22C2099700738EAA /* StationAnnotation.swift */; };
+		69C3A6D622C3B43D00738EAA /* ErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C3A6D522C3B43D00738EAA /* ErrorCode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,7 +42,10 @@
 		690A84F522B0A548009F4EC5 /* MapManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
 		690A84F822B0A7B9009F4EC5 /* UbikeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbikeData.swift; sourceTree = "<group>"; };
 		6950B18322BA719A00581822 /* UbikeStation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbikeStation.swift; sourceTree = "<group>"; };
+		69BAC56022C725B200CA8CB3 /* StationAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationAPI.swift; sourceTree = "<group>"; };
+		69BAC56222C7382400CA8CB3 /* SationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SationType.swift; sourceTree = "<group>"; };
 		69C3A6AC22C2099700738EAA /* StationAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationAnnotation.swift; sourceTree = "<group>"; };
+		69C3A6D522C3B43D00738EAA /* ErrorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorCode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,22 +91,15 @@
 		690A84CA22AFC2B4009F4EC5 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				6948697B22BC693F00914A42 /* test */,
 				6950B18222BA6D9000581822 /* View */,
 				6950B18122BA6D4900581822 /* Model */,
 				6950B18022BA6C5E00581822 /* Module */,
 				6950B17F22BA6BC000581822 /* Map */,
 				690A84ED22B0A438009F4EC5 /* TransportationPlus.xcdatamodeld */,
 				690A84B622AFBE03009F4EC5 /* Main.storyboard */,
+				69C3A6D522C3B43D00738EAA /* ErrorCode.swift */,
 			);
 			path = Common;
-			sourceTree = "<group>";
-		};
-		6948697B22BC693F00914A42 /* test */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = test;
 			sourceTree = "<group>";
 		};
 		6950B17F22BA6BC000581822 /* Map */ = {
@@ -116,6 +115,7 @@
 				690A84F422B0A548009F4EC5 /* UbikeJson.swift */,
 				690A84F522B0A548009F4EC5 /* MapManager.swift */,
 				690A84EB22B0A40D009F4EC5 /* CoreDataHelper.swift */,
+				69BAC56022C725B200CA8CB3 /* StationAPI.swift */,
 			);
 			path = Module;
 			sourceTree = "<group>";
@@ -126,6 +126,7 @@
 				690A84F822B0A7B9009F4EC5 /* UbikeData.swift */,
 				6950B18322BA719A00581822 /* UbikeStation.swift */,
 				69C3A6AC22C2099700738EAA /* StationAnnotation.swift */,
+				69BAC56222C7382400CA8CB3 /* SationType.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -211,13 +212,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				690A84C722AFC0D9009F4EC5 /* BikeAndBusViewController.swift in Sources */,
+				69BAC56322C7382400CA8CB3 /* SationType.swift in Sources */,
 				690A84C522AFC0C2009F4EC5 /* MainViewController.swift in Sources */,
 				690A84F622B0A548009F4EC5 /* UbikeJson.swift in Sources */,
 				690A84EF22B0A438009F4EC5 /* TransportationPlus.xcdatamodeld in Sources */,
+				69C3A6D622C3B43D00738EAA /* ErrorCode.swift in Sources */,
 				690A84F922B0A7B9009F4EC5 /* UbikeData.swift in Sources */,
 				690A84F722B0A548009F4EC5 /* MapManager.swift in Sources */,
 				690A84EC22B0A40D009F4EC5 /* CoreDataHelper.swift in Sources */,
 				69C3A6AD22C2099700738EAA /* StationAnnotation.swift in Sources */,
+				69BAC56122C725B200CA8CB3 /* StationAPI.swift in Sources */,
 				690A84B522AFBE03009F4EC5 /* ViewController.swift in Sources */,
 				6950B18422BA719A00581822 /* UbikeStation.swift in Sources */,
 				690A84B322AFBE03009F4EC5 /* AppDelegate.swift in Sources */,
