@@ -140,11 +140,16 @@ extension BikeAndBusViewController : MKMapViewDelegate{
         }catch{
             assertionFailure("Error")
         }
-       
     }
-    // 移動結束才會執行
+    
+    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+        guard let annotation = view.annotation as? StationAnnotation else {
+            return
+        }
+         annotation.subtitle = ""
+    }
+
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        //移動玩過兩秒
         showBikeStation()
     }
 }
