@@ -16,20 +16,31 @@ class BikeAndBusViewController: UIViewController {
         getUbikeData()
         queryFromCoreData()
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         guard CLLocationManager.locationServicesEnabled() else{
+            errorAlert(title: "載入地圖失敗", message: "載入地圖失敗", actionTitle: "OK")
             return
         }
         uploadDefaultView()
         MapManager.shared.managerSetting()
         mainMapView.delegate = self
     }
+    
+    func errorAlert(title:String,message:String,actionTitle:String){
+        let alertCon = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let alertActA = UIAlertAction(title: actionTitle, style: .default, handler: nil)
+        alertCon.addAction(alertActA)
+        self.present(alertCon, animated: true, completion: nil)
+    }
+    
     //控制載入的範圍&畫面
     func uploadDefaultView(){
         //Get current location
         guard let location = MapManager.shared.manager.location else{
             assertionFailure("Location is not ready")
+            errorAlert(title: "載入位置失敗", message: "確認定位功能已啟用", actionTitle: "OK")
             return
         }
         let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
@@ -40,12 +51,14 @@ class BikeAndBusViewController: UIViewController {
         addTextViewInputAccessoryView()
         mainMapView.userTrackingMode = .follow
     }
+    
     //收起textView鍵盤的方法
     func addTextViewInputAccessoryView(){
         let textToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
         textToolbar.items = [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),UIBarButtonItem(title: "return", style: .done, target: self, action: #selector(closeKeyboard))]
         searchBar.inputAccessoryView = textToolbar
     }
+    
     func showBikeStation(){
         if autoSwitchBtn.isOn{
             mainMapView.removeAnnotations(mainMapView.annotations)
@@ -79,12 +92,15 @@ class BikeAndBusViewController: UIViewController {
         moc.performAndWait {
             do{
                 ubikeDatas = try moc.fetch(request)
-            }catch{
-                print("error:\(error)")
+            }catch is ErrorCode{
+                errorAlert(title: ErrorCode.CoreDataError.alertTitle, message: ErrorCode.CoreDataError.alertMessage, actionTitle: "OK")
                 ubikeDatas = []
+            }catch{
+                
             }
         }
     }
+    
     //clean Data
     func cleanUbData(){
         let moc = CoreDataHelper.shared.managedObjectContext()
@@ -95,8 +111,11 @@ class BikeAndBusViewController: UIViewController {
                 moc.delete(result)
             }
             saveToCoreData()
+        }catch is ErrorCode{
+            errorAlert(title: ErrorCode.CoreDataError.alertTitle, message: ErrorCode.CoreDataError.alertMessage, actionTitle: "OK")
+            ubikeDatas = []
         }catch{
-            fatalError("Failed to fetch data: \(error)")
+            
         }
     }
     
@@ -108,17 +127,22 @@ class BikeAndBusViewController: UIViewController {
             let TPEStation = try tmp.fetchStationList(type: .Taipei)
             let NWTStation = try tmp.fetchStationList(type: .NewTaipei)
             CoreDataHelper.shared.saveUbikes(stations:(TPEStation + NWTStation))
-        } catch {
-            assertionFailure("Error")
+        } catch is ErrorCode{
+            errorAlert(title: ErrorCode.JsonDecodeError.alertTitle, message: ErrorCode.JsonDecodeError.alertMessage, actionTitle: "OK")
+            ubikeDatas = []
+        }catch{
+            
         }
     }
     
     @IBAction func autoSwitchBtnPressed(_ sender: Any) {
         showBikeStation()
     }
+    
     @objc func closeKeyboard() {
         self.view.endEditing(true)
     }
+    
     @IBAction func locationBtnPressed(_ sender: Any) {
         mainMapView.userTrackingMode = .followWithHeading
     }
@@ -126,19 +150,21 @@ class BikeAndBusViewController: UIViewController {
 
 
 extension BikeAndBusViewController : MKMapViewDelegate{
+    
     //點擊圖標的動作,思考新增判斷網路
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        
         let tmp = UbikeJson()
         guard let annotation = view.annotation as? StationAnnotation else {
-            
+            errorAlert(title: "載入圖標失敗", message: "載入圖標失敗", actionTitle: "OK")
             return
         }
         do{
             let ubState = try tmp.fetchStationStatus(stationAnnotation: annotation)
             annotation.subtitle = ubState.ServieAvailable == 0 ? "未營運" : "可借\(ubState.AvailableRentBikes)台,可還\(ubState.AvailableReturnBikes)台"
+        }catch is ErrorCode{
+            errorAlert(title: ErrorCode.JsonDecodeError.alertTitle, message: ErrorCode.JsonDecodeError.alertMessage, actionTitle: "OK")
+            ubikeDatas = []
         }catch{
-            assertionFailure("Error")
         }
     }
     
@@ -149,6 +175,7 @@ extension BikeAndBusViewController : MKMapViewDelegate{
          annotation.subtitle = ""
     }
 
+    // 移動結束才會執行
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         showBikeStation()
     }
