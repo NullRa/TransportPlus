@@ -78,7 +78,7 @@ class UbikeJson {
         self.stationAPI = StationAPI()
     }
     
-    func fetchStationList(type: StationType) throws -> [UbikeStation] {
+    func fetchStationList(type: StationType) throws -> [Station] {
         return try stationAPI.fetchStationList(stationType: type)
     }
     
