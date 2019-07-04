@@ -5,7 +5,7 @@ import UIKit
 import CoreData
 
 class BikeAndBusViewController: UIViewController {
-    var ubikeDatas : [UbikeData] = []
+    var ubikeDatas : [Station] = []
     @IBOutlet weak var mainMapView: MKMapView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var autoSwitchBtn: UISwitch!
@@ -67,13 +67,11 @@ class BikeAndBusViewController: UIViewController {
             let maxLng = mainMapView.centerCoordinate.longitude + mainMapView.region.span.longitudeDelta/2
             let minLng = mainMapView.centerCoordinate.longitude - mainMapView.region.span.longitudeDelta/2
             for i in 0 ..< ubikeDatas.count{
-                if(ubikeDatas[i].lng > minLng && ubikeDatas[i].lng < maxLng && ubikeDatas[i].lat > minLat && ubikeDatas[i].lat < maxLat ){
-                    let annotation = StationAnnotation()
-                    annotation.coordinate.latitude = ubikeDatas[i].lat
-                    annotation.coordinate.longitude = ubikeDatas[i].lng
-                    annotation.title = ubikeDatas[i].sna
-                    annotation.stationID = ubikeDatas[i].sno
-                    annotation.cityName = ubikeDatas[i].cityName
+                if(ubikeDatas[i].longitude > minLng && ubikeDatas[i].longitude < maxLng && ubikeDatas[i].latitude > minLat && ubikeDatas[i].latitude < maxLat ){
+                    let annotation = MKPointAnnotation()
+                    annotation.coordinate.latitude = ubikeDatas[i].latitude
+                    annotation.coordinate.longitude = ubikeDatas[i].longitude
+                    annotation.title = ubikeDatas[i].name
                     mainMapView.addAnnotation(annotation)
                 }
             }
@@ -88,7 +86,7 @@ class BikeAndBusViewController: UIViewController {
     //load
     func queryFromCoreData(){
         let moc = CoreDataHelper.shared.managedObjectContext()
-        let request = NSFetchRequest<UbikeData>(entityName: "UbikeData")
+        let request = NSFetchRequest<Station>(entityName: "Station")
         moc.performAndWait {
             do{
                 ubikeDatas = try moc.fetch(request)
@@ -104,9 +102,9 @@ class BikeAndBusViewController: UIViewController {
     //clean Data
     func cleanUbData(){
         let moc = CoreDataHelper.shared.managedObjectContext()
-        let request = NSFetchRequest<UbikeData>(entityName: "UbikeData")
+        let request = NSFetchRequest<Station>(entityName: "Station")
         do {
-            let results = try moc.fetch(request as! NSFetchRequest<NSFetchRequestResult>) as! [UbikeData]
+            let results = try moc.fetch(request as! NSFetchRequest<NSFetchRequestResult>) as! [Station]
             for result in results {
                 moc.delete(result)
             }
@@ -154,12 +152,21 @@ extension BikeAndBusViewController : MKMapViewDelegate{
     //點擊圖標的動作,思考新增判斷網路
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         let tmp = UbikeJson()
-        guard let annotation = view.annotation as? StationAnnotation else {
+        var cityName = ""
+        var stationID = ""
+        guard let annotation = view.annotation as? MKPointAnnotation else {
             errorAlert(title: "載入圖標失敗", message: "載入圖標失敗", actionTitle: "OK")
             return
         }
+        for i in 0..<ubikeDatas.count{
+            if ubikeDatas[i].longitude == annotation.coordinate.longitude && ubikeDatas[i].latitude == annotation.coordinate.latitude{
+                cityName = ubikeDatas[i].cityName
+                stationID = ubikeDatas[i].no
+                break
+            }
+        }
         do{
-            let ubState = try tmp.fetchStationStatus(stationAnnotation: annotation)
+            let ubState = try tmp.fetchStationStatus(stationID: stationID,cityName: cityName)
             annotation.subtitle = ubState.ServieAvailable == 0 ? "未營運" : "可借\(ubState.AvailableRentBikes)台,可還\(ubState.AvailableReturnBikes)台"
         }catch is ErrorCode{
             errorAlert(title: ErrorCode.JsonDecodeError.alertTitle, message: ErrorCode.JsonDecodeError.alertMessage, actionTitle: "OK")
@@ -169,7 +176,7 @@ extension BikeAndBusViewController : MKMapViewDelegate{
     }
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
-        guard let annotation = view.annotation as? StationAnnotation else {
+        guard let annotation = view.annotation as? MKPointAnnotation else {
             return
         }
          annotation.subtitle = ""

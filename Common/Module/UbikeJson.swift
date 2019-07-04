@@ -1,6 +1,8 @@
 import Foundation
 import CoreLocation
 import CommonCrypto
+import MapKit
+//import Foundation
 
 enum CryptoAlgorithm {
     case MD5, SHA1, SHA224, SHA256, SHA384, SHA512
@@ -76,13 +78,12 @@ class UbikeJson {
         self.stationAPI = StationAPI()
     }
     
-    func fetchStationList(type: StationType) throws -> [UbikeStation] {
+    func fetchStationList(type: StationType) throws -> [Station] {
         return try stationAPI.fetchStationList(stationType: type)
     }
     
-    func fetchStationStatus(stationAnnotation:StationAnnotation) throws -> UbikeStateJson {
-        let stationType: StationType = stationAnnotation.cityName == "NWT" ? StationType.NewTaipei : StationType.Taipei
-        let stationID = stationAnnotation.stationID
+    func fetchStationStatus(stationID: String,cityName: String) throws -> UbikeStateJson {
+        let stationType: StationType = cityName == "NWT" ? StationType.NewTaipei : StationType.Taipei
         return try stationAPI.fetchStationStatus(stationType: stationType, stationID: stationID)
     }
 }

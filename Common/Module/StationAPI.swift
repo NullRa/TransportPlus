@@ -2,18 +2,18 @@ import Foundation
 
 class StationAPI {
     
-    func fetchStationList(stationType:StationType) throws -> [UbikeStation] {
+    func fetchStationList(stationType:StationType) throws -> [Station] {
         let apiURL = getStationListRequstURL(stationType: stationType)
         let data:Data = try self.fetchJsonData(apiURL: apiURL);
-        var stations: [UbikeStation] = []
+        var stations: [Station] = []
         
         let decoder = JSONDecoder()
         
         if let dataList = try? decoder.decode([StationJsonStruct].self, from: data) {
             for ubikeStation in dataList {
-                let station = UbikeStation()
+                let moc = CoreDataHelper.shared.managedObjectContext()
+                let station = Station(context: moc)
                 station.cityName = ubikeStation.AuthorityID
-                print(station.cityName)
                 station.no = ubikeStation.StationUID
                 station.name = ubikeStation.StationName.Zh_tw
                 station.longitude = ubikeStation.StationPosition.PositionLon

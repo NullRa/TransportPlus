@@ -43,10 +43,8 @@ class CoreDataHelper: NSObject {
             }
         }
     }
-    func saveUbikes(stations: [UbikeStation]){
-        for i in 0 ..< stations.count{
-            let ubData = UbikeData(context: CoreDataHelper.shared.managedObjectContext())
-            ubData.load(station: stations[i])
+    func saveUbikes(stations: [Station]){
+        for _ in 0 ..< stations.count{
             saveContext ()
         }
     }
