@@ -1,7 +1,12 @@
 language: swift
 osx_image: xcode10.2
+
+install:
+  - sh scripts/install_swiftlint.sh
+
 before_script:
   - gem install xcpretty
+
 script:
-  - set -o pipefail
+  - swiftlint
   - xcodebuild -workspace Transportation_PLUS.xcodeproj/project.xcworkspace -scheme Transportation_PLUS -destination 'platform=iOS Simulator,name=iPhone 8,OS=11.3' build | xcpretty --test --color
