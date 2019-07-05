@@ -1,4 +1,3 @@
-//BUS&UBIKE viewController
 import CoreLocation
 import MapKit
 import UIKit
@@ -26,6 +25,7 @@ class BikeAndBusViewController: UIViewController {
         uploadDefaultView()
         MapManager.shared.managerSetting()
         mainMapView.delegate = self
+        searchBar.delegate = self
     }
 
     func errorAlert(title: String, message: String, actionTitle: String) {
@@ -50,6 +50,7 @@ class BikeAndBusViewController: UIViewController {
         showBikeStation()
         addTextViewInputAccessoryView()
         mainMapView.userTrackingMode = .follow
+        searchBar.placeholder = "Search"
     }
 
     //收起textView鍵盤的方法
@@ -119,11 +120,11 @@ class BikeAndBusViewController: UIViewController {
 
     //build ubikeData
     func getUbikeData() {
-        let tmp = UbikeJson()
+        let ubikeDefault = UbikeJson()
 
         do {
-            let TPEStation = try tmp.fetchStationList(type: .Taipei)
-            let NWTStation = try tmp.fetchStationList(type: .NewTaipei)
+            let TPEStation = try ubikeDefault.fetchStationList(type: .Taipei)
+            let NWTStation = try ubikeDefault.fetchStationList(type: .NewTaipei)
             CoreDataHelper.shared.saveUbikes(stations: (TPEStation + NWTStation))
         } catch is ErrorCode {
             errorAlert(title: ErrorCode.JsonDecodeError.alertTitle, message: ErrorCode.JsonDecodeError.alertMessage, actionTitle: "OK")
@@ -138,6 +139,7 @@ class BikeAndBusViewController: UIViewController {
     }
 
     @objc func closeKeyboard() {
+        searchBar.text = ""
         self.view.endEditing(true)
     }
 
@@ -148,9 +150,9 @@ class BikeAndBusViewController: UIViewController {
 
 extension BikeAndBusViewController: MKMapViewDelegate {
 
-    //點擊圖標的動作,思考新增判斷網路
+    //點擊圖標的動作
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        let tmp = UbikeJson()
+        let ubkieDefault = UbikeJson()
         var cityName = ""
         var stationID = ""
         guard let annotation = view.annotation as? MKPointAnnotation else {
@@ -165,24 +167,43 @@ extension BikeAndBusViewController: MKMapViewDelegate {
             }
         }
         do {
-            let ubState = try tmp.fetchStationStatus(stationID: stationID, cityName: cityName)
+            let ubState = try ubkieDefault.fetchStationStatus(stationID: stationID, cityName: cityName)
             annotation.subtitle = ubState.ServieAvailable == 0 ? "未營運" : "可借\(ubState.AvailableRentBikes)台,可還\(ubState.AvailableReturnBikes)台"
         } catch is ErrorCode {
             errorAlert(title: ErrorCode.JsonDecodeError.alertTitle, message: ErrorCode.JsonDecodeError.alertMessage, actionTitle: "OK")
             ubikeDatas = []
-        } catch {
-        }
+        } catch {}
     }
 
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
         guard let annotation = view.annotation as? MKPointAnnotation else {
             return
         }
-         annotation.subtitle = ""
+        annotation.subtitle = ""
     }
 
     // 移動結束才會執行
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         showBikeStation()
+    }
+}
+
+// MASK:UISearchBar
+extension BikeAndBusViewController: UISearchBarDelegate {
+    //點擊鍵盤的search btn
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        MapManager.shared.searchAction(searchText: searchBar.text!) { (center, error) in
+            if let currentError = error as? ErrorCode {
+                self.errorAlert(title: currentError.alertTitle, message: currentError.alertMessage, actionTitle: "OK")
+                return
+            }
+            if center != nil {
+                let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                let region = MKCoordinateRegion(center: center!, span: span)
+                self.mainMapView.setRegion(region, animated: true)
+                self.view.endEditing(true)
+                searchBar.text = ""
+            }
+        }
     }
 }

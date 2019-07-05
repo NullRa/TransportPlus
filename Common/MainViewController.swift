@@ -5,17 +5,15 @@ import CoreLocation
 class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
         // 首次使用 向使用者詢問定位自身位置權限
         if CLLocationManager.authorizationStatus()
             == .notDetermined {
             // 取得定位服務授權
             MapManager.shared.manager.requestWhenInUseAuthorization()
-
             // 開始定位自身位置
             MapManager.shared.manager.startUpdatingLocation()
         }
