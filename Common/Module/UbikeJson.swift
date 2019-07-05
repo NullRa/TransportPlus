@@ -6,7 +6,7 @@ import MapKit
 
 enum CryptoAlgorithm {
     case MD5, SHA1, SHA224, SHA256, SHA384, SHA512
-    
+
     var HMACAlgorithm: CCHmacAlgorithm {
         var result: Int = 0
         switch self {
@@ -19,7 +19,7 @@ enum CryptoAlgorithm {
         }
         return CCHmacAlgorithm(result)
     }
-    
+
     var digestLength: Int {
         var result: Int32 = 0
         switch self {
@@ -41,30 +41,30 @@ extension String {
         let digestLen = algorithm.digestLength
         var result = [CUnsignedChar](repeating: 0, count: digestLen)
         CCHmac(algorithm.HMACAlgorithm, cKey!, strlen(cKey!), cData!, strlen(cData!), &result)
-        let hmacData:Data = Data(bytes: result, count: digestLen)
+        let hmacData: Data = Data(bytes: result, count: digestLen)
         let hmacBase64 = hmacData.base64EncodedString(options: .lineLength64Characters)
         return String(hmacBase64)
     }
 }
 
-struct UbikeStateJson: Codable{
+struct UbikeStateJson: Codable {
     var StationUID: String
     var ServieAvailable: Int
     var AvailableReturnBikes: Int
     var AvailableRentBikes: Int
 }
 
-struct StationJsonStruct:Codable{
-    var StationUID:String
-    var StationID:String
-    var AuthorityID:String
-    var StationName:StationName
-    var StationPosition:StationPosition
-    struct StationName:Codable {
-        var Zh_tw:String
-        var En:String
+struct StationJsonStruct: Codable {
+    var StationUID: String
+    var StationID: String
+    var AuthorityID: String
+    var StationName: StationName
+    var StationPosition: StationPosition
+    struct StationName: Codable {
+        var Zh_tw: String
+        var En: String
     }
-    struct StationPosition:Codable{
+    struct StationPosition: Codable {
         var PositionLat: Double
         var PositionLon: Double
     }
@@ -72,20 +72,18 @@ struct StationJsonStruct:Codable{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class UbikeJson {
-    let stationAPI: StationAPI;
-    
+    let stationAPI: StationAPI
+
     init() {
         self.stationAPI = StationAPI()
     }
-    
+
     func fetchStationList(type: StationType) throws -> [Station] {
         return try stationAPI.fetchStationList(stationType: type)
     }
-    
-    func fetchStationStatus(stationID: String,cityName: String) throws -> UbikeStateJson {
+
+    func fetchStationStatus(stationID: String, cityName: String) throws -> UbikeStateJson {
         let stationType: StationType = cityName == "NWT" ? StationType.NewTaipei : StationType.Taipei
         return try stationAPI.fetchStationStatus(stationType: stationType, stationID: stationID)
     }
 }
-
-

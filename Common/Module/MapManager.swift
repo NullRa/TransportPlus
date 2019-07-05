@@ -1,10 +1,10 @@
 import Foundation
 import CoreLocation
-class MapManager{
+class MapManager {
     static let shared = MapManager()
     let manager = CLLocationManager()
-    
-    func managerSetting(){
+
+    func managerSetting() {
         //instance
         manager.requestAlwaysAuthorization()
         //啟用背景功能
@@ -17,4 +17,3 @@ class MapManager{
         manager.startUpdatingLocation()
     }
 }
-
