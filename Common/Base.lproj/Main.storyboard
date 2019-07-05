@@ -149,7 +149,7 @@
                     <connections>
                         <outlet property="autoSwitchBtn" destination="oYG-Y0-x6y" id="30X-kI-YTa"/>
                         <outlet property="mainMapView" destination="IcK-op-qVO" id="YxH-Tv-HK2"/>
-                        <outlet property="searchBar" destination="8u9-fL-luO" id="Ub0-5O-c0V"/>
+                        <outlet property="searchBar" destination="8u9-fL-luO" id="z8p-Hf-Mq2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ojZ-78-ueP" userLabel="First Responder" sceneMemberID="firstResponder"/>

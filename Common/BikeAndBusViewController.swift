@@ -26,6 +26,7 @@ class BikeAndBusViewController: UIViewController {
         uploadDefaultView()
         MapManager.shared.managerSetting()
         mainMapView.delegate = self
+        searchBar.delegate = self
     }
     
     func errorAlert(title:String,message:String,actionTitle:String){
@@ -50,6 +51,7 @@ class BikeAndBusViewController: UIViewController {
         showBikeStation()
         addTextViewInputAccessoryView()
         mainMapView.userTrackingMode = .follow
+        searchBar.placeholder = "Search"
     }
     
     //收起textView鍵盤的方法
@@ -133,11 +135,18 @@ class BikeAndBusViewController: UIViewController {
         }
     }
     
+    func gecodeAddressHandler(placemarks:[CLPlacemark]?,error:Error?){
+        
+    }
+    func gecodeLocationHandler(){}
+    
+    
     @IBAction func autoSwitchBtnPressed(_ sender: Any) {
         showBikeStation()
     }
     
     @objc func closeKeyboard() {
+        searchBar.text = ""
         self.view.endEditing(true)
     }
     
@@ -179,12 +188,31 @@ extension BikeAndBusViewController : MKMapViewDelegate{
         guard let annotation = view.annotation as? MKPointAnnotation else {
             return
         }
-         annotation.subtitle = ""
+        annotation.subtitle = ""
     }
-
+    
     // 移動結束才會執行
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         showBikeStation()
     }
 }
 
+// MASK:UISearchBar
+extension BikeAndBusViewController: UISearchBarDelegate {
+    //點擊鍵盤的search btn
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        MapManager.shared.searchAction(searchText: searchBar.text!) { (tmpCenter,tmpError) in
+            if let error = tmpError as? ErrorCode{
+                self.errorAlert(title: error.alertTitle, message: error.alertMessage, actionTitle: "OK")
+                return
+            }
+            if let center = tmpCenter{
+                let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                let regin = MKCoordinateRegion(center: center, span: span)
+                self.mainMapView.setRegion(regin, animated: true)
+                self.view.endEditing(true)
+                searchBar.text = ""
+            }
+        }
+    }
+}
