@@ -6,7 +6,6 @@ class StationAPI {
         let apiURL = getStationListRequstURL(stationType: stationType)
         let data: Data = try self.fetchJsonData(apiURL: apiURL)
         var stations: [Station] = []
-
         let decoder = JSONDecoder()
 
         if let dataList = try? decoder.decode([StationJsonStruct].self, from: data) {
@@ -25,12 +24,11 @@ class StationAPI {
     }
 
     func fetchStationStatus(stationType: StationType, stationID: String) throws -> UbikeStateJson {
-
         let apiURL = self.getStationStatusRequestURL(stationType: stationType, stationID: stationID)
-
         let data = try self.fetchJsonData(apiURL: apiURL)
         let decoder = JSONDecoder()
         let dataList = try decoder.decode([UbikeStateJson].self, from: data)
+
         if (dataList.count == 0) {
             throw ErrorCode.DataError
         }
@@ -74,19 +72,20 @@ class StationAPI {
         let base64HmacStr = signDate.hmac(algorithm: .SHA1, key: APP_KEY)
         let authorization: String = "hmac username=\""+APP_ID+"\", algorithm=\"hmac-sha1\", headers=\"x-date\", signature=\""+base64HmacStr+"\""
         let url = URL(string: apiURL)
-
         var request = URLRequest(url: url!)
         request.setValue(xdate, forHTTPHeaderField: "x-date")
         request.setValue(authorization, forHTTPHeaderField: "Authorization")
         request.setValue("gzip", forHTTPHeaderField: "Accept-Encoding")
         let sema = DispatchSemaphore( value: 0)
-        var tmpData: Data = Data()
+
+        var currentData: Data = Data()
         let completionHandler = {(data: Data?, response: URLResponse?, error: Error?) -> Void in
-            tmpData = data!
+            currentData = data!
             sema.signal()
         }
         URLSession.shared.dataTask(with: request, completionHandler: completionHandler).resume()
         sema.wait()
-        return tmpData
+
+        return currentData
     }
 }
