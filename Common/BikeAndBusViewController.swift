@@ -95,9 +95,7 @@ class BikeAndBusViewController: UIViewController {
             }catch is ErrorCode{
                 errorAlert(title: ErrorCode.CoreDataError.alertTitle, message: ErrorCode.CoreDataError.alertMessage, actionTitle: "OK")
                 ubikeDatas = []
-            }catch{
-                
-            }
+            }catch{}
         }
     }
     
@@ -114,9 +112,7 @@ class BikeAndBusViewController: UIViewController {
         }catch is ErrorCode{
             errorAlert(title: ErrorCode.CoreDataError.alertTitle, message: ErrorCode.CoreDataError.alertMessage, actionTitle: "OK")
             ubikeDatas = []
-        }catch{
-            
-        }
+        }catch{}
     }
     
     //build ubikeData
@@ -130,9 +126,7 @@ class BikeAndBusViewController: UIViewController {
         } catch is ErrorCode{
             errorAlert(title: ErrorCode.JsonDecodeError.alertTitle, message: ErrorCode.JsonDecodeError.alertMessage, actionTitle: "OK")
             ubikeDatas = []
-        }catch{
-            
-        }
+        }catch{}
     }
     
     @IBAction func autoSwitchBtnPressed(_ sender: Any) {
@@ -174,8 +168,7 @@ extension BikeAndBusViewController : MKMapViewDelegate{
         }catch is ErrorCode{
             errorAlert(title: ErrorCode.JsonDecodeError.alertTitle, message: ErrorCode.JsonDecodeError.alertMessage, actionTitle: "OK")
             ubikeDatas = []
-        }catch{
-        }
+        }catch{}
     }
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
