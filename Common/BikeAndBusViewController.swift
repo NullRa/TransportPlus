@@ -121,11 +121,11 @@ class BikeAndBusViewController: UIViewController {
     
     //build ubikeData
     func getUbikeData(){
-        let tmp = UbikeJson()
+        let ubikeDefault = UbikeJson()
         
         do {
-            let TPEStation = try tmp.fetchStationList(type: .Taipei)
-            let NWTStation = try tmp.fetchStationList(type: .NewTaipei)
+            let TPEStation = try ubikeDefault.fetchStationList(type: .Taipei)
+            let NWTStation = try ubikeDefault.fetchStationList(type: .NewTaipei)
             CoreDataHelper.shared.saveUbikes(stations:(TPEStation + NWTStation))
         } catch is ErrorCode{
             errorAlert(title: ErrorCode.JsonDecodeError.alertTitle, message: ErrorCode.JsonDecodeError.alertMessage, actionTitle: "OK")
@@ -160,7 +160,7 @@ extension BikeAndBusViewController : MKMapViewDelegate{
     
     //點擊圖標的動作,思考新增判斷網路
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        let tmp = UbikeJson()
+        let ubkieDefault = UbikeJson()
         var cityName = ""
         var stationID = ""
         guard let annotation = view.annotation as? MKPointAnnotation else {
@@ -175,7 +175,7 @@ extension BikeAndBusViewController : MKMapViewDelegate{
             }
         }
         do{
-            let ubState = try tmp.fetchStationStatus(stationID: stationID,cityName: cityName)
+            let ubState = try ubkieDefault.fetchStationStatus(stationID: stationID,cityName: cityName)
             annotation.subtitle = ubState.ServieAvailable == 0 ? "未營運" : "可借\(ubState.AvailableRentBikes)台,可還\(ubState.AvailableReturnBikes)台"
         }catch is ErrorCode{
             errorAlert(title: ErrorCode.JsonDecodeError.alertTitle, message: ErrorCode.JsonDecodeError.alertMessage, actionTitle: "OK")
@@ -201,14 +201,14 @@ extension BikeAndBusViewController : MKMapViewDelegate{
 extension BikeAndBusViewController: UISearchBarDelegate {
     //點擊鍵盤的search btn
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        MapManager.shared.searchAction(searchText: searchBar.text!) { (tmpCenter,tmpError) in
-            if let error = tmpError as? ErrorCode{
-                self.errorAlert(title: error.alertTitle, message: error.alertMessage, actionTitle: "OK")
+        MapManager.shared.searchAction(searchText: searchBar.text!) { (center,error) in
+            if let currentError = error as? ErrorCode{
+                self.errorAlert(title: currentError.alertTitle, message: currentError.alertMessage, actionTitle: "OK")
                 return
             }
-            if let center = tmpCenter{
+            if let currentCenter = center{
                 let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                let regin = MKCoordinateRegion(center: center, span: span)
+                let regin = MKCoordinateRegion(center: currentCenter, span: span)
                 self.mainMapView.setRegion(regin, animated: true)
                 self.view.endEditing(true)
                 searchBar.text = ""

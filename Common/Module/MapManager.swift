@@ -30,7 +30,7 @@ class MapManager{
             if let _ = error {
                 funcError = ErrorCode.AddressError
             }
-            if let tmpPlacemarks = placemarks,let location = tmpPlacemarks[0].location{
+            if let addressPlacemarks = placemarks,let location = addressPlacemarks[0].location{
                 //placemark.location.coordinate 取得經緯度的參數
                 lon = location.coordinate.longitude
                 lat = location.coordinate.latitude
@@ -44,7 +44,7 @@ class MapManager{
                 if let _ = error, !(funcError is ErrorCode) {
                     funcError = ErrorCode.AddressError
                 }
-                if let tmpPlacemarks = placemarks,let subAdministrativeArea = tmpPlacemarks[0].subAdministrativeArea, let locality = tmpPlacemarks[0].locality,let name = tmpPlacemarks[0].name{
+                if let currentPlacemarks = placemarks,let subAdministrativeArea = currentPlacemarks[0].subAdministrativeArea, let locality = currentPlacemarks[0].locality,let name = currentPlacemarks[0].name{
                     //這邊拼湊轉回來的地址
                     let resultAddress = subAdministrativeArea + locality + name
                     if resultAddress.contains(searchText){

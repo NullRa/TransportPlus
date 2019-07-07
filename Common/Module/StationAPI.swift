@@ -82,13 +82,13 @@ class StationAPI {
         request.setValue(authorization, forHTTPHeaderField: "Authorization")
         request.setValue("gzip", forHTTPHeaderField: "Accept-Encoding")
         let sema = DispatchSemaphore( value: 0)
-        var tmpData: Data = Data()
+        var currentData: Data = Data()
         let completionHandler = {(data:  Data?, response: URLResponse?, error: Error?) -> Void in
-            tmpData = data!
+            currentData = data!
             sema.signal()
         }
         URLSession.shared.dataTask(with: request, completionHandler: completionHandler).resume()
         sema.wait();
-        return tmpData
+        return currentData
     }
 }
