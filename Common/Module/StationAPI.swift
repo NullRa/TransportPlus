@@ -6,7 +6,6 @@ class StationAPI {
         let apiURL = getStationListRequstURL(stationType: stationType)
         let data:Data = try self.fetchJsonData(apiURL: apiURL);
         var stations: [Station] = []
-        
         let decoder = JSONDecoder()
         
         if let dataList = try? decoder.decode([StationJsonStruct].self, from: data) {
@@ -25,16 +24,14 @@ class StationAPI {
     }
     
     func fetchStationStatus(stationType: StationType, stationID: String) throws -> UbikeStateJson{
-        
         let apiURL = self.getStationStatusRequestURL(stationType: stationType, stationID: stationID)
-        
         let data = try self.fetchJsonData(apiURL: apiURL)
         let decoder = JSONDecoder()
         let dataList = try decoder.decode([UbikeStateJson].self, from: data)
+        
         if (dataList.count == 0) {
             throw ErrorCode.DataError
         }
-        
         return dataList[0]
     }
     
@@ -49,13 +46,11 @@ class StationAPI {
     
     private func getStationStatusRequestURL(stationType: StationType, stationID: String) -> String  {
         let city = self.getCityCode(stationType: stationType)
-        
         return "https://ptx.transportdata.tw/MOTC/v2/Bike/Availability/\(city)?$filter=StationUID%20eq%20'\(stationID)'&$top=30&$format=JSON"
     }
     
     private func getStationListRequstURL(stationType: StationType ) -> String {
         let city = self.getCityCode(stationType: stationType)
-        
         return "https://ptx.transportdata.tw/MOTC/v2/Bike/Station/\(city)?$format=JSON"
     }
     
@@ -76,7 +71,6 @@ class StationAPI {
         let base64HmacStr = signDate.hmac(algorithm: .SHA1, key: APP_KEY)
         let authorization:String = "hmac username=\""+APP_ID+"\", algorithm=\"hmac-sha1\", headers=\"x-date\", signature=\""+base64HmacStr+"\""
         let url = URL(string: apiURL)
-        
         var request = URLRequest(url: url!)
         request.setValue(xdate, forHTTPHeaderField: "x-date")
         request.setValue(authorization, forHTTPHeaderField: "Authorization")
