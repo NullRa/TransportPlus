@@ -2,7 +2,6 @@ import Foundation
 import CoreLocation
 import CommonCrypto
 import MapKit
-//import Foundation
 
 enum CryptoAlgorithm {
     case MD5, SHA1, SHA224, SHA256, SHA384, SHA512
@@ -70,7 +69,6 @@ struct StationJsonStruct:Codable{
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class UbikeJson {
     let stationAPI: StationAPI;
     

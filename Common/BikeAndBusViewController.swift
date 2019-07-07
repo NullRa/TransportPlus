@@ -1,4 +1,3 @@
-//BUS&UBIKE viewController
 import CoreLocation
 import MapKit
 import UIKit
@@ -146,7 +145,7 @@ class BikeAndBusViewController: UIViewController {
 
 extension BikeAndBusViewController : MKMapViewDelegate{
     
-    //點擊圖標的動作,思考新增判斷網路
+    //點擊圖標的動作
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         let tmp = UbikeJson()
         var cityName = ""

@@ -6,15 +6,10 @@ class MapManager{
     let manager = CLLocationManager()
     
     func managerSetting(){
-        //instance
         manager.requestAlwaysAuthorization()
-        //啟用背景功能
         manager.allowsBackgroundLocationUpdates = true
-        //精確度設定
         manager.desiredAccuracy = kCLLocationAccuracyBest
-        //活動種類
         manager.activityType = .automotiveNavigation
-        //回報位置
         manager.startUpdatingLocation()
     }
     
@@ -31,7 +26,6 @@ class MapManager{
                 funcError = ErrorCode.AddressError
             }
             if let tmpPlacemarks = placemarks,let location = tmpPlacemarks[0].location{
-                //placemark.location.coordinate 取得經緯度的參數
                 lon = location.coordinate.longitude
                 lat = location.coordinate.latitude
                 if(lat < 22 || lat > 27 || lon < 118 || lon > 122 && lat != 0 && lon != 0){

@@ -2,7 +2,6 @@ import UIKit
 import CoreData
 
 class CoreDataHelper: NSObject {
-    //Singleton在整個應用程式中只有一個物件(實體)
     static let shared = CoreDataHelper()
     
     override internal init() {
