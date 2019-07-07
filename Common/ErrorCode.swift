@@ -5,7 +5,7 @@ enum ErrorCode: Error {
     case DataError
     case JsonDecodeError
     case CoreDataError
-    var alertTitle:String{
+    var alertTitle: String {
         var result = ""
         switch self {
         case .UrlError: result = "UrlError"
@@ -15,7 +15,7 @@ enum ErrorCode: Error {
         }
         return result
     }
-    var alertMessage:String{
+    var alertMessage: String {
         var result = ""
         switch self {
         case .UrlError: result = "UrlError"
