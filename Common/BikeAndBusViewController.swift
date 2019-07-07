@@ -208,8 +208,8 @@ extension BikeAndBusViewController: UISearchBarDelegate {
             }
             if let center = tmpCenter{
                 let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                let regin = MKCoordinateRegion(center: center, span: span)
-                self.mainMapView.setRegion(regin, animated: true)
+                let region = MKCoordinateRegion(center: center, span: span)
+                self.mainMapView.setRegion(region, animated: true)
                 self.view.endEditing(true)
                 searchBar.text = ""
             }
