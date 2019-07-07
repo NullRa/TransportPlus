@@ -135,12 +135,6 @@ class BikeAndBusViewController: UIViewController {
         }
     }
     
-    func gecodeAddressHandler(placemarks:[CLPlacemark]?,error:Error?){
-        
-    }
-    func gecodeLocationHandler(){}
-    
-    
     @IBAction func autoSwitchBtnPressed(_ sender: Any) {
         showBikeStation()
     }
