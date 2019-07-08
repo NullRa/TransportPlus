@@ -28,6 +28,14 @@ class BikeAndBusViewController: UIViewController {
         searchBar.delegate = self
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        let name = "Map Page"
+        guard let tracker = GAI.sharedInstance().defaultTracker else { return }
+        tracker.set(kGAIScreenName, value: name)
+        guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
+        tracker.send(builder.build() as [NSObject: AnyObject])
+    }
+
     func errorAlert(title: String, message: String, actionTitle: String) {
         let alertCon = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let alertActA = UIAlertAction(title: actionTitle, style: .default, handler: nil)
