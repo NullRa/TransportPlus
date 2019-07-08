@@ -56,7 +56,10 @@ class BikeAndBusViewController: UIViewController {
     //收起textView鍵盤的方法
     func addTextViewInputAccessoryView() {
         let textToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
-        textToolbar.items = [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), UIBarButtonItem(title: "return", style: .done, target: self, action: #selector(closeKeyboard))]
+        // swiftlint:disable line_length
+        textToolbar.items = [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+                             UIBarButtonItem(title: "return", style: .done, target: self, action: #selector(closeKeyboard))]
+        // swiftlint:enable line_length
         searchBar.inputAccessoryView = textToolbar
     }
 
@@ -67,12 +70,13 @@ class BikeAndBusViewController: UIViewController {
             let minLat = mainMapView.centerCoordinate.latitude - mainMapView.region.span.latitudeDelta/2
             let maxLng = mainMapView.centerCoordinate.longitude + mainMapView.region.span.longitudeDelta/2
             let minLng = mainMapView.centerCoordinate.longitude - mainMapView.region.span.longitudeDelta/2
-            for i in 0 ..< ubikeDatas.count {
-                if(ubikeDatas[i].longitude > minLng && ubikeDatas[i].longitude < maxLng && ubikeDatas[i].latitude > minLat && ubikeDatas[i].latitude < maxLat ) {
+            for index in 0 ..< ubikeDatas.count {
+                if ubikeDatas[index].longitude > minLng && ubikeDatas[index].longitude < maxLng
+                    && ubikeDatas[index].latitude > minLat && ubikeDatas[index].latitude < maxLat {
                     let annotation = MKPointAnnotation()
-                    annotation.coordinate.latitude = ubikeDatas[i].latitude
-                    annotation.coordinate.longitude = ubikeDatas[i].longitude
-                    annotation.title = ubikeDatas[i].name
+                    annotation.coordinate.latitude = ubikeDatas[index].latitude
+                    annotation.coordinate.longitude = ubikeDatas[index].longitude
+                    annotation.title = ubikeDatas[index].name
                     mainMapView.addAnnotation(annotation)
                 }
             }
@@ -92,7 +96,9 @@ class BikeAndBusViewController: UIViewController {
             do {
                 ubikeDatas = try moc.fetch(request)
             } catch is ErrorCode {
-                errorAlert(title: ErrorCode.CoreDataError.alertTitle, message: ErrorCode.CoreDataError.alertMessage, actionTitle: "OK")
+                // swiftlint:disable line_length
+                errorAlert(title: ErrorCode.coreDataError.alertTitle, message: ErrorCode.coreDataError.alertMessage, actionTitle: "OK")
+                // swiftlint:enable line_length
                 ubikeDatas = []
             } catch {
 
@@ -105,16 +111,17 @@ class BikeAndBusViewController: UIViewController {
         let moc = CoreDataHelper.shared.managedObjectContext()
         let request = NSFetchRequest<Station>(entityName: "Station")
         do {
-            let results = try moc.fetch(request as! NSFetchRequest<NSFetchRequestResult>) as! [Station]
+            let results = try moc.fetch(request)
             for result in results {
                 moc.delete(result)
             }
             saveToCoreData()
         } catch is ErrorCode {
-            errorAlert(title: ErrorCode.CoreDataError.alertTitle, message: ErrorCode.CoreDataError.alertMessage, actionTitle: "OK")
+            // swiftlint:disable line_length
+            errorAlert(title: ErrorCode.coreDataError.alertTitle, message: ErrorCode.coreDataError.alertMessage, actionTitle: "OK")
+            // swiftlint:enable line_length
             ubikeDatas = []
         } catch {
-
         }
     }
 
@@ -123,14 +130,15 @@ class BikeAndBusViewController: UIViewController {
         let ubikeDefault = UbikeJson()
 
         do {
-            let TPEStation = try ubikeDefault.fetchStationList(type: .Taipei)
-            let NWTStation = try ubikeDefault.fetchStationList(type: .NewTaipei)
+            let TPEStation = try ubikeDefault.fetchStationList(type: .taipei)
+            let NWTStation = try ubikeDefault.fetchStationList(type: .newTaipei)
             CoreDataHelper.shared.saveUbikes(stations: (TPEStation + NWTStation))
         } catch is ErrorCode {
-            errorAlert(title: ErrorCode.JsonDecodeError.alertTitle, message: ErrorCode.JsonDecodeError.alertMessage, actionTitle: "OK")
+            // swiftlint:disable line_length
+            errorAlert(title: ErrorCode.jsonDecodeError.alertTitle, message: ErrorCode.jsonDecodeError.alertMessage, actionTitle: "OK")
+            // swiftlint:enable line_length
             ubikeDatas = []
         } catch {
-
         }
     }
 
@@ -159,18 +167,25 @@ extension BikeAndBusViewController: MKMapViewDelegate {
             errorAlert(title: "載入圖標失敗", message: "載入圖標失敗", actionTitle: "OK")
             return
         }
-        for i in 0..<ubikeDatas.count {
-            if ubikeDatas[i].longitude == annotation.coordinate.longitude && ubikeDatas[i].latitude == annotation.coordinate.latitude {
-                cityName = ubikeDatas[i].cityName
-                stationID = ubikeDatas[i].no
+        for index in 0..<ubikeDatas.count {
+            if ubikeDatas[index].longitude == annotation.coordinate.longitude
+                && ubikeDatas[index].latitude == annotation.coordinate.latitude {
+                cityName = ubikeDatas[index].cityName
+                stationID = ubikeDatas[index].number
                 break
             }
         }
         do {
             let ubState = try ubkieDefault.fetchStationStatus(stationID: stationID, cityName: cityName)
-            annotation.subtitle = ubState.ServieAvailable == 0 ? "未營運" : "可借\(ubState.AvailableRentBikes)台,可還\(ubState.AvailableReturnBikes)台"
+            if ubState.ServieAvailable == 0 {
+                annotation.subtitle = "未營運"
+            } else {
+                annotation.subtitle = "可借\(ubState.AvailableRentBikes)台,可還\(ubState.AvailableReturnBikes)台"
+            }
         } catch is ErrorCode {
-            errorAlert(title: ErrorCode.JsonDecodeError.alertTitle, message: ErrorCode.JsonDecodeError.alertMessage, actionTitle: "OK")
+            // swiftlint:disable line_length
+            errorAlert(title: ErrorCode.jsonDecodeError.alertTitle, message: ErrorCode.jsonDecodeError.alertMessage, actionTitle: "OK")
+            // swiftlint:enable line_length
             ubikeDatas = []
         } catch {}
     }

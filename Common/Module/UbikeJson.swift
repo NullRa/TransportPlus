@@ -46,8 +46,8 @@ extension String {
     }
 }
 
+// swiftlint:disable identifier_name
 struct UbikeStateJson: Codable {
-    var StationUID: String
     var ServieAvailable: Int
     var AvailableReturnBikes: Int
     var AvailableRentBikes: Int
@@ -55,19 +55,18 @@ struct UbikeStateJson: Codable {
 
 struct StationJsonStruct: Codable {
     var StationUID: String
-    var StationID: String
     var AuthorityID: String
     var StationName: StationName
     var StationPosition: StationPosition
     struct StationName: Codable {
         var Zh_tw: String
-        var En: String
     }
     struct StationPosition: Codable {
         var PositionLat: Double
         var PositionLon: Double
     }
 }
+// swiftlint:enable identifier_name
 
 class UbikeJson {
     let stationAPI: StationAPI
@@ -81,7 +80,7 @@ class UbikeJson {
     }
 
     func fetchStationStatus(stationID: String, cityName: String) throws -> UbikeStateJson {
-        let stationType: StationType = cityName == "NWT" ? StationType.NewTaipei : StationType.Taipei
+        let stationType: StationType = cityName == "NWT" ? StationType.newTaipei : StationType.taipei
         return try stationAPI.fetchStationStatus(stationType: stationType, stationID: stationID)
     }
 }

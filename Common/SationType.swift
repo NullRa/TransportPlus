@@ -1,5 +1,5 @@
 import Foundation
 
 enum StationType {
-    case Taipei, NewTaipei
+    case taipei, newTaipei
 }
