@@ -8,18 +8,16 @@ class StationAPI {
         var stations: [Station] = []
         let decoder = JSONDecoder()
         let dataList = try decoder.decode([StationJsonStruct].self, from: data)
-//        if let dataList = try? decoder.decode([StationJsonStruct].self, from: data) {
-            for ubikeStation in dataList {
-                let moc = CoreDataHelper.shared.managedObjectContext()
-                let station = Station(context: moc)
-                station.cityName = ubikeStation.AuthorityID
-                station.number = ubikeStation.StationUID
-                station.name = ubikeStation.StationName.Zh_tw
-                station.longitude = ubikeStation.StationPosition.PositionLon
-                station.latitude = ubikeStation.StationPosition.PositionLat
-                stations.append(station)
-            }
-//        }
+        for ubikeStation in dataList {
+            let moc = CoreDataHelper.shared.managedObjectContext()
+            let station = Station(context: moc)
+            station.cityName = ubikeStation.AuthorityID
+            station.number = ubikeStation.StationUID
+            station.name = ubikeStation.StationName.Zh_tw
+            station.longitude = ubikeStation.StationPosition.PositionLon
+            station.latitude = ubikeStation.StationPosition.PositionLat
+            stations.append(station)
+        }
         return stations
     }
 
