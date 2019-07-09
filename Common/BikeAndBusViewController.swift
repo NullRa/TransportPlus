@@ -8,6 +8,9 @@ class BikeAndBusViewController: UIViewController {
     @IBOutlet weak var mainMapView: MKMapView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var autoSwitchBtn: UISwitch!
+    @IBOutlet weak var toggleSearchBarBtn: UIButton!
+    @IBOutlet weak var toggleBtnConstraintTop: NSLayoutConstraint!
+    @IBOutlet weak var labelConstraintTop: NSLayoutConstraint!
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         cleanUbData()
@@ -149,6 +152,27 @@ class BikeAndBusViewController: UIViewController {
         } catch {
         }
     }
+    // MARK: permission check
+    func checkPermission() {
+        if CLLocationManager.authorizationStatus() == .notDetermined {
+            MapManager.shared.manager.requestWhenInUseAuthorization()
+            MapManager.shared.manager.startUpdatingLocation()
+            return
+        }
+        if CLLocationManager.authorizationStatus() == .denied {
+            let alertController = UIAlertController(
+                title: "定位權限已關閉",
+                message: "如要變更權限，請至 設定 > 隱私權 > 定位服務 開啟",
+                preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "確認", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            self.present(alertController, animated: true, completion: nil)
+            return
+        }
+        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+            MapManager.shared.manager.startUpdatingLocation()
+        }
+    }
 
     @IBAction func autoSwitchBtnPressed(_ sender: Any) {
         showBikeStation()
@@ -161,6 +185,23 @@ class BikeAndBusViewController: UIViewController {
 
     @IBAction func locationBtnPressed(_ sender: Any) {
         mainMapView.userTrackingMode = .followWithHeading
+    }
+    @IBAction func toggleSearchBarPressed(_ sender: Any) {
+        if searchBar.isHidden {
+            toggleBtnConstraintTop.priority = UILayoutPriority(rawValue: 100)
+            labelConstraintTop.priority = UILayoutPriority(rawValue: 100)
+            DispatchQueue.main.async {
+                self.searchBar.isHidden = false
+                self.toggleSearchBarBtn.titleLabel?.text = "收起"
+            }
+        } else {
+            toggleBtnConstraintTop.priority = UILayoutPriority(rawValue: 900)
+            labelConstraintTop.priority = UILayoutPriority(rawValue: 900)
+            DispatchQueue.main.async {
+                self.searchBar.isHidden = true
+                self.toggleSearchBarBtn.titleLabel?.text = "展開"
+            }
+        }
     }
 }
 
