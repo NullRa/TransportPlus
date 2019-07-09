@@ -18,6 +18,7 @@ class BikeAndBusViewController: UIViewController {
         print(NSHomeDirectory())
         getUbikeData()
         queryFromCoreData()
+        checkPermission()
     }
 
     override func viewDidLoad() {
@@ -26,13 +27,14 @@ class BikeAndBusViewController: UIViewController {
             showAlertMessage(title: "載入地圖失敗", message: "載入地圖失敗", actionTitle: "OK")
             return
         }
-        uploadDefaultView()
-        MapManager.shared.managerSetting()
         mainMapView.delegate = self
         searchBar.delegate = self
+        MapManager.shared.manager.delegate = self
+        uploadDefaultView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         let name = "Map Page"
         guard let tracker = GAI.sharedInstance().defaultTracker else { return }
         tracker.set(kGAIScreenName, value: name)
@@ -50,13 +52,13 @@ class BikeAndBusViewController: UIViewController {
     //控制載入的範圍&畫面
     func uploadDefaultView() {
         //Get current location
-        guard let location = MapManager.shared.manager.location else {
-            assertionFailure("Location is not ready")
-            showAlertMessage(title: "載入位置失敗", message: "確認定位功能已啟用", actionTitle: "OK")
+        if MapManager.shared.manager.location == nil {
+            errorAlert(title: "抓不到位置", message: "請檢查定位服務是否啟用", actionTitle: "OK")
+
             return
         }
         let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-        let regin = MKCoordinateRegion(center: location.coordinate, span: span)
+        let regin = MKCoordinateRegion(center: MapManager.shared.manager.location!.coordinate, span: span)
         mainMapView.setRegion(regin, animated: true)
         autoSwitchBtn.setOn(true, animated: false)
         showBikeStation()
@@ -153,11 +155,6 @@ class BikeAndBusViewController: UIViewController {
     }
     // MARK: permission check
     func checkPermission() {
-        if CLLocationManager.authorizationStatus() == .notDetermined {
-            MapManager.shared.manager.requestWhenInUseAuthorization()
-            MapManager.shared.manager.startUpdatingLocation()
-            return
-        }
         if CLLocationManager.authorizationStatus() == .denied {
             let alertController = UIAlertController(
                 title: "定位權限已關閉",
@@ -168,9 +165,10 @@ class BikeAndBusViewController: UIViewController {
             self.present(alertController, animated: true, completion: nil)
             return
         }
-        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
-            MapManager.shared.manager.startUpdatingLocation()
+        if CLLocationManager.authorizationStatus() == .notDetermined {
+            MapManager.shared.manager.requestAlwaysAuthorization()
         }
+        MapManager.shared.manager.startUpdatingLocation()
     }
 
     @IBAction func autoSwitchBtnPressed(_ sender: Any) {
@@ -183,7 +181,7 @@ class BikeAndBusViewController: UIViewController {
     }
 
     @IBAction func locationBtnPressed(_ sender: Any) {
-        mainMapView.userTrackingMode = .followWithHeading
+        mainMapView.userTrackingMode = .follow
     }
     @IBAction func toggleSearchBarPressed(_ sender: Any) {
         if searchBar.isHidden {
@@ -260,5 +258,12 @@ extension BikeAndBusViewController: UISearchBarDelegate {
                 searchBar.text = ""
             }
         }
+    }
+}
+
+extension BikeAndBusViewController: CLLocationManagerDelegate {
+    //授權完做動作
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        self.uploadDefaultView()
     }
 }
