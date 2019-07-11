@@ -102,6 +102,9 @@
                                     <segment title="Ubike"/>
                                     <segment title="Bus"/>
                                 </segments>
+                                <connections>
+                                    <action selector="stationSegmentAction:" destination="AXg-Cj-T36" eventType="valueChanged" id="lBD-bK-1fn"/>
+                                </connections>
                             </segmentedControl>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rXR-ba-yoQ">
                                 <rect key="frame" x="144.5" y="120" width="31" height="30"/>
@@ -145,6 +148,7 @@
                         <outlet property="labelConstraintTop" destination="aKc-Oe-6JS" id="45Z-np-NQd"/>
                         <outlet property="mainMapView" destination="IcK-op-qVO" id="YxH-Tv-HK2"/>
                         <outlet property="searchBar" destination="8u9-fL-luO" id="z8p-Hf-Mq2"/>
+                        <outlet property="stationSegment" destination="b8d-78-TLe" id="Ynk-Ff-drS"/>
                         <outlet property="toggleBtnConstraintTop" destination="QHD-tF-rAR" id="j0b-Jx-nx9"/>
                         <outlet property="toggleSearchBarBtn" destination="rXR-ba-yoQ" id="ghr-JG-wz9"/>
                     </connections>

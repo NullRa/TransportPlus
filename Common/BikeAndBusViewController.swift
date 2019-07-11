@@ -2,7 +2,7 @@ import CoreLocation
 import MapKit
 import UIKit
 import CoreData
-
+//用modNumber來判斷資料庫要讀取哪一個arraylist就好了!
 class BikeAndBusViewController: UIViewController {
     var ubikeDatas: [Station] = []
     var annotationMap = AnnotationMap()
@@ -12,6 +12,7 @@ class BikeAndBusViewController: UIViewController {
     @IBOutlet weak var toggleSearchBarBtn: UIButton!
     @IBOutlet weak var toggleBtnConstraintTop: NSLayoutConstraint!
     @IBOutlet weak var labelConstraintTop: NSLayoutConstraint!
+    @IBOutlet weak var stationSegment: UISegmentedControl!
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         cleanUbData()
@@ -59,10 +60,10 @@ class BikeAndBusViewController: UIViewController {
         let regin = MKCoordinateRegion(center: location.coordinate, span: span)
         mainMapView.setRegion(regin, animated: true)
         autoSwitchBtn.setOn(true, animated: false)
-        showBikeStation()
         addTextViewInputAccessoryView()
         mainMapView.userTrackingMode = .follow
         searchBar.placeholder = "Search"
+        showBikeStation(modNumber: stationSegment.selectedSegmentIndex)
     }
 
     //收起textView鍵盤的方法
@@ -75,7 +76,7 @@ class BikeAndBusViewController: UIViewController {
         searchBar.inputAccessoryView = textToolbar
     }
 
-    func showBikeStation() {
+    func showBikeStation(modNumber: Int) {
         if autoSwitchBtn.isOn {
             annotationMap.reset()
             mainMapView.removeAnnotations(mainMapView.annotations)
@@ -174,7 +175,7 @@ class BikeAndBusViewController: UIViewController {
     }
 
     @IBAction func autoSwitchBtnPressed(_ sender: Any) {
-        showBikeStation()
+        showBikeStation(modNumber: stationSegment.selectedSegmentIndex)
     }
 
     @objc func closeKeyboard() {
@@ -200,6 +201,13 @@ class BikeAndBusViewController: UIViewController {
                 self.searchBar.isHidden = true
                 self.toggleSearchBarBtn.titleLabel?.text = "展開"
             }
+        }
+    }
+    @IBAction func stationSegmentAction(_ sender: Any) {
+        if stationSegment.selectedSegmentIndex == 0 {
+            //
+        } else {
+            //
         }
     }
 }
@@ -238,7 +246,7 @@ extension BikeAndBusViewController: MKMapViewDelegate {
 
     // 移動結束才會執行
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        showBikeStation()
+        showBikeStation(modNumber: stationSegment.selectedSegmentIndex)
     }
 }
 
