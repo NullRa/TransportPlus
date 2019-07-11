@@ -2,10 +2,10 @@ import CoreLocation
 import MapKit
 import UIKit
 
-//用modNumber來判斷資料庫要讀取哪一個arraylist就好了!
 class MainViewController: UIViewController {
     var ubikeDatas: [UbikeStation] = []
     var busDatas: [BusStation] = []
+
     var annotationMap = AnnotationMap()
     @IBOutlet weak var mainMapView: MKMapView!
     @IBOutlet weak var searchBar: UISearchBar!
