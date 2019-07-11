@@ -5,6 +5,7 @@ import CoreData
 
 class BikeAndBusViewController: UIViewController {
     var ubikeDatas: [Station] = []
+    var annotationMap = AnnotationMap()
     @IBOutlet weak var mainMapView: MKMapView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var autoSwitchBtn: UISwitch!
@@ -73,6 +74,7 @@ class BikeAndBusViewController: UIViewController {
 
     func showBikeStation() {
         if autoSwitchBtn.isOn {
+            annotationMap.reset()
             mainMapView.removeAnnotations(mainMapView.annotations)
             let maxLat = mainMapView.centerCoordinate.latitude + mainMapView.region.span.latitudeDelta/2
             let minLat = mainMapView.centerCoordinate.latitude - mainMapView.region.span.latitudeDelta/2
@@ -85,6 +87,7 @@ class BikeAndBusViewController: UIViewController {
                     annotation.coordinate.latitude = ubikeDatas[index].latitude
                     annotation.coordinate.longitude = ubikeDatas[index].longitude
                     annotation.title = ubikeDatas[index].name
+                    annotationMap.set(key: annotation, station: ubikeDatas[index])
                     mainMapView.addAnnotation(annotation)
                 }
             }
@@ -103,13 +106,11 @@ class BikeAndBusViewController: UIViewController {
         moc.performAndWait {
             do {
                 ubikeDatas = try moc.fetch(request)
-            } catch is ErrorCode {
+            } catch {
                 // swiftlint:disable line_length
                 errorAlert(title: ErrorCode.coreDataError.alertTitle, message: ErrorCode.coreDataError.alertMessage, actionTitle: "OK")
                 // swiftlint:enable line_length
                 ubikeDatas = []
-            } catch {
-
             }
         }
     }
@@ -124,12 +125,11 @@ class BikeAndBusViewController: UIViewController {
                 moc.delete(result)
             }
             saveToCoreData()
-        } catch is ErrorCode {
+        } catch {
             // swiftlint:disable line_length
             errorAlert(title: ErrorCode.coreDataError.alertTitle, message: ErrorCode.coreDataError.alertMessage, actionTitle: "OK")
             // swiftlint:enable line_length
             ubikeDatas = []
-        } catch {
         }
     }
 
@@ -141,12 +141,11 @@ class BikeAndBusViewController: UIViewController {
             let TPEStation = try ubikeDefault.fetchStationList(type: .taipei)
             let NWTStation = try ubikeDefault.fetchStationList(type: .newTaipei)
             CoreDataHelper.shared.saveUbikes(stations: (TPEStation + NWTStation))
-        } catch is ErrorCode {
+        } catch {
             // swiftlint:disable line_length
             errorAlert(title: ErrorCode.jsonDecodeError.alertTitle, message: ErrorCode.jsonDecodeError.alertMessage, actionTitle: "OK")
             // swiftlint:enable line_length
             ubikeDatas = []
-        } catch {
         }
     }
 
@@ -169,33 +168,24 @@ extension BikeAndBusViewController: MKMapViewDelegate {
     //點擊圖標的動作
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         let ubkieDefault = UbikeJson()
-        var cityName = ""
-        var stationID = ""
-        guard let annotation = view.annotation as? MKPointAnnotation else {
+        guard let annotation = view.annotation as? MKPointAnnotation,
+            let station = annotationMap.get(key: annotation) else {
             errorAlert(title: "載入圖標失敗", message: "載入圖標失敗", actionTitle: "OK")
             return
         }
-        for index in 0..<ubikeDatas.count {
-            if ubikeDatas[index].longitude == annotation.coordinate.longitude
-                && ubikeDatas[index].latitude == annotation.coordinate.latitude {
-                cityName = ubikeDatas[index].cityName
-                stationID = ubikeDatas[index].number
-                break
-            }
-        }
         do {
-            let ubState = try ubkieDefault.fetchStationStatus(stationID: stationID, cityName: cityName)
+            let ubState = try ubkieDefault.fetchStationStatus(stationID: station.number, cityName: station.cityName)
             if ubState.ServieAvailable == 0 {
                 annotation.subtitle = "未營運"
             } else {
                 annotation.subtitle = "可借\(ubState.AvailableRentBikes)台,可還\(ubState.AvailableReturnBikes)台"
             }
-        } catch is ErrorCode {
+        } catch {
             // swiftlint:disable line_length
             errorAlert(title: ErrorCode.jsonDecodeError.alertTitle, message: ErrorCode.jsonDecodeError.alertMessage, actionTitle: "OK")
             // swiftlint:enable line_length
             ubikeDatas = []
-        } catch {}
+        }
     }
 
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
