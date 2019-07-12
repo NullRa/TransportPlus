@@ -23,7 +23,7 @@ class BikeAndBusViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         guard CLLocationManager.locationServicesEnabled() else {
-            errorAlert(title: "載入地圖失敗", message: "載入地圖失敗", actionTitle: "OK")
+            showAlertMessage(title: "載入地圖失敗", message: "載入地圖失敗", actionTitle: "OK")
             return
         }
         uploadDefaultView()
@@ -40,7 +40,7 @@ class BikeAndBusViewController: UIViewController {
         tracker.send(builder.build() as [NSObject: AnyObject])
     }
 
-    func errorAlert(title: String, message: String, actionTitle: String) {
+    func showAlertMessage(title: String, message: String, actionTitle: String) {
         let alertCon = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let alertActA = UIAlertAction(title: actionTitle, style: .default, handler: nil)
         alertCon.addAction(alertActA)
@@ -52,7 +52,7 @@ class BikeAndBusViewController: UIViewController {
         //Get current location
         guard let location = MapManager.shared.manager.location else {
             assertionFailure("Location is not ready")
-            errorAlert(title: "載入位置失敗", message: "確認定位功能已啟用", actionTitle: "OK")
+            showAlertMessage(title: "載入位置失敗", message: "確認定位功能已啟用", actionTitle: "OK")
             return
         }
         let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
@@ -111,7 +111,7 @@ class BikeAndBusViewController: UIViewController {
                 ubikeDatas = try moc.fetch(request)
             } catch {
                 // swiftlint:disable line_length
-                errorAlert(title: ErrorCode.coreDataError.alertTitle, message: ErrorCode.coreDataError.alertMessage, actionTitle: "OK")
+                showAlertMessage(title: ErrorCode.coreDataError.alertTitle, message: ErrorCode.coreDataError.alertMessage, actionTitle: "OK")
                 // swiftlint:enable line_length
                 ubikeDatas = []
             }
@@ -130,7 +130,7 @@ class BikeAndBusViewController: UIViewController {
             saveToCoreData()
         } catch {
             // swiftlint:disable line_length
-            errorAlert(title: ErrorCode.coreDataError.alertTitle, message: ErrorCode.coreDataError.alertMessage, actionTitle: "OK")
+            showAlertMessage(title: ErrorCode.coreDataError.alertTitle, message: ErrorCode.coreDataError.alertMessage, actionTitle: "OK")
             // swiftlint:enable line_length
             ubikeDatas = []
         }
@@ -146,7 +146,7 @@ class BikeAndBusViewController: UIViewController {
             CoreDataHelper.shared.saveUbikes(stations: (TPEStation + NWTStation))
         } catch {
             // swiftlint:disable line_length
-            errorAlert(title: ErrorCode.jsonDecodeError.alertTitle, message: ErrorCode.jsonDecodeError.alertMessage, actionTitle: "OK")
+            showAlertMessage(title: ErrorCode.jsonDecodeError.alertTitle, message: ErrorCode.jsonDecodeError.alertMessage, actionTitle: "OK")
             // swiftlint:enable line_length
             ubikeDatas = []
         }
@@ -211,7 +211,7 @@ extension BikeAndBusViewController: MKMapViewDelegate {
         let ubkieDefault = UbikeJson()
         guard let annotation = view.annotation as? MKPointAnnotation,
             let station = annotationMap.get(key: annotation) else {
-            errorAlert(title: "載入圖標失敗", message: "載入圖標失敗", actionTitle: "OK")
+            showAlertMessage(title: "載入圖標失敗", message: "載入圖標失敗", actionTitle: "OK")
             return
         }
         do {
@@ -223,7 +223,7 @@ extension BikeAndBusViewController: MKMapViewDelegate {
             }
         } catch {
             // swiftlint:disable line_length
-            errorAlert(title: ErrorCode.jsonDecodeError.alertTitle, message: ErrorCode.jsonDecodeError.alertMessage, actionTitle: "OK")
+            showAlertMessage(title: ErrorCode.jsonDecodeError.alertTitle, message: ErrorCode.jsonDecodeError.alertMessage, actionTitle: "OK")
             // swiftlint:enable line_length
             ubikeDatas = []
         }
@@ -248,7 +248,8 @@ extension BikeAndBusViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         MapManager.shared.searchAction(searchText: searchBar.text!) { (center, error) in
             if let currentError = error as? ErrorCode {
-                self.errorAlert(title: currentError.alertTitle, message: currentError.alertMessage, actionTitle: "OK")
+                self.showAlertMessage(title: currentError.alertTitle,
+                                      message: currentError.alertMessage, actionTitle: "OK")
                 return
             }
             if center != nil {
