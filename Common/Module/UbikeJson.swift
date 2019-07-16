@@ -53,7 +53,7 @@ struct UbikeStateJson: Codable {
     var AvailableRentBikes: Int
 }
 
-struct StationJsonStruct: Codable {
+struct UbikeStationJson: Codable {
     var StationUID: String
     var AuthorityID: String
     var StationName: StationName
@@ -69,18 +69,18 @@ struct StationJsonStruct: Codable {
 // swiftlint:enable identifier_name
 
 class UbikeJson {
-    let stationAPI: StationAPI
+    let stationAPI: UbikeStationAPI
 
     init() {
-        self.stationAPI = StationAPI()
+        self.stationAPI = UbikeStationAPI()
     }
 
-    func fetchStationList(type: StationType) throws -> [Station] {
+    func fetchStationList(type: CityType) throws -> [UbikeStation] {
         return try stationAPI.fetchStationList(stationType: type)
     }
 
     func fetchStationStatus(stationID: String, cityName: String) throws -> UbikeStateJson {
-        let stationType: StationType = cityName == "NWT" ? StationType.newTaipei : StationType.taipei
+        let stationType: CityType = cityName == "NWT" ? CityType.newTaipei : CityType.taipei
         return try stationAPI.fetchStationStatus(stationType: stationType, stationID: stationID)
     }
 }

@@ -1,31 +1,38 @@
 import Foundation
 
-class StationAPI {
+class BusStationAPI {
 
-    func fetchStationList(stationType: StationType) throws -> [Station] {
+    func fetchStationList(stationType: CityType) throws -> [BusStation] {
+        print(NSHomeDirectory())
         let apiURL = getStationListRequstURL(stationType: stationType)
         let data: Data = try self.fetchJsonData(apiURL: apiURL)
-        var stations: [Station] = []
+        var stations: [BusStation] = []
         let decoder = JSONDecoder()
-        let dataList = try decoder.decode([StationJsonStruct].self, from: data)
-        for ubikeStation in dataList {
+        let dataList = try decoder.decode([BusStationJson].self, from: data)
+        for station in dataList {
             let moc = CoreDataHelper.shared.managedObjectContext()
-            let station = Station(context: moc)
-            station.cityName = ubikeStation.AuthorityID
-            station.number = ubikeStation.StationUID
-            station.name = ubikeStation.StationName.Zh_tw
-            station.longitude = ubikeStation.StationPosition.PositionLon
-            station.latitude = ubikeStation.StationPosition.PositionLat
-            stations.append(station)
+            let currentStation = BusStation(context: moc)
+            currentStation.number = station.StationUID
+            currentStation.cityName = String(currentStation.number.prefix(3))
+            currentStation.name = station.StationName.Zh_tw
+            currentStation.longitude = station.StationPosition.PositionLon
+            currentStation.latitude = station.StationPosition.PositionLat
+            for value in station.Stops {
+                let busNumber = BusNumber()
+                busNumber.busID = value.StopUID
+                busNumber.busName = value.RouteName.Zh_tw
+                currentStation.busNumbers.append(busNumber)
+            }
+            stations.append(currentStation)
         }
         return stations
     }
 
-    func fetchStationStatus(stationType: StationType, stationID: String) throws -> UbikeStateJson {
+    func fetchStationStatus(stationType: CityType, stationID: String) throws -> BusStateJson {
         let apiURL = self.getStationStatusRequestURL(stationType: stationType, stationID: stationID)
         let data = try self.fetchJsonData(apiURL: apiURL)
         let decoder = JSONDecoder()
-        let dataList = try decoder.decode([UbikeStateJson].self, from: data)
+        let dataList = try decoder.decode([BusStateJson].self, from: data)
 
         if dataList.count == 0 {
             throw ErrorCode.dataError
@@ -34,7 +41,7 @@ class StationAPI {
         return dataList[0]
     }
 
-    private func getCityCode(stationType: StationType) -> String {
+    private func getCityCode(stationType: CityType) -> String {
         if stationType == .taipei {
             return "Taipei"
         } else {
@@ -42,17 +49,16 @@ class StationAPI {
         }
     }
 
-    private func getStationStatusRequestURL(stationType: StationType, stationID: String) -> String {
+    private func getStationStatusRequestURL(stationType: CityType, stationID: String) -> String {
         let city = self.getCityCode(stationType: stationType)
         // swiftlint:disable line_length
-        return "https://ptx.transportdata.tw/MOTC/v2/Bike/Availability/\(city)?$filter=StationUID%20eq%20'\(stationID)'&$top=30&$format=JSON"
+        return "https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/\(city)?$filter=StopUID%20eq%20'\(stationID)'&$top=30&$format=JSON"
         // swiftlint:enable line_length
     }
 
-    private func getStationListRequstURL(stationType: StationType ) -> String {
+    private func getStationListRequstURL(stationType: CityType ) -> String {
         let city = self.getCityCode(stationType: stationType)
-
-        return "https://ptx.transportdata.tw/MOTC/v2/Bike/Station/\(city)?$format=JSON"
+        return "https://ptx.transportdata.tw/MOTC/v2/Bus/Station/City/\(city)?$format=JSON"
     }
 
     private func getServerTime() -> String {
@@ -88,7 +94,6 @@ class StationAPI {
         }
         URLSession.shared.dataTask(with: request, completionHandler: completionHandler).resume()
         sema.wait()
-
         return currentData
     }
 }

@@ -38,10 +38,80 @@
             </objects>
             <point key="canvasLocation" x="2000.625" y="-606.33802816901414"/>
         </scene>
+        <!--Bus Number View Controller-->
+        <scene sceneID="VT0-AS-DHz">
+            <objects>
+                <viewController storyboardIdentifier="busNumberViewID" id="Mgv-TM-jbr" customClass="BusNumberViewController" customModule="Transportation_PLUS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="eiD-L5-XLf">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="x6H-ph-3pB">
+                                <rect key="frame" x="0.0" y="20" width="320" height="503"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="busNumberCell" textLabel="LFg-1t-3Pz" detailTextLabel="GWd-qK-foT" style="IBUITableViewCellStyleSubtitle" id="wRF-J0-80A">
+                                        <rect key="frame" x="0.0" y="28" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wRF-J0-80A" id="osa-hW-qv2">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LFg-1t-3Pz">
+                                                    <rect key="frame" x="15" y="5" width="33.5" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="GWd-qK-foT">
+                                                    <rect key="frame" x="15" y="25.5" width="44" height="14.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kHN-Zp-QlV">
+                                <rect key="frame" x="0.0" y="523" width="320" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="kHN-Zp-QlV" secondAttribute="height" multiplier="64:9" id="fQo-yl-k1j"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="返回"/>
+                                <connections>
+                                    <action selector="returnBtnPressed:" destination="Mgv-TM-jbr" eventType="touchUpInside" id="vaQ-i9-pgE"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="kHN-Zp-QlV" firstAttribute="top" secondItem="x6H-ph-3pB" secondAttribute="bottom" id="EFG-Kn-tNR"/>
+                            <constraint firstItem="x6H-ph-3pB" firstAttribute="leading" secondItem="eWR-Wu-c0u" secondAttribute="leading" id="LVQ-d0-YZS"/>
+                            <constraint firstItem="kHN-Zp-QlV" firstAttribute="trailing" secondItem="eWR-Wu-c0u" secondAttribute="trailing" id="WL1-gG-Llq"/>
+                            <constraint firstItem="x6H-ph-3pB" firstAttribute="trailing" secondItem="eWR-Wu-c0u" secondAttribute="trailing" id="XkS-lL-MA5"/>
+                            <constraint firstItem="kHN-Zp-QlV" firstAttribute="leading" secondItem="eWR-Wu-c0u" secondAttribute="leading" id="qnQ-VK-TQj"/>
+                            <constraint firstItem="kHN-Zp-QlV" firstAttribute="bottom" secondItem="eWR-Wu-c0u" secondAttribute="bottom" id="vPx-vL-Qlc"/>
+                            <constraint firstItem="x6H-ph-3pB" firstAttribute="top" secondItem="eWR-Wu-c0u" secondAttribute="top" id="ycg-Tm-ia9"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="eWR-Wu-c0u"/>
+                    </view>
+                    <connections>
+                        <outlet property="busNumberTableView" destination="x6H-ph-3pB" id="jZs-6i-jiM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gxK-yE-pbm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2891.25" y="-608.45070422535207"/>
+        </scene>
         <!--地圖-->
         <scene sceneID="fFg-57-yT2">
             <objects>
-                <viewController id="AXg-Cj-T36" customClass="BikeAndBusViewController" customModule="Transportation_PLUS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="AXg-Cj-T36" customClass="MainViewController" customModule="Transportation_PLUS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5xQ-Ss-Rlk">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -96,7 +166,7 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="b8d-78-TLe">
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="b8d-78-TLe">
                                 <rect key="frame" x="205" y="475" width="99" height="29"/>
                                 <segments>
                                     <segment title="Ubike"/>
@@ -151,6 +221,7 @@
                         <outlet property="stationSegment" destination="b8d-78-TLe" id="Ynk-Ff-drS"/>
                         <outlet property="toggleBtnConstraintTop" destination="QHD-tF-rAR" id="j0b-Jx-nx9"/>
                         <outlet property="toggleSearchBarBtn" destination="rXR-ba-yoQ" id="ghr-JG-wz9"/>
+                        <segue destination="Mgv-TM-jbr" kind="show" identifier="mapView" id="D5G-yp-x8X"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ojZ-78-ueP" userLabel="First Responder" sceneMemberID="firstResponder"/>

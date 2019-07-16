@@ -1,10 +1,11 @@
 import CoreLocation
 import MapKit
 import UIKit
-import CoreData
+
 //用modNumber來判斷資料庫要讀取哪一個arraylist就好了!
-class BikeAndBusViewController: UIViewController {
-    var ubikeDatas: [Station] = []
+class MainViewController: UIViewController {
+    var ubikeDatas: [UbikeStation] = []
+    var busDatas: [BusStation] = []
     var annotationMap = AnnotationMap()
     @IBOutlet weak var mainMapView: MKMapView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -15,10 +16,7 @@ class BikeAndBusViewController: UIViewController {
     @IBOutlet weak var stationSegment: UISegmentedControl!
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        cleanUbData()
-        print(NSHomeDirectory())
-        getUbikeData()
-        queryFromCoreData()
+        loadData()
     }
 
     override func viewDidLoad() {
@@ -41,7 +39,23 @@ class BikeAndBusViewController: UIViewController {
         tracker.send(builder.build() as [NSObject: AnyObject])
     }
 
-    func showAlertMessage(title: String, message: String, actionTitle: String) {
+    func loadData() {
+        do {
+            let busEntity = BusStationRepository()
+            let ubikeEntity = UbikeStationRepository()
+            //            try ubikeEntity.cleanData()
+            //            try ubikeEntity.getData()
+            try ubikeDatas = ubikeEntity.queryFromCoreData(datas: ubikeDatas)
+            //            try busEntity.cleanData()
+            //            try busEntity.getData()
+            try busDatas = busEntity.queryFromCoreData(datas: busDatas)
+        } catch {
+            showAlertMessage(title: ErrorCode.jsonDecodeError.alertTitle,
+                       message: ErrorCode.jsonDecodeError.alertMessage, actionTitle: "OK")
+            ubikeDatas = []
+        }
+    }
+    @objc func showAlertMessage(title: String, message: String, actionTitle: String) {
         let alertCon = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let alertActA = UIAlertAction(title: actionTitle, style: .default, handler: nil)
         alertCon.addAction(alertActA)
@@ -63,20 +77,19 @@ class BikeAndBusViewController: UIViewController {
         addTextViewInputAccessoryView()
         mainMapView.userTrackingMode = .follow
         searchBar.placeholder = "Search"
-        showBikeStation(modNumber: stationSegment.selectedSegmentIndex)
+        showStation(modNumber: stationSegment.selectedSegmentIndex)
     }
 
     //收起textView鍵盤的方法
     func addTextViewInputAccessoryView() {
         let textToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
-        // swiftlint:disable line_length
         textToolbar.items = [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                             UIBarButtonItem(title: "return", style: .done, target: self, action: #selector(closeKeyboard))]
-        // swiftlint:enable line_length
+                             UIBarButtonItem(title: "return", style: .done,
+                                             target: self, action: #selector(closeKeyboard))]
         searchBar.inputAccessoryView = textToolbar
     }
 
-    func showBikeStation(modNumber: Int) {
+    func showStation(modNumber: Int) {
         if autoSwitchBtn.isOn {
             annotationMap.reset()
             mainMapView.removeAnnotations(mainMapView.annotations)
@@ -84,74 +97,34 @@ class BikeAndBusViewController: UIViewController {
             let minLat = mainMapView.centerCoordinate.latitude - mainMapView.region.span.latitudeDelta/2
             let maxLng = mainMapView.centerCoordinate.longitude + mainMapView.region.span.longitudeDelta/2
             let minLng = mainMapView.centerCoordinate.longitude - mainMapView.region.span.longitudeDelta/2
-            for index in 0 ..< ubikeDatas.count {
-                if ubikeDatas[index].longitude > minLng && ubikeDatas[index].longitude < maxLng
-                    && ubikeDatas[index].latitude > minLat && ubikeDatas[index].latitude < maxLat {
+            if modNumber == 0 {
+                for value in ubikeDatas {
+                    if value.longitude > minLng && value.longitude < maxLng
+                        && value.latitude > minLat && value.latitude < maxLat {
+                        let annotation = MKPointAnnotation()
+                        annotation.coordinate.latitude = value.latitude
+                        annotation.coordinate.longitude = value.longitude
+                        annotation.title = value.name
+                        annotationMap.set(key: annotation, station: value)
+                        mainMapView.addAnnotation(annotation)
+                    }
+                }
+                return
+            }
+            for value in busDatas {
+                if value.longitude > minLng && value.longitude < maxLng
+                    && value.latitude > minLat && value.latitude < maxLat {
                     let annotation = MKPointAnnotation()
-                    annotation.coordinate.latitude = ubikeDatas[index].latitude
-                    annotation.coordinate.longitude = ubikeDatas[index].longitude
-                    annotation.title = ubikeDatas[index].name
-                    annotationMap.set(key: annotation, station: ubikeDatas[index])
+                    annotation.coordinate.latitude = value.latitude
+                    annotation.coordinate.longitude = value.longitude
+                    annotation.title = value.name
+                    annotationMap.set(key: annotation, station: value)
                     mainMapView.addAnnotation(annotation)
                 }
             }
         }
     }
 
-    // MARK: CoreData
-    //save
-    func saveToCoreData() {
-        CoreDataHelper.shared.saveContext()
-    }
-    //load
-    func queryFromCoreData() {
-        let moc = CoreDataHelper.shared.managedObjectContext()
-        let request = NSFetchRequest<Station>(entityName: "Station")
-        moc.performAndWait {
-            do {
-                ubikeDatas = try moc.fetch(request)
-            } catch {
-                // swiftlint:disable line_length
-                showAlertMessage(title: ErrorCode.coreDataError.alertTitle, message: ErrorCode.coreDataError.alertMessage, actionTitle: "OK")
-                // swiftlint:enable line_length
-                ubikeDatas = []
-            }
-        }
-    }
-
-    //clean Data
-    func cleanUbData() {
-        let moc = CoreDataHelper.shared.managedObjectContext()
-        let request = NSFetchRequest<Station>(entityName: "Station")
-        do {
-            let results = try moc.fetch(request)
-            for result in results {
-                moc.delete(result)
-            }
-            saveToCoreData()
-        } catch {
-            // swiftlint:disable line_length
-            showAlertMessage(title: ErrorCode.coreDataError.alertTitle, message: ErrorCode.coreDataError.alertMessage, actionTitle: "OK")
-            // swiftlint:enable line_length
-            ubikeDatas = []
-        }
-    }
-
-    //build ubikeData
-    func getUbikeData() {
-        let ubikeDefault = UbikeJson()
-
-        do {
-            let TPEStation = try ubikeDefault.fetchStationList(type: .taipei)
-            let NWTStation = try ubikeDefault.fetchStationList(type: .newTaipei)
-            CoreDataHelper.shared.saveUbikes(stations: (TPEStation + NWTStation))
-        } catch {
-            // swiftlint:disable line_length
-            showAlertMessage(title: ErrorCode.jsonDecodeError.alertTitle, message: ErrorCode.jsonDecodeError.alertMessage, actionTitle: "OK")
-            // swiftlint:enable line_length
-            ubikeDatas = []
-        }
-    }
     // MARK: permission check
     func checkPermission() {
         if CLLocationManager.authorizationStatus() == .notDetermined {
@@ -175,7 +148,7 @@ class BikeAndBusViewController: UIViewController {
     }
 
     @IBAction func autoSwitchBtnPressed(_ sender: Any) {
-        showBikeStation(modNumber: stationSegment.selectedSegmentIndex)
+        showStation(modNumber: stationSegment.selectedSegmentIndex)
     }
 
     @objc func closeKeyboard() {
@@ -204,36 +177,49 @@ class BikeAndBusViewController: UIViewController {
         }
     }
     @IBAction func stationSegmentAction(_ sender: Any) {
-        if stationSegment.selectedSegmentIndex == 0 {
-            //
-        } else {
-            //
-        }
+        loadData()
+        showStation(modNumber: stationSegment.selectedSegmentIndex)
     }
 }
 
-extension BikeAndBusViewController: MKMapViewDelegate {
+extension MainViewController: MKMapViewDelegate {
 
     //點擊圖標的動作
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        let ubkieDefault = UbikeJson()
-        guard let annotation = view.annotation as? MKPointAnnotation,
-            let station = annotationMap.get(key: annotation) else {
-            showAlertMessage(title: "載入圖標失敗", message: "載入圖標失敗", actionTitle: "OK")
-            return
-        }
-        do {
-            let ubState = try ubkieDefault.fetchStationStatus(stationID: station.number, cityName: station.cityName)
-            if ubState.ServieAvailable == 0 {
-                annotation.subtitle = "未營運"
-            } else {
-                annotation.subtitle = "可借\(ubState.AvailableRentBikes)台,可還\(ubState.AvailableReturnBikes)台"
+        if stationSegment.selectedSegmentIndex == 0 {
+            let stationDetail = UbikeJson()
+            guard let annotation = view.annotation as? MKPointAnnotation,
+                let station = annotationMap.get(key: annotation) as? UbikeStation else {
+                    showAlertMessage(title: "載入圖標失敗", message: "載入圖標失敗", actionTitle: "OK")
+                    return
             }
-        } catch {
-            // swiftlint:disable line_length
-            showAlertMessage(title: ErrorCode.jsonDecodeError.alertTitle, message: ErrorCode.jsonDecodeError.alertMessage, actionTitle: "OK")
-            // swiftlint:enable line_length
-            ubikeDatas = []
+            do {
+                let ubState = try stationDetail.fetchStationStatus(stationID: station.number,
+                                                                   cityName: station.cityName)
+                if ubState.ServieAvailable == 0 {
+                    annotation.subtitle = "未營運"
+                } else {
+                    annotation.subtitle = "可借\(ubState.AvailableRentBikes)台,可還\(ubState.AvailableReturnBikes)台"
+                }
+            } catch {
+                showAlertMessage(title: ErrorCode.jsonDecodeError.alertTitle,
+                           message: ErrorCode.jsonDecodeError.alertMessage, actionTitle: "OK")
+                ubikeDatas = []
+            }
+        } else {
+            guard let annotation = view.annotation as? MKPointAnnotation,
+                let station = annotationMap.get(key: annotation) as? BusStation else {
+                    showAlertMessage(title: "載入圖標失敗", message: "載入圖標失敗", actionTitle: "OK")
+                    return
+            }
+
+            if let busNumberVC =
+                storyboard?.instantiateViewController(withIdentifier: "busNumberViewID") as? BusNumberViewController,
+                let busIndex = busDatas.firstIndex(of: station) {
+                busNumberVC.busStation = busDatas[busIndex]
+                self.present(busNumberVC, animated: true, completion: nil)
+            }
+            view.isSelected = false
         }
     }
 
@@ -246,12 +232,12 @@ extension BikeAndBusViewController: MKMapViewDelegate {
 
     // 移動結束才會執行
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        showBikeStation(modNumber: stationSegment.selectedSegmentIndex)
+        showStation(modNumber: stationSegment.selectedSegmentIndex)
     }
 }
 
 // MASK:UISearchBar
-extension BikeAndBusViewController: UISearchBarDelegate {
+extension MainViewController: UISearchBarDelegate {
     //點擊鍵盤的search btn
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         MapManager.shared.searchAction(searchText: searchBar.text!) { (center, error) in
