@@ -5,7 +5,6 @@ import UIKit
 class MainViewController: UIViewController {
     var ubikeDatas: [UbikeStation] = []
     var busDatas: [BusStation] = []
-
     var annotationMap = AnnotationMap()
     @IBOutlet weak var mainMapView: MKMapView!
     @IBOutlet weak var searchBar: UISearchBar!
