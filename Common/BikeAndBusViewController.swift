@@ -12,6 +12,7 @@ class BikeAndBusViewController: UIViewController {
     @IBOutlet weak var toggleSearchBarBtn: UIButton!
     @IBOutlet weak var toggleBtnConstraintTop: NSLayoutConstraint!
     @IBOutlet weak var labelConstraintTop: NSLayoutConstraint!
+    @IBOutlet weak var mapNavigationBar: UINavigationBar!
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         cleanUbData()
@@ -63,6 +64,7 @@ class BikeAndBusViewController: UIViewController {
         addTextViewInputAccessoryView()
         mainMapView.userTrackingMode = .follow
         searchBar.placeholder = "Search"
+        mapNavigationBar.topItem?.title = "Ubike Station"
     }
 
     //收起textView鍵盤的方法
