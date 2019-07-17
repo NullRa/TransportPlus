@@ -5,14 +5,6 @@ class MapManager {
     static let shared = MapManager()
     let manager = CLLocationManager()
 
-    func managerSetting() {
-        manager.requestAlwaysAuthorization()
-        manager.allowsBackgroundLocationUpdates = true
-        manager.desiredAccuracy = kCLLocationAccuracyBest
-        manager.activityType = .automotiveNavigation
-        manager.startUpdatingLocation()
-    }
-
     func searchAction(searchText: String, completion: @escaping (CLLocationCoordinate2D?, Error?) -> Void) {
         let geoCoder = CLGeocoder()
         var longitude: Double = 0
