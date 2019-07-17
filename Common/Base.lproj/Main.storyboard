@@ -158,6 +158,7 @@
                         <outlet property="labelConstraintTop" destination="aKc-Oe-6JS" id="45Z-np-NQd"/>
                         <outlet property="mainMapView" destination="IcK-op-qVO" id="YxH-Tv-HK2"/>
                         <outlet property="refreshBtn" destination="zdX-3u-Cyh" id="Svv-x7-u8n"/>
+                        <outlet property="mapNavigationBar" destination="bvu-GD-xHx" id="HGa-Hi-b6U"/>
                         <outlet property="searchBar" destination="8u9-fL-luO" id="z8p-Hf-Mq2"/>
                         <outlet property="toggleBtnConstraintTop" destination="QHD-tF-rAR" id="j0b-Jx-nx9"/>
                         <outlet property="toggleSearchBarBtn" destination="rXR-ba-yoQ" id="ghr-JG-wz9"/>
