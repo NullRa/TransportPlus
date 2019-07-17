@@ -83,3 +83,5 @@ iOSInjectionProject/
 
 *.xcuserstate
 APIKey.xcconfig
+ptx.appID
+ptx.appKey
