@@ -64,10 +64,12 @@ class StationAPI {
     }
 
     private func fetchJsonData(apiURL: String) throws -> Data {
-        // swiftlint:disable identifier_name
-        let APP_ID = "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF"
-        let APP_KEY = "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF"
-        // swiftlint:enable identifier_name
+        // swiftlint:disable all
+        let appIDURL = Bundle.main.url(forResource: "ptx.appID", withExtension: nil)!
+        let APP_ID = try! String(contentsOf: appIDURL).trimmingCharacters(in: .whitespacesAndNewlines)
+        let appKeyURL = Bundle.main.url(forResource: "ptx.appKey", withExtension: nil)!
+        let APP_KEY = try! String(contentsOf: appKeyURL).trimmingCharacters(in: .whitespacesAndNewlines)
+        // swiftlint:enable all
         let xdate: String = getServerTime()
         let signDate = "x-date: " + xdate
         let base64HmacStr = signDate.hmac(algorithm: .SHA1, key: APP_KEY)
