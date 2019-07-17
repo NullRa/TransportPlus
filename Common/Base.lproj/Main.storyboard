@@ -81,7 +81,13 @@
                                                 <rect key="frame" x="16" y="7" width="71" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" title="Refresh"/>
+                                                <connections>
+                                                    <action selector="refreshBtnPressed:" destination="AXg-Cj-T36" eventType="touchUpInside" id="Dpu-rA-lti"/>
+                                                </connections>
                                             </button>
+                                            <connections>
+                                                <action selector="refreshBtnPressed:" destination="AXg-Cj-T36" id="enV-AK-KtN"/>
+                                            </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" style="done" id="xlZ-K1-Thd">
                                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="k5h-Is-m5K">
@@ -111,6 +117,10 @@
                                     <action selector="toggleSearchBarPressed:" destination="AXg-Cj-T36" eventType="touchUpInside" id="tqf-tm-nd2"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="bQH-in-p2Z">
+                                <rect key="frame" x="141.5" y="265.5" width="37" height="37"/>
+                                <color key="color" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -125,6 +135,7 @@
                             <constraint firstItem="8u9-fL-luO" firstAttribute="top" secondItem="bvu-GD-xHx" secondAttribute="bottom" id="PpV-Vh-xKg"/>
                             <constraint firstItem="bvu-GD-xHx" firstAttribute="trailing" secondItem="uNs-jw-rCA" secondAttribute="trailing" id="Pt4-rw-hIa"/>
                             <constraint firstItem="rXR-ba-yoQ" firstAttribute="top" secondItem="bvu-GD-xHx" secondAttribute="bottom" priority="100" id="QHD-tF-rAR"/>
+                            <constraint firstItem="bQH-in-p2Z" firstAttribute="centerY" secondItem="5xQ-Ss-Rlk" secondAttribute="centerY" id="WMZ-MV-HRG"/>
                             <constraint firstItem="o9a-C9-3Ad" firstAttribute="leading" secondItem="rXR-ba-yoQ" secondAttribute="trailing" constant="59" id="WVa-El-hTM"/>
                             <constraint firstItem="uNs-jw-rCA" firstAttribute="bottom" secondItem="IcK-op-qVO" secondAttribute="bottom" id="Wli-uU-MjE"/>
                             <constraint firstItem="uNs-jw-rCA" firstAttribute="trailing" secondItem="o9a-C9-3Ad" secondAttribute="trailing" constant="16" id="Xd4-uE-G7O"/>
@@ -133,6 +144,7 @@
                             <constraint firstItem="bvu-GD-xHx" firstAttribute="top" secondItem="uNs-jw-rCA" secondAttribute="top" id="aut-57-RhP"/>
                             <constraint firstItem="b8d-78-TLe" firstAttribute="leading" secondItem="uNs-jw-rCA" secondAttribute="leading" constant="205" id="iCd-1c-3KK"/>
                             <constraint firstItem="rXR-ba-yoQ" firstAttribute="top" secondItem="8u9-fL-luO" secondAttribute="bottom" priority="500" id="mcI-Y4-LmA"/>
+                            <constraint firstItem="bQH-in-p2Z" firstAttribute="centerX" secondItem="5xQ-Ss-Rlk" secondAttribute="centerX" id="s0T-3D-4Iu"/>
                             <constraint firstItem="8u9-fL-luO" firstAttribute="leading" secondItem="uNs-jw-rCA" secondAttribute="leading" id="vDX-MT-sJo"/>
                             <constraint firstItem="IcK-op-qVO" firstAttribute="trailing" secondItem="uNs-jw-rCA" secondAttribute="trailing" id="vGE-vq-pYf"/>
                             <constraint firstItem="uNs-jw-rCA" firstAttribute="bottom" secondItem="b8d-78-TLe" secondAttribute="bottom" constant="16" id="xVs-wx-vdo"/>
@@ -141,9 +153,11 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="地圖" id="cwD-gw-V6J"/>
                     <connections>
+                        <outlet property="activity" destination="bQH-in-p2Z" id="Vrb-1p-Gco"/>
                         <outlet property="autoSwitchBtn" destination="oYG-Y0-x6y" id="30X-kI-YTa"/>
                         <outlet property="labelConstraintTop" destination="aKc-Oe-6JS" id="45Z-np-NQd"/>
                         <outlet property="mainMapView" destination="IcK-op-qVO" id="YxH-Tv-HK2"/>
+                        <outlet property="refreshBtn" destination="zdX-3u-Cyh" id="Svv-x7-u8n"/>
                         <outlet property="mapNavigationBar" destination="bvu-GD-xHx" id="HGa-Hi-b6U"/>
                         <outlet property="searchBar" destination="8u9-fL-luO" id="z8p-Hf-Mq2"/>
                         <outlet property="toggleBtnConstraintTop" destination="QHD-tF-rAR" id="j0b-Jx-nx9"/>

@@ -12,12 +12,15 @@ class BikeAndBusViewController: UIViewController {
     @IBOutlet weak var toggleSearchBarBtn: UIButton!
     @IBOutlet weak var toggleBtnConstraintTop: NSLayoutConstraint!
     @IBOutlet weak var labelConstraintTop: NSLayoutConstraint!
+    @IBOutlet weak var activity: UIActivityIndicatorView!
+    @IBOutlet weak var refreshBtn: UIBarButtonItem!
     @IBOutlet weak var mapNavigationBar: UINavigationBar!
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        cleanUbData()
-        print(NSHomeDirectory())
-        getUbikeData()
+//        cleanUbData()
+//        print(NSHomeDirectory())
+//        getUbikeData()
         queryFromCoreData()
         checkPermission()
     }
@@ -182,6 +185,21 @@ class BikeAndBusViewController: UIViewController {
         self.view.endEditing(true)
     }
 
+    @IBAction func refreshBtnPressed(_ sender: Any) {
+        DispatchQueue.global().async {
+            DispatchQueue.main.async {
+                self.refreshBtn.isEnabled = false
+                self.activity.startAnimating()
+            }
+            self.cleanUbData()
+            self.getUbikeData()
+            self.queryFromCoreData()
+            DispatchQueue.main.async {
+                self.activity.stopAnimating()
+                self.refreshBtn.isEnabled = true
+            }
+        }
+    }
     @IBAction func locationBtnPressed(_ sender: Any) {
         mainMapView.userTrackingMode = .follow
     }
