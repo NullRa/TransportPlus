@@ -49,7 +49,7 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="IcK-op-qVO">
                                 <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                             </mapView>
-                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="8u9-fL-luO">
+                            <searchBar contentMode="redraw" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="8u9-fL-luO">
                                 <rect key="frame" x="0.0" y="64" width="320" height="56"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <scopeButtonTitles>
@@ -66,7 +66,7 @@
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oYG-Y0-x6y">
                                 <rect key="frame" x="255" y="149" width="51" height="31"/>
                                 <connections>
-                                    <action selector="autoSwitchBtnPressed:" destination="AXg-Cj-T36" eventType="valueChanged" id="jyD-ND-a7P"/>
+                                    <action selector="onAutoSwitchButtonPressed:" destination="AXg-Cj-T36" eventType="valueChanged" id="jyD-ND-a7P"/>
                                 </connections>
                             </switch>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bvu-GD-xHx">
@@ -82,11 +82,11 @@
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" title="Refresh"/>
                                                 <connections>
-                                                    <action selector="refreshBtnPressed:" destination="AXg-Cj-T36" eventType="touchUpInside" id="Dpu-rA-lti"/>
+                                                    <action selector="onRefreshButtonPressed:" destination="AXg-Cj-T36" eventType="touchUpInside" id="Dpu-rA-lti"/>
                                                 </connections>
                                             </button>
                                             <connections>
-                                                <action selector="refreshBtnPressed:" destination="AXg-Cj-T36" id="enV-AK-KtN"/>
+                                                <action selector="onRefreshButtonPressed:" destination="AXg-Cj-T36" id="enV-AK-KtN"/>
                                             </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" style="done" id="xlZ-K1-Thd">
@@ -95,7 +95,7 @@
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" title="Location"/>
                                                 <connections>
-                                                    <action selector="locationBtnPressed:" destination="AXg-Cj-T36" eventType="touchUpInside" id="3Zc-7s-zRm"/>
+                                                    <action selector="onLocationButtonPressed:" destination="AXg-Cj-T36" eventType="touchUpInside" id="3Zc-7s-zRm"/>
                                                 </connections>
                                             </button>
                                         </barButtonItem>
@@ -114,7 +114,7 @@
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="收起"/>
                                 <connections>
-                                    <action selector="toggleSearchBarPressed:" destination="AXg-Cj-T36" eventType="touchUpInside" id="tqf-tm-nd2"/>
+                                    <action selector="onToggleSearchBarButtonPressed:" destination="AXg-Cj-T36" eventType="touchUpInside" id="tqf-tm-nd2"/>
                                 </connections>
                             </button>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="bQH-in-p2Z">
@@ -153,12 +153,12 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="地圖" id="cwD-gw-V6J"/>
                     <connections>
-                        <outlet property="activity" destination="bQH-in-p2Z" id="Vrb-1p-Gco"/>
-                        <outlet property="autoSwitchBtn" destination="oYG-Y0-x6y" id="30X-kI-YTa"/>
+                        <outlet property="autoUpdateButton" destination="oYG-Y0-x6y" id="30X-kI-YTa"/>
                         <outlet property="labelConstraintTop" destination="aKc-Oe-6JS" id="45Z-np-NQd"/>
+                        <outlet property="loadingView" destination="bQH-in-p2Z" id="Vrb-1p-Gco"/>
                         <outlet property="mainMapView" destination="IcK-op-qVO" id="YxH-Tv-HK2"/>
-                        <outlet property="refreshBtn" destination="zdX-3u-Cyh" id="Svv-x7-u8n"/>
-                        <outlet property="mapNavigationBar" destination="bvu-GD-xHx" id="HGa-Hi-b6U"/>
+                        <outlet property="navigationBar" destination="bvu-GD-xHx" id="HGa-Hi-b6U"/>
+                        <outlet property="refreshButton" destination="zdX-3u-Cyh" id="Svv-x7-u8n"/>
                         <outlet property="searchBar" destination="8u9-fL-luO" id="z8p-Hf-Mq2"/>
                         <outlet property="toggleBtnConstraintTop" destination="QHD-tF-rAR" id="j0b-Jx-nx9"/>
                         <outlet property="toggleSearchBarBtn" destination="rXR-ba-yoQ" id="ghr-JG-wz9"/>
