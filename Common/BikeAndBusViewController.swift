@@ -53,10 +53,11 @@ class BikeAndBusViewController: UIViewController, BikeAndBusDelegate, UISearchBa
     //收起textView鍵盤的方法
     func addTextViewInputAccessoryView() -> UIToolbar {
         let textToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
-        // swiftlint:disable line_length
-        textToolbar.items = [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                             UIBarButtonItem(title: "return", style: .done, target: self, action: #selector(closeKeyboard))]
-        // swiftlint:enable line_length
+        textToolbar.items = [UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
+                                             target: nil, action: nil),
+                             UIBarButtonItem(title: "return", style: .done,
+                                             target: self, action: #selector(closeKeyboard))]
+
         return textToolbar
     }
 
