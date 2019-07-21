@@ -3,9 +3,9 @@ import MapKit
 import UIKit
 import CoreData
 
-class BikeAndBusViewController: UIViewController, BikeAndBusDelegate, UISearchBarDelegate {
+class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDelegate {
 
-    private var viewModel: BikeAndBusViewModel!
+    private var viewModel: MainMapViewModel!
     @IBOutlet weak var mainMapView: MKMapView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var autoUpdateButton: UISwitch!
@@ -42,7 +42,7 @@ class BikeAndBusViewController: UIViewController, BikeAndBusDelegate, UISearchBa
         mainMapView.delegate = self
         searchBar.delegate = self
 
-        viewModel = BikeAndBusViewModel(viewController: self, center: MapManager.shared.manager.location!.coordinate)
+        viewModel = MainMapViewModel(viewController: self, center: MapManager.shared.manager.location!.coordinate)
 
         // FIXME
         searchBar.inputAccessoryView = addTextViewInputAccessoryView()
@@ -170,7 +170,7 @@ class BikeAndBusViewController: UIViewController, BikeAndBusDelegate, UISearchBa
     }
 }
 
-extension BikeAndBusViewController: MKMapViewDelegate {
+extension MainViewController: MKMapViewDelegate {
 
     //點擊圖標的動作
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {

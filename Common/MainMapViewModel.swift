@@ -2,7 +2,7 @@ import Foundation
 import MapKit
 import CoreData
 
-class BikeAndBusViewModel {
+class MainMapViewModel {
     var viewController: BikeAndBusDelegate
     var ubikeDatas: [Station] = []
     var annotationMap = AnnotationMap()
