@@ -2,7 +2,7 @@ import Foundation
 import CoreData
 import UIKit
 
-class Station: NSManagedObject {
+class UbikeStation: NSManagedObject {
     @NSManaged var number: String
     @NSManaged var name: String
     @NSManaged var latitude: Double

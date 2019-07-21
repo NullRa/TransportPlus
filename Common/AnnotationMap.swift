@@ -1,13 +1,13 @@
 import Foundation
 import MapKit
 class AnnotationMap {
-    var dict = [MKPointAnnotation: Station]()
+    var dict = [MKPointAnnotation: UbikeStation]()
 
-    func set(key: MKPointAnnotation, station: Station) {
+    func set(key: MKPointAnnotation, station: UbikeStation) {
         dict[key] = station
     }
 
-    func get(key: MKPointAnnotation) -> Station? {
+    func get(key: MKPointAnnotation) -> UbikeStation? {
         return dict[key]
     }
 

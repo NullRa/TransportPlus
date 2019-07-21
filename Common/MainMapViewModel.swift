@@ -4,7 +4,7 @@ import CoreData
 
 class MainMapViewModel {
     var viewController: BikeAndBusDelegate
-    var ubikeDatas: [Station] = []
+    var ubikeDatas: [UbikeStation] = []
     var annotationMap = AnnotationMap()
     var center: CLLocationCoordinate2D
     var isAutoUpdate = true
@@ -43,16 +43,17 @@ class MainMapViewModel {
     }
 
     func updateUbikeCoreData() {
-        let ubikeDefault = UbikeJson()
+        let ubikeDefault = UbikeAPI()
         let moc = CoreDataHelper.shared.managedObjectContext()
-        let request = NSFetchRequest<Station>(entityName: "Station")
+        let request = NSFetchRequest<UbikeStation>(entityName: "UbikeStation")
         do {
             let results = try moc.fetch(request)
             for result in results {
                 moc.delete(result)
             }
-            let TPEStation = try ubikeDefault.fetchStationList(type: .taipei)
-            let NWTStation = try ubikeDefault.fetchStationList(type: .newTaipei)
+            let TPEStation = try ubikeDefault.fetchStationList(stationType: .taipei)
+            //(type: .taipei)
+            let NWTStation = try ubikeDefault.fetchStationList(stationType: .newTaipei)
             CoreDataHelper.shared.saveUbikes(stations: (TPEStation + NWTStation))
         } catch {
             viewController.showAlertMessage(title: ErrorCode.jsonDecodeError.alertTitle,
@@ -63,7 +64,7 @@ class MainMapViewModel {
 
     func loadUbikeData() {
         let moc = CoreDataHelper.shared.managedObjectContext()
-        let request = NSFetchRequest<Station>(entityName: "Station")
+        let request = NSFetchRequest<UbikeStation>(entityName: "UbikeStation")
         moc.performAndWait {
             do {
                  self.ubikeDatas = try moc.fetch(request)
@@ -122,7 +123,7 @@ class MainMapViewModel {
     }
 
     func showStationStatus(annotation: MKPointAnnotation?) -> String {
-        let ubkieDefault = UbikeJson()
+        let ubkieDefault = UbikeAPI()
         var subTitle = "確認網路狀態"
 
         guard annotation != nil, let station = annotationMap.get(key: annotation!) else {
@@ -131,7 +132,7 @@ class MainMapViewModel {
         }
 
         do {
-            let ubState = try ubkieDefault.fetchStationStatus(stationID: station.number, cityName: station.cityName)
+            let ubState = try ubkieDefault.fetchStationStatus(cityName: station.cityName, stationID: station.number)
             if ubState.ServieAvailable == 0 {
                 subTitle = "未營運"
             } else {
