@@ -1,12 +1,21 @@
 language: swift
 osx_image: xcode10.2
 
+cache:
+  - cocoapods
+
+before_install:
+  - gem install cocoapods
+  - pod repo update
+
 install:
   - sh scripts/install_swiftlint.sh
+  - pod install
 
 before_script:
-  - gem install xcpretty
+  - echo "ZZZZZZZZZZZZZZZZZZZZZZZZZZZ" > ptx.appID
+  - echo "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" > ptx.appKey
 
 script:
   - swiftlint
-  - xcodebuild -workspace Transportation_PLUS.xcodeproj/project.xcworkspace -scheme Transportation_PLUS -destination 'platform=iOS Simulator,name=iPhone 8,OS=11.3' build | xcpretty --test --color
+  - xcodebuild -workspace Transportation_PLUS.xcworkspace -scheme Transportation_PLUS -destination 'platform=iOS Simulator,name=iPhone 8,OS=11.3' build

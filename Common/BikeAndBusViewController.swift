@@ -57,7 +57,7 @@ class BikeAndBusViewController: UIViewController {
     func uploadDefaultView() {
         //Get current location
         if MapManager.shared.manager.location == nil {
-            errorAlert(title: "抓不到位置", message: "請檢查定位服務是否啟用", actionTitle: "OK")
+            showAlertMessage(title: "抓不到位置", message: "請檢查定位服務是否啟用", actionTitle: "OK")
 
             return
         }
