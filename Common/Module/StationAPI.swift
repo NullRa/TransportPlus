@@ -65,10 +65,12 @@ class StationAPI {
 
     private func fetchJsonData(apiURL: String) throws -> Data {
         // swiftlint:disable all
-        let appIDURL = Bundle.main.url(forResource: "ptx.appID", withExtension: nil)!
-        let APP_ID = try! String(contentsOf: appIDURL).trimmingCharacters(in: .whitespacesAndNewlines)
-        let appKeyURL = Bundle.main.url(forResource: "ptx.appKey", withExtension: nil)!
-        let APP_KEY = try! String(contentsOf: appKeyURL).trimmingCharacters(in: .whitespacesAndNewlines)
+        let src = Bundle.main.path(forResource: "SecretKey", ofType: "plist")
+        guard let plist = NSMutableDictionary(contentsOfFile: src!),
+            let APP_ID = plist["ptxAPPID"] as? String,
+            let APP_KEY = plist["ptxAPPKey"] as? String else {
+                throw ErrorCode.dataError
+        }
         // swiftlint:enable all
         let xdate: String = getServerTime()
         let signDate = "x-date: " + xdate
