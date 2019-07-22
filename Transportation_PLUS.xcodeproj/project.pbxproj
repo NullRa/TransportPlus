@@ -18,10 +18,9 @@
 		690A84F622B0A548009F4EC5 /* UbikeJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690A84F422B0A548009F4EC5 /* UbikeJson.swift */; };
 		690A84F722B0A548009F4EC5 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690A84F522B0A548009F4EC5 /* MapManager.swift */; };
 		690A84F922B0A7B9009F4EC5 /* Station.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690A84F822B0A7B9009F4EC5 /* Station.swift */; };
+		6941055122E4A19A00D90E22 /* SecretKey.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6941055022E4A19A00D90E22 /* SecretKey.plist */; };
 		6965F88322E2B75C00203FBE /* MainMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6965F88222E2B75C00203FBE /* MainMapViewModel.swift */; };
 		6984A79B22D71EE10003EF2B /* AnnotationMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6984A79A22D71EE10003EF2B /* AnnotationMap.swift */; };
-		698D112B22DECB0A00DDAC77 /* ptx.appID in Resources */ = {isa = PBXBuildFile; fileRef = 698D112922DECB0A00DDAC77 /* ptx.appID */; };
-		698D112C22DECB0A00DDAC77 /* ptx.appKey in Resources */ = {isa = PBXBuildFile; fileRef = 698D112A22DECB0A00DDAC77 /* ptx.appKey */; };
 		69BAC56122C725B200CA8CB3 /* StationAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BAC56022C725B200CA8CB3 /* StationAPI.swift */; };
 		69BAC56322C7382400CA8CB3 /* SationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BAC56222C7382400CA8CB3 /* SationType.swift */; };
 		69C3A6D622C3B43D00738EAA /* ErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C3A6D522C3B43D00738EAA /* ErrorCode.swift */; };
@@ -44,11 +43,10 @@
 		690A84F422B0A548009F4EC5 /* UbikeJson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UbikeJson.swift; sourceTree = "<group>"; };
 		690A84F522B0A548009F4EC5 /* MapManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
 		690A84F822B0A7B9009F4EC5 /* Station.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Station.swift; sourceTree = "<group>"; };
+		6941055022E4A19A00D90E22 /* SecretKey.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SecretKey.plist; sourceTree = "<group>"; };
 		6965F88222E2B75C00203FBE /* MainMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapViewModel.swift; sourceTree = "<group>"; };
 		6974B32622D5959B00A11B7D /* APIKey.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = APIKey.xcconfig; sourceTree = "<group>"; };
 		6984A79A22D71EE10003EF2B /* AnnotationMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationMap.swift; sourceTree = "<group>"; };
-		698D112922DECB0A00DDAC77 /* ptx.appID */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ptx.appID; sourceTree = "<group>"; };
-		698D112A22DECB0A00DDAC77 /* ptx.appKey */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ptx.appKey; sourceTree = "<group>"; };
 		69BAC56022C725B200CA8CB3 /* StationAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationAPI.swift; sourceTree = "<group>"; };
 		69BAC56222C7382400CA8CB3 /* SationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SationType.swift; sourceTree = "<group>"; };
 		69C3A6D522C3B43D00738EAA /* ErrorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorCode.swift; sourceTree = "<group>"; };
@@ -90,9 +88,8 @@
 		690A84A622AFBE03009F4EC5 = {
 			isa = PBXGroup;
 			children = (
-				698D112922DECB0A00DDAC77 /* ptx.appID */,
-				698D112A22DECB0A00DDAC77 /* ptx.appKey */,
 				6974B32622D5959B00A11B7D /* APIKey.xcconfig */,
+				6941055022E4A19A00D90E22 /* SecretKey.plist */,
 				690A84CA22AFC2B4009F4EC5 /* Common */,
 				690A84B122AFBE03009F4EC5 /* Transportation_PLUS */,
 				690A84B022AFBE03009F4EC5 /* Products */,
@@ -235,9 +232,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				698D112C22DECB0A00DDAC77 /* ptx.appKey in Resources */,
+				6941055122E4A19A00D90E22 /* SecretKey.plist in Resources */,
 				690A84BD22AFBE05009F4EC5 /* LaunchScreen.storyboard in Resources */,
-				698D112B22DECB0A00DDAC77 /* ptx.appID in Resources */,
 				69F8642722D2EB10003A268B /* GoogleService-Info.plist in Resources */,
 				690A84BA22AFBE05009F4EC5 /* Assets.xcassets in Resources */,
 				690A84B822AFBE03009F4EC5 /* Main.storyboard in Resources */,
