@@ -20,6 +20,7 @@
 		690A84F922B0A7B9009F4EC5 /* Station.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690A84F822B0A7B9009F4EC5 /* Station.swift */; };
 		6941055122E4A19A00D90E22 /* SecretKey.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6941055022E4A19A00D90E22 /* SecretKey.plist */; };
 		6965F88322E2B75C00203FBE /* MainMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6965F88222E2B75C00203FBE /* MainMapViewModel.swift */; };
+		6968F91422E55ED100FB390E /* .gitattributes in Resources */ = {isa = PBXBuildFile; fileRef = 6968F91322E55ED100FB390E /* .gitattributes */; };
 		6984A79B22D71EE10003EF2B /* AnnotationMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6984A79A22D71EE10003EF2B /* AnnotationMap.swift */; };
 		69BAC56122C725B200CA8CB3 /* StationAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BAC56022C725B200CA8CB3 /* StationAPI.swift */; };
 		69BAC56322C7382400CA8CB3 /* SationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BAC56222C7382400CA8CB3 /* SationType.swift */; };
@@ -45,6 +46,7 @@
 		690A84F822B0A7B9009F4EC5 /* Station.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Station.swift; sourceTree = "<group>"; };
 		6941055022E4A19A00D90E22 /* SecretKey.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SecretKey.plist; sourceTree = "<group>"; };
 		6965F88222E2B75C00203FBE /* MainMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapViewModel.swift; sourceTree = "<group>"; };
+		6968F91322E55ED100FB390E /* .gitattributes */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitattributes; sourceTree = "<group>"; };
 		6974B32622D5959B00A11B7D /* APIKey.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = APIKey.xcconfig; sourceTree = "<group>"; };
 		6984A79A22D71EE10003EF2B /* AnnotationMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationMap.swift; sourceTree = "<group>"; };
 		69BAC56022C725B200CA8CB3 /* StationAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationAPI.swift; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 		690A84A622AFBE03009F4EC5 = {
 			isa = PBXGroup;
 			children = (
+				6968F91322E55ED100FB390E /* .gitattributes */,
 				6974B32622D5959B00A11B7D /* APIKey.xcconfig */,
 				6941055022E4A19A00D90E22 /* SecretKey.plist */,
 				690A84CA22AFC2B4009F4EC5 /* Common */,
@@ -233,6 +236,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6941055122E4A19A00D90E22 /* SecretKey.plist in Resources */,
+				6968F91422E55ED100FB390E /* .gitattributes in Resources */,
 				690A84BD22AFBE05009F4EC5 /* LaunchScreen.storyboard in Resources */,
 				69F8642722D2EB10003A268B /* GoogleService-Info.plist in Resources */,
 				690A84BA22AFBE05009F4EC5 /* Assets.xcassets in Resources */,
