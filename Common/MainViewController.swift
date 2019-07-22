@@ -38,7 +38,8 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
 
             return
         }
-
+        mainMapView.userTrackingMode = .follow
+        mainMapView.userTrackingMode = .none
         mainMapView.delegate = self
         searchBar.delegate = self
 
