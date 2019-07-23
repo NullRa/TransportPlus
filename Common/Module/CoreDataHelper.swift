@@ -42,7 +42,7 @@ class CoreDataHelper: NSObject {
             }
         }
     }
-    func saveUbikes(stations: [Station]) {
+    func saveUbikes(stations: [UbikeStation]) {
         for _ in 0 ..< stations.count {
             saveContext ()
         }

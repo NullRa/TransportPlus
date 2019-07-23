@@ -1,16 +1,16 @@
 import Foundation
 
-class StationAPI {
+class UbikeAPI {
 
-    func fetchStationList(stationType: StationType) throws -> [Station] {
+    func fetchStationList(stationType: StationType) throws -> [UbikeStation] {
         let apiURL = getStationListRequstURL(stationType: stationType)
         let data: Data = try self.fetchJsonData(apiURL: apiURL)
-        var stations: [Station] = []
+        var stations: [UbikeStation] = []
         let decoder = JSONDecoder()
-        let dataList = try decoder.decode([StationJsonStruct].self, from: data)
+        let dataList = try decoder.decode([UbikeStationStruct].self, from: data)
         for ubikeStation in dataList {
             let moc = CoreDataHelper.shared.managedObjectContext()
-            let station = Station(context: moc)
+            let station = UbikeStation(context: moc)
             station.cityName = ubikeStation.AuthorityID
             station.number = ubikeStation.StationUID
             station.name = ubikeStation.StationName.Zh_tw
@@ -21,11 +21,12 @@ class StationAPI {
         return stations
     }
 
-    func fetchStationStatus(stationType: StationType, stationID: String) throws -> UbikeStateJson {
+    func fetchStationStatus(cityName: String, stationID: String) throws -> UbikeStatusStruct {
+        let stationType: StationType = cityName == "NWT" ? StationType.newTaipei : StationType.taipei
         let apiURL = self.getStationStatusRequestURL(stationType: stationType, stationID: stationID)
         let data = try self.fetchJsonData(apiURL: apiURL)
         let decoder = JSONDecoder()
-        let dataList = try decoder.decode([UbikeStateJson].self, from: data)
+        let dataList = try decoder.decode([UbikeStatusStruct].self, from: data)
 
         if dataList.count == 0 {
             throw ErrorCode.dataError

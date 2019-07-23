@@ -1,7 +1,5 @@
-import Foundation
-import CoreLocation
 import CommonCrypto
-import MapKit
+import Foundation
 
 enum CryptoAlgorithm {
     case MD5, SHA1, SHA224, SHA256, SHA384, SHA512
@@ -43,44 +41,5 @@ extension String {
         let hmacData: Data = Data(bytes: result, count: digestLen)
         let hmacBase64 = hmacData.base64EncodedString(options: .lineLength64Characters)
         return String(hmacBase64)
-    }
-}
-
-// swiftlint:disable identifier_name
-struct UbikeStateJson: Codable {
-    var ServieAvailable: Int
-    var AvailableReturnBikes: Int
-    var AvailableRentBikes: Int
-}
-
-struct StationJsonStruct: Codable {
-    var StationUID: String
-    var AuthorityID: String
-    var StationName: StationName
-    var StationPosition: StationPosition
-    struct StationName: Codable {
-        var Zh_tw: String
-    }
-    struct StationPosition: Codable {
-        var PositionLat: Double
-        var PositionLon: Double
-    }
-}
-// swiftlint:enable identifier_name
-
-class UbikeJson {
-    let stationAPI: StationAPI
-
-    init() {
-        self.stationAPI = StationAPI()
-    }
-
-    func fetchStationList(type: StationType) throws -> [Station] {
-        return try stationAPI.fetchStationList(stationType: type)
-    }
-
-    func fetchStationStatus(stationID: String, cityName: String) throws -> UbikeStateJson {
-        let stationType: StationType = cityName == "NWT" ? StationType.newTaipei : StationType.taipei
-        return try stationAPI.fetchStationStatus(stationType: stationType, stationID: stationID)
     }
 }
