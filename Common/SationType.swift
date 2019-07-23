@@ -1,5 +1,5 @@
 import Foundation
 
-enum StationType {
+enum CityCode {
     case taipei, newTaipei
 }
