@@ -17,15 +17,21 @@
 		690A84EF22B0A438009F4EC5 /* TransportationPlus.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 690A84ED22B0A438009F4EC5 /* TransportationPlus.xcdatamodeld */; };
 		690A84F722B0A548009F4EC5 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690A84F522B0A548009F4EC5 /* MapManager.swift */; };
 		690A84F922B0A7B9009F4EC5 /* UbikeStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690A84F822B0A7B9009F4EC5 /* UbikeStation.swift */; };
+		6925F9A622E828E000136ED8 /* MapType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6925F9A522E828E000136ED8 /* MapType.swift */; };
 		6941055122E4A19A00D90E22 /* SecretKey.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6941055022E4A19A00D90E22 /* SecretKey.plist */; };
 		6941055522E4ABBB00D90E22 /* CryptoAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6941055422E4ABBB00D90E22 /* CryptoAlgorithm.swift */; };
 		6941056322E4ADDD00D90E22 /* UbikeStatusStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6941056222E4ADDD00D90E22 /* UbikeStatusStruct.swift */; };
 		6941056522E4AE9700D90E22 /* UbikeStationStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6941056422E4AE9700D90E22 /* UbikeStationStruct.swift */; };
+		6943BF0022E6B84E007E7793 /* BusStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6943BEFF22E6B84E007E7793 /* BusStation.swift */; };
+		6943BF0222E6BAA9007E7793 /* BusNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6943BF0122E6BAA9007E7793 /* BusNumber.swift */; };
+		6943BF0422E6D575007E7793 /* BusStationStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6943BF0322E6D575007E7793 /* BusStationStruct.swift */; };
+		6943BF0622E6D603007E7793 /* BusAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6943BF0522E6D603007E7793 /* BusAPI.swift */; };
+		6943BF0822E6D665007E7793 /* BaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6943BF0722E6D665007E7793 /* BaseAPI.swift */; };
 		6965F88322E2B75C00203FBE /* MainMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6965F88222E2B75C00203FBE /* MainMapViewModel.swift */; };
 		6968F91422E55ED100FB390E /* .gitattributes in Resources */ = {isa = PBXBuildFile; fileRef = 6968F91322E55ED100FB390E /* .gitattributes */; };
 		6984A79B22D71EE10003EF2B /* AnnotationMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6984A79A22D71EE10003EF2B /* AnnotationMap.swift */; };
 		69BAC56122C725B200CA8CB3 /* UbikeAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BAC56022C725B200CA8CB3 /* UbikeAPI.swift */; };
-		69BAC56322C7382400CA8CB3 /* SationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BAC56222C7382400CA8CB3 /* SationType.swift */; };
+		69BAC56322C7382400CA8CB3 /* CityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BAC56222C7382400CA8CB3 /* CityType.swift */; };
 		69C3A6D622C3B43D00738EAA /* ErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C3A6D522C3B43D00738EAA /* ErrorCode.swift */; };
 		69F8642722D2EB10003A268B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 69F8642622D2EB10003A268B /* GoogleService-Info.plist */; };
 		C1C0ED2DCDEB753B42E9A1B0 /* Pods_Transportation_PLUS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0CD4B4EE6B22A8993F29D8A /* Pods_Transportation_PLUS.framework */; };
@@ -45,16 +51,22 @@
 		690A84EE22B0A438009F4EC5 /* TransportationPlus.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TransportationPlus.xcdatamodel; sourceTree = "<group>"; };
 		690A84F522B0A548009F4EC5 /* MapManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
 		690A84F822B0A7B9009F4EC5 /* UbikeStation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbikeStation.swift; sourceTree = "<group>"; };
+		6925F9A522E828E000136ED8 /* MapType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapType.swift; sourceTree = "<group>"; };
 		6941055022E4A19A00D90E22 /* SecretKey.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SecretKey.plist; sourceTree = "<group>"; };
 		6941055422E4ABBB00D90E22 /* CryptoAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoAlgorithm.swift; sourceTree = "<group>"; };
 		6941056222E4ADDD00D90E22 /* UbikeStatusStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbikeStatusStruct.swift; sourceTree = "<group>"; };
 		6941056422E4AE9700D90E22 /* UbikeStationStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbikeStationStruct.swift; sourceTree = "<group>"; };
+		6943BEFF22E6B84E007E7793 /* BusStation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStation.swift; sourceTree = "<group>"; };
+		6943BF0122E6BAA9007E7793 /* BusNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusNumber.swift; sourceTree = "<group>"; };
+		6943BF0322E6D575007E7793 /* BusStationStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStationStruct.swift; sourceTree = "<group>"; };
+		6943BF0522E6D603007E7793 /* BusAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusAPI.swift; sourceTree = "<group>"; };
+		6943BF0722E6D665007E7793 /* BaseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAPI.swift; sourceTree = "<group>"; };
 		6965F88222E2B75C00203FBE /* MainMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapViewModel.swift; sourceTree = "<group>"; };
 		6968F91322E55ED100FB390E /* .gitattributes */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitattributes; sourceTree = "<group>"; };
 		6974B32622D5959B00A11B7D /* APIKey.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = APIKey.xcconfig; sourceTree = "<group>"; };
 		6984A79A22D71EE10003EF2B /* AnnotationMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationMap.swift; sourceTree = "<group>"; };
 		69BAC56022C725B200CA8CB3 /* UbikeAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbikeAPI.swift; sourceTree = "<group>"; };
-		69BAC56222C7382400CA8CB3 /* SationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SationType.swift; sourceTree = "<group>"; };
+		69BAC56222C7382400CA8CB3 /* CityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityType.swift; sourceTree = "<group>"; };
 		69C3A6D522C3B43D00738EAA /* ErrorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorCode.swift; sourceTree = "<group>"; };
 		69F8642622D2EB10003A268B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		69F8642822D2F847003A268B /* BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BridgingHeader.h; sourceTree = "<group>"; };
@@ -146,6 +158,8 @@
 			children = (
 				6941055322E4AB4F00D90E22 /* FetchStruct */,
 				69BAC56022C725B200CA8CB3 /* UbikeAPI.swift */,
+				6943BF0522E6D603007E7793 /* BusAPI.swift */,
+				6943BF0722E6D665007E7793 /* BaseAPI.swift */,
 				6941055422E4ABBB00D90E22 /* CryptoAlgorithm.swift */,
 			);
 			name = Networking;
@@ -156,6 +170,7 @@
 			children = (
 				6941056222E4ADDD00D90E22 /* UbikeStatusStruct.swift */,
 				6941056422E4AE9700D90E22 /* UbikeStationStruct.swift */,
+				6943BF0322E6D575007E7793 /* BusStationStruct.swift */,
 			);
 			name = FetchStruct;
 			sourceTree = "<group>";
@@ -173,8 +188,11 @@
 			isa = PBXGroup;
 			children = (
 				6984A79A22D71EE10003EF2B /* AnnotationMap.swift */,
+				6925F9A522E828E000136ED8 /* MapType.swift */,
+				69BAC56222C7382400CA8CB3 /* CityType.swift */,
 				690A84F822B0A7B9009F4EC5 /* UbikeStation.swift */,
-				69BAC56222C7382400CA8CB3 /* SationType.swift */,
+				6943BEFF22E6B84E007E7793 /* BusStation.swift */,
+				6943BF0122E6BAA9007E7793 /* BusNumber.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -334,16 +352,22 @@
 			files = (
 				690A84C722AFC0D9009F4EC5 /* MainViewController.swift in Sources */,
 				6941056322E4ADDD00D90E22 /* UbikeStatusStruct.swift in Sources */,
-				69BAC56322C7382400CA8CB3 /* SationType.swift in Sources */,
+				6925F9A622E828E000136ED8 /* MapType.swift in Sources */,
+				69BAC56322C7382400CA8CB3 /* CityType.swift in Sources */,
 				6984A79B22D71EE10003EF2B /* AnnotationMap.swift in Sources */,
 				690A84EF22B0A438009F4EC5 /* TransportationPlus.xcdatamodeld in Sources */,
 				69C3A6D622C3B43D00738EAA /* ErrorCode.swift in Sources */,
 				690A84F922B0A7B9009F4EC5 /* UbikeStation.swift in Sources */,
+				6943BF0022E6B84E007E7793 /* BusStation.swift in Sources */,
+				6943BF0222E6BAA9007E7793 /* BusNumber.swift in Sources */,
+				6943BF0822E6D665007E7793 /* BaseAPI.swift in Sources */,
 				690A84F722B0A548009F4EC5 /* MapManager.swift in Sources */,
 				690A84EC22B0A40D009F4EC5 /* CoreDataHelper.swift in Sources */,
+				6943BF0622E6D603007E7793 /* BusAPI.swift in Sources */,
 				6941056522E4AE9700D90E22 /* UbikeStationStruct.swift in Sources */,
 				69BAC56122C725B200CA8CB3 /* UbikeAPI.swift in Sources */,
 				690A84B522AFBE03009F4EC5 /* ViewController.swift in Sources */,
+				6943BF0422E6D575007E7793 /* BusStationStruct.swift in Sources */,
 				6965F88322E2B75C00203FBE /* MainMapViewModel.swift in Sources */,
 				6941055522E4ABBB00D90E22 /* CryptoAlgorithm.swift in Sources */,
 				690A84B322AFBE03009F4EC5 /* AppDelegate.swift in Sources */,
