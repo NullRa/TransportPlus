@@ -9,11 +9,11 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
     @IBOutlet weak var mainMapView: MKMapView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var autoUpdateButton: UISwitch!
-    @IBOutlet weak var toggleSearchBarBtn: UIButton!
+    @IBOutlet weak var toggleSearchBarButton: UIButton!
     @IBOutlet weak var loadingView: UIActivityIndicatorView!
-    @IBOutlet weak var refreshButton: UIBarButtonItem!
+    @IBOutlet weak var refreshButton: UIButton!
     @IBOutlet weak var navigationBar: UINavigationBar!
-
+    @IBOutlet weak var locationButton: UIButton!
     @IBOutlet weak var toggleBtnConstraintTop: NSLayoutConstraint!
     @IBOutlet weak var labelConstraintTop: NSLayoutConstraint!
 
@@ -47,7 +47,12 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
 
         // FIXME
         searchBar.inputAccessoryView = addTextViewInputAccessoryView()
-
+        autoUpdateButton.addTarget(self, action: #selector(onAutoSwitchButtonPressed(_:)),
+                                   for: .valueChanged)
+        toggleSearchBarButton.addTarget(self, action: #selector(onToggleSearchBarButtonPressed(_:)),
+                                        for: .touchUpInside)
+        refreshButton.addTarget(self, action: #selector(onRefreshButtonPressed(_:)), for: .touchUpInside)
+        locationButton.addTarget(self, action: #selector(onLocationButtonPressed(_:)), for: .touchUpInside)
         viewModel.onViewLoad()
     }
 
@@ -76,7 +81,7 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
         MapManager.shared.manager.startUpdatingLocation()
     }
 
-    @IBAction func onRefreshButtonPressed(_ sender: Any) {
+    @objc func onRefreshButtonPressed(_ sender: UIBarButtonItem) {
         self.refreshButton.isEnabled = false
         self.loadingView.startAnimating()
 
@@ -90,16 +95,16 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
         }
     }
 
-    @IBAction func onLocationButtonPressed(_ sender: Any) {
+    @objc func onLocationButtonPressed(_ sender: UIBarButtonItem) {
         mainMapView.userTrackingMode = .follow
         mainMapView.userTrackingMode = .none
     }
 
-    @IBAction func onAutoSwitchButtonPressed(_ sender: UISwitch) {
-        self.viewModel.toggleAutoUpdate()
+    @objc func onAutoSwitchButtonPressed(_ sender: UISwitch) {
+        viewModel.toggleAutoUpdate()
     }
 
-    @IBAction func onToggleSearchBarButtonPressed(_ sender: Any) {
+    @objc func onToggleSearchBarButtonPressed(_ sender: UIButton) {
         viewModel.toggleSearchBarCollapsed()
     }
 
@@ -123,14 +128,14 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
             labelConstraintTop.priority = UILayoutPriority(rawValue: 100)
             DispatchQueue.main.async {
                 self.searchBar.isHidden = false
-                self.toggleSearchBarBtn.titleLabel?.text = "收起"
+                self.toggleSearchBarButton.titleLabel?.text = "收起"
             }
         } else {
             toggleBtnConstraintTop.priority = UILayoutPriority(rawValue: 900)
             labelConstraintTop.priority = UILayoutPriority(rawValue: 900)
             DispatchQueue.main.async {
                 self.searchBar.isHidden = true
-                self.toggleSearchBarBtn.titleLabel?.text = "展開"
+                self.toggleSearchBarButton.titleLabel?.text = "展開"
             }
         }
     }
