@@ -51,10 +51,9 @@ class MainMapViewModel {
             for result in results {
                 moc.delete(result)
             }
-            let TPEStation = try ubikeDefault.fetchStationList(cityCode: .taipei)
-            //(type: .taipei)
-            let NWTStation = try ubikeDefault.fetchStationList(cityCode: .newTaipei)
-            CoreDataHelper.shared.saveUbikes(stations: (TPEStation + NWTStation))
+                try ubikeDefault.fetchStationList(cityCode: .taipei)
+                try ubikeDefault.fetchStationList(cityCode: .newTaipei)
+            CoreDataHelper.shared.saveContext()
         } catch {
             viewController.showAlertMessage(title: ErrorCode.jsonDecodeError.alertTitle,
                                             message: ErrorCode.jsonDecodeError.alertMessage,

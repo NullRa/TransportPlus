@@ -2,10 +2,9 @@ import Foundation
 
 class UbikeAPI {
 
-    func fetchStationList(cityCode: CityCode) throws -> [UbikeStation] {
+    func fetchStationList(cityCode: CityCode) throws {
         let apiURL = getStationListRequstURL(cityCode: cityCode)
         let data: Data = try self.fetchJsonData(apiURL: apiURL)
-        var stations: [UbikeStation] = []
         let decoder = JSONDecoder()
         let dataList = try decoder.decode([UbikeStationStruct].self, from: data)
         for ubikeStation in dataList {
@@ -16,9 +15,7 @@ class UbikeAPI {
             station.name = ubikeStation.StationName.Zh_tw
             station.longitude = ubikeStation.StationPosition.PositionLon
             station.latitude = ubikeStation.StationPosition.PositionLat
-            stations.append(station)
         }
-        return stations
     }
 
     func fetchStationStatus(cityName: String, stationID: String) throws -> UbikeStatusStruct {
