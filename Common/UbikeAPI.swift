@@ -2,8 +2,8 @@ import Foundation
 
 class UbikeAPI {
 
-    func fetchStationList(stationType: StationType) throws -> [UbikeStation] {
-        let apiURL = getStationListRequstURL(stationType: stationType)
+    func fetchStationList(cityCode: CityCode) throws -> [UbikeStation] {
+        let apiURL = getStationListRequstURL(cityCode: cityCode)
         let data: Data = try self.fetchJsonData(apiURL: apiURL)
         var stations: [UbikeStation] = []
         let decoder = JSONDecoder()
@@ -22,8 +22,8 @@ class UbikeAPI {
     }
 
     func fetchStationStatus(cityName: String, stationID: String) throws -> UbikeStatusStruct {
-        let stationType: StationType = cityName == "NWT" ? StationType.newTaipei : StationType.taipei
-        let apiURL = self.getStationStatusRequestURL(stationType: stationType, stationID: stationID)
+        let cityCode: CityCode = cityName == "NWT" ? CityCode.newTaipei : CityCode.taipei
+        let apiURL = self.getStationStatusRequestURL(cityCode: cityCode, stationID: stationID)
         let data = try self.fetchJsonData(apiURL: apiURL)
         let decoder = JSONDecoder()
         let dataList = try decoder.decode([UbikeStatusStruct].self, from: data)
@@ -35,23 +35,23 @@ class UbikeAPI {
         return dataList[0]
     }
 
-    private func getCityCode(stationType: StationType) -> String {
-        if stationType == .taipei {
+    private func getCityCode(cityCode: CityCode) -> String {
+        if cityCode == .taipei {
             return "Taipei"
         } else {
             return "NewTaipei"
         }
     }
 
-    private func getStationStatusRequestURL(stationType: StationType, stationID: String) -> String {
-        let city = self.getCityCode(stationType: stationType)
+    private func getStationStatusRequestURL(cityCode: CityCode, stationID: String) -> String {
+        let city = self.getCityCode(cityCode: cityCode)
         // swiftlint:disable line_length
         return "https://ptx.transportdata.tw/MOTC/v2/Bike/Availability/\(city)?$filter=StationUID%20eq%20'\(stationID)'&$top=30&$format=JSON"
         // swiftlint:enable line_length
     }
 
-    private func getStationListRequstURL(stationType: StationType ) -> String {
-        let city = self.getCityCode(stationType: stationType)
+    private func getStationListRequstURL(cityCode: CityCode ) -> String {
+        let city = self.getCityCode(cityCode: cityCode)
 
         return "https://ptx.transportdata.tw/MOTC/v2/Bike/Station/\(city)?$format=JSON"
     }
