@@ -66,7 +66,7 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
         DispatchQueue.global().async {
             self.viewModel.updateUbikeData()
             DispatchQueue.main.async {
-                self.viewModel.updateStations()
+                self.updateAnnotations(annotations: self.viewModel.getRegionStations())
                 self.loadingView.stopAnimating()
                 self.refreshButton.isEnabled = true
             }
