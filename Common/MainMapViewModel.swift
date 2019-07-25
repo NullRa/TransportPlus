@@ -90,14 +90,14 @@ class MainMapViewModel {
         let minLng = center.longitude - region.span.longitudeDelta / 2
         var annotations: [MKPointAnnotation] = []
 
-        for index in 0 ..< ubikeDatas.count {
-            if ubikeDatas[index].longitude > minLng && ubikeDatas[index].longitude < maxLng
-                && ubikeDatas[index].latitude > minLat && ubikeDatas[index].latitude < maxLat {
+        for station in ubikeDatas {
+            if station.longitude > minLng && station.longitude < maxLng
+                && station.latitude > minLat && station.latitude < maxLat {
                 let annotation = MKPointAnnotation()
-                annotation.coordinate.latitude = ubikeDatas[index].latitude
-                annotation.coordinate.longitude = ubikeDatas[index].longitude
-                annotation.title = ubikeDatas[index].name
-                annotationMap.set(key: annotation, station: ubikeDatas[index])
+                annotation.coordinate.latitude = station.latitude
+                annotation.coordinate.longitude = station.longitude
+                annotation.title = station.name
+                annotationMap.set(key: annotation, station: station)
                 annotations.append(annotation)
             }
         }
