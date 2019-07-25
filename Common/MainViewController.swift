@@ -5,6 +5,7 @@ import CoreData
 import Network
 
 class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDelegate {
+
     let monitor = NWPathMonitor()
     private var viewModel: MainMapViewModel!
     @IBOutlet weak var mainMapView: MKMapView!
@@ -53,10 +54,8 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
     }
 
     @objc func onRefreshButtonPressed(_ sender: UIBarButtonItem) {
-        self.refreshButton.isEnabled = false
-        self.setMapTypeSegmentEnable(enable: false)
+        self.setLoading(enable: false)
         self.loadingView.startAnimating()
-
         DispatchQueue.global().async {
             if self.viewModel.mapType == .ubike {
                 self.viewModel.updateUbikeData()
@@ -66,8 +65,7 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
             DispatchQueue.main.async {
                 self.updateAnnotations(annotations: self.viewModel.getRegionStations())
                 self.loadingView.stopAnimating()
-                self.refreshButton.isEnabled = true
-                self.setMapTypeSegmentEnable(enable: true)
+                self.setLoading(enable: true)
             }
         }
     }
@@ -108,12 +106,8 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
     }
 
     func setAutoUpdatedButton(enable: Bool) {
+        viewModel.isAutoUpdate = enable
         autoUpdateButton.isOn = enable
-    }
-
-    func setMapTypeSegmentEnable(enable: Bool) {
-        viewModel.isMayTypeSegment = enable
-        mapTypeSegment.isEnabled = enable
     }
 
     func setMapTypeSegmentButton(type: MapType) {
@@ -121,6 +115,20 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
             return type == .ubike ? 0 : 1
         }
         mapTypeSegment.selectedSegmentIndex = index
+    }
+
+    func setLoading(enable: Bool) {
+        setSearchBarCollapsed(collapsed: enable)
+        autoUpdateButton.isEnabled = enable
+        locationButton.isEnabled = enable
+        mainMapView.isZoomEnabled = enable
+        mainMapView.isPitchEnabled = enable
+        mainMapView.isRotateEnabled = enable
+        mainMapView.isScrollEnabled = enable
+        mapTypeSegment.isEnabled = enable
+        refreshButton.isEnabled = enable
+        toggleSearchBarButton.isEnabled = enable
+        viewModel.isSearchBarCollapsed = enable
     }
 
     func setSearchBarCollapsed(collapsed: Bool) {
@@ -139,11 +147,6 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
                 self.toggleSearchBarButton.titleLabel?.text = "展開"
             }
         }
-    }
-
-    func setLocationButton(enable: Bool) {
-        locationButton.isEnabled = enable
-        viewModel.isLocation = enable
     }
 
     func showAlertMessage(title: String, message: String, actionTitle: String) {
@@ -219,13 +222,13 @@ extension MainViewController: CLLocationManagerDelegate {
             showAlertMessage(title: "定位權限已關閉",
                              message: "如要變更權限，請至 設定 > 隱私權 > 定位服務 開啟",
                              actionTitle: "確認")
-            setLocationButton(enable: false)
+            locationButton.isEnabled = false
         default:
             MapManager.shared.manager.startUpdatingLocation()
             viewModel.setCenter(center: MapManager.shared.manager.location!.coordinate)
             mainMapView.userTrackingMode = .follow
             mainMapView.userTrackingMode = .none
-            setLocationButton(enable: true)
+            locationButton.isEnabled = true
         }
     }
 }
