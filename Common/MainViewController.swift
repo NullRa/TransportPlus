@@ -17,11 +17,6 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
     @IBOutlet weak var toggleBtnConstraintTop: NSLayoutConstraint!
     @IBOutlet weak var labelConstraintTop: NSLayoutConstraint!
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        checkPermission()
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         let name = "Map Page"
@@ -38,13 +33,11 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
 
             return
         }
-        mainMapView.userTrackingMode = .follow
-        mainMapView.userTrackingMode = .none
+        viewModel = MainMapViewModel(viewController: self)
+        viewModel.onViewLoad()
         mainMapView.delegate = self
         searchBar.delegate = self
-
-        viewModel = MainMapViewModel(viewController: self, center: MapManager.shared.manager.location!.coordinate)
-
+        MapManager.shared.manager.delegate = self
         // FIXME
         searchBar.inputAccessoryView = addTextViewInputAccessoryView()
         autoUpdateButton.addTarget(self, action: #selector(onAutoSwitchButtonPressed(_:)),
@@ -53,7 +46,6 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
                                         for: .touchUpInside)
         refreshButton.addTarget(self, action: #selector(onRefreshButtonPressed(_:)), for: .touchUpInside)
         locationButton.addTarget(self, action: #selector(onLocationButtonPressed(_:)), for: .touchUpInside)
-        viewModel.onViewLoad()
     }
 
     //收起textView鍵盤的方法
@@ -65,20 +57,6 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
                                              target: self, action: #selector(closeKeyboard))]
 
         return textToolbar
-    }
-
-    // MARK: permission check
-    func checkPermission() {
-        if CLLocationManager.authorizationStatus() == .denied {
-            showAlertMessage(title: "定位權限已關閉",
-                             message: "如要變更權限，請至 設定 > 隱私權 > 定位服務 開啟",
-                             actionTitle: "確認")
-            return
-        }
-        if CLLocationManager.authorizationStatus() == .notDetermined {
-            MapManager.shared.manager.requestAlwaysAuthorization()
-        }
-        MapManager.shared.manager.startUpdatingLocation()
     }
 
     @objc func onRefreshButtonPressed(_ sender: UIBarButtonItem) {
@@ -140,6 +118,11 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
         }
     }
 
+    func setLocationButton(enable: Bool) {
+        locationButton.isEnabled = enable
+        viewModel.isLocation = enable
+    }
+
     func showAlertMessage(title: String, message: String, actionTitle: String) {
         let alertCon = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let alertActA = UIAlertAction(title: actionTitle, style: .default, handler: nil)
@@ -194,5 +177,25 @@ extension MainViewController: MKMapViewDelegate {
     // 移動結束才會執行
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         self.viewModel.updateStations()
+    }
+}
+
+extension MainViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .notDetermined:
+            MapManager.shared.manager.requestAlwaysAuthorization()
+        case .denied:
+            showAlertMessage(title: "定位權限已關閉",
+                             message: "如要變更權限，請至 設定 > 隱私權 > 定位服務 開啟",
+                             actionTitle: "確認")
+            setLocationButton(enable: false)
+        default:
+            MapManager.shared.manager.startUpdatingLocation()
+            viewModel.setCenter(center: MapManager.shared.manager.location!.coordinate)
+            mainMapView.userTrackingMode = .follow
+            mainMapView.userTrackingMode = .none
+            setLocationButton(enable: true)
+        }
     }
 }
