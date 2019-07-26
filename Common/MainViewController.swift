@@ -2,9 +2,10 @@ import CoreLocation
 import MapKit
 import UIKit
 import CoreData
+import Network
 
 class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDelegate {
-
+    let monitor = NWPathMonitor()
     private var viewModel: MainMapViewModel!
     @IBOutlet weak var mainMapView: MKMapView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -19,6 +20,8 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        monitor.start(queue: DispatchQueue.global())
+
         let name = "Map Page"
         guard let tracker = GAI.sharedInstance().defaultTracker else { return }
         tracker.set(kGAIScreenName, value: name)
@@ -164,8 +167,13 @@ extension MainViewController: MKMapViewDelegate {
 
     //點擊圖標的動作
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        if monitor.currentPath.status == .satisfied {
+            let annotation = view.annotation as? MKPointAnnotation
+            annotation!.subtitle = viewModel.showStationStatus(annotation: annotation)
+            return
+        }
         let annotation = view.annotation as? MKPointAnnotation
-        annotation!.subtitle = viewModel.showStationStatus(annotation: annotation)
+        annotation!.subtitle = "請確認網路"
     }
 
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
