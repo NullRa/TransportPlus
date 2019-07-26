@@ -6,23 +6,28 @@ class MainMapViewModel {
     var viewController: BikeAndBusDelegate
     var ubikeDatas: [UbikeStation] = []
     var annotationMap = AnnotationMap()
-    var center: CLLocationCoordinate2D
+    var center: CLLocationCoordinate2D?
     var isAutoUpdate = true
     var isSearchBarCollapsed = true
+    var isLocation = true
 
-    init(viewController: BikeAndBusDelegate, center: CLLocationCoordinate2D) {
+    init(viewController: BikeAndBusDelegate) {
         self.viewController = viewController
-        self.center = center
     }
 
     func onViewLoad() {
         self.loadUbikeData()
         let annotations = getRegionStations()
         viewController.updateAnnotations(annotations: annotations)
-        viewController.moveMapCenter(center: center)
+
         viewController.setNavigationBarTitle(title: "Ubike Station")
         viewController.setAutoUpdatedButton(enable: isAutoUpdate)
         viewController.setSearchBarCollapsed(collapsed: isSearchBarCollapsed)
+    }
+
+    func setCenter(center: CLLocationCoordinate2D) {
+        self.center = center
+        viewController.moveMapCenter(center: self.center!)
     }
 
     func toggleAutoUpdate() {
@@ -150,6 +155,7 @@ protocol BikeAndBusDelegate: class {
     func setNavigationBarTitle(title: String)
     func setAutoUpdatedButton(enable: Bool)
     func setSearchBarCollapsed(collapsed: Bool)
+    func setLocationButton(enable: Bool)
     func showAlertMessage(title: String, message: String, actionTitle: String)
     func moveMapCenter(center: CLLocationCoordinate2D)
     func closeKeyboard()
