@@ -10,6 +10,7 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
     @IBOutlet weak var mainMapView: MKMapView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var autoUpdateButton: UISwitch!
+    @IBOutlet weak var mapTypeSegment: UISegmentedControl!
     @IBOutlet weak var toggleSearchBarButton: UIButton!
     @IBOutlet weak var loadingView: UIActivityIndicatorView!
     @IBOutlet weak var refreshButton: UIButton!
@@ -49,6 +50,8 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
                                         for: .touchUpInside)
         refreshButton.addTarget(self, action: #selector(onRefreshButtonPressed(_:)), for: .touchUpInside)
         locationButton.addTarget(self, action: #selector(onLocationButtonPressed(_:)), for: .touchUpInside)
+        mapTypeSegment.addTarget(self, action: #selector(onMapTypeSegmentChanged(_:)), for: .valueChanged)
+        viewModel.onViewLoad()
     }
 
     //收起textView鍵盤的方法
@@ -64,14 +67,20 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
 
     @objc func onRefreshButtonPressed(_ sender: UIBarButtonItem) {
         self.refreshButton.isEnabled = false
+        self.setMapTypeSegmentEnable(enable: false)
         self.loadingView.startAnimating()
 
         DispatchQueue.global().async {
-            self.viewModel.updateUbikeData()
+            if self.viewModel.mapType == .ubike {
+                self.viewModel.updateUbikeData()
+            } else {
+                self.viewModel.updateBusData()
+            }
             DispatchQueue.main.async {
                 self.updateAnnotations(annotations: self.viewModel.getRegionStations())
                 self.loadingView.stopAnimating()
                 self.refreshButton.isEnabled = true
+                self.setMapTypeSegmentEnable(enable: true)
             }
         }
     }
@@ -85,6 +94,10 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
         viewModel.toggleAutoUpdate()
     }
 
+    @objc func onMapTypeSegmentChanged(_ sender: UISegmentedControl) {
+        viewModel.segmentUpdate()
+    }
+
     @objc func onToggleSearchBarButtonPressed(_ sender: UIButton) {
         viewModel.toggleSearchBarCollapsed()
     }
@@ -95,12 +108,25 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
     }
 
     // MARK: BikeAndBusDelegate
-    func setNavigationBarTitle(title: String) {
+    func setNavigationBarTitle(mapType: MapType) {
+        let title = mapType == .ubike ? "Ubike" : "Bus"
         navigationBar.topItem?.title = title
     }
 
     func setAutoUpdatedButton(enable: Bool) {
         autoUpdateButton.isOn = enable
+    }
+
+    func setMapTypeSegmentEnable(enable: Bool) {
+        viewModel.isMayTypeSegment = enable
+        mapTypeSegment.isEnabled = enable
+    }
+
+    func setMapTypeSegmentButton(type: MapType) {
+        var index: Int {
+            return type == .ubike ? 0 : 1
+        }
+        mapTypeSegment.selectedSegmentIndex = index
     }
 
     func setSearchBarCollapsed(collapsed: Bool) {

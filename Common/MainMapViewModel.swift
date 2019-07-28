@@ -5,11 +5,14 @@ import CoreData
 class MainMapViewModel {
     var viewController: BikeAndBusDelegate
     var ubikeDatas: [UbikeStation] = []
+    var busDatas: [BusStation] = []
     var annotationMap = AnnotationMap()
     var center: CLLocationCoordinate2D?
     var isAutoUpdate = true
     var isSearchBarCollapsed = true
     var isLocation = true
+    var isMayTypeSegment = true
+    var mapType = MapType.ubike
 
     init(viewController: BikeAndBusDelegate) {
         self.viewController = viewController
@@ -17,11 +20,13 @@ class MainMapViewModel {
 
     func onViewLoad() {
         self.loadUbikeData()
+        self.loadBusData()
         let annotations = getRegionStations()
         viewController.updateAnnotations(annotations: annotations)
-
-        viewController.setNavigationBarTitle(title: "Ubike Station")
+        viewController.setNavigationBarTitle(mapType: mapType)
+        viewController.setNavigationBarTitle(mapType: mapType)
         viewController.setAutoUpdatedButton(enable: isAutoUpdate)
+        viewController.setMapTypeSegmentButton(type: mapType)
         viewController.setSearchBarCollapsed(collapsed: isSearchBarCollapsed)
     }
 
@@ -36,15 +41,65 @@ class MainMapViewModel {
         updateStations()
     }
 
+    func segmentUpdate() {
+        if mapType == .ubike {
+            mapType = .bus
+        } else {
+            mapType = .ubike
+        }
+        viewController.setNavigationBarTitle(mapType: mapType)
+        viewController.setMapTypeSegmentButton(type: mapType)
+        let annotations = getRegionStations()
+        viewController.updateAnnotations(annotations: annotations)
+    }
+
     func updateStations() {
         if isAutoUpdate {
             viewController.updateAnnotations(annotations: getRegionStations())
         }
     }
 
+    func updateBusData() {
+        updateBusCoreData()
+        loadBusData()
+    }
+
     func updateUbikeData() {
         updateUbikeCoreData()
         loadUbikeData()
+    }
+
+    func updateBusCoreData() {
+        let busDefault = BusAPI()
+        let moc = CoreDataHelper.shared.managedObjectContext()
+        let request = NSFetchRequest<BusStation>(entityName: "BusStation")
+        do {
+            let results = try moc.fetch(request)
+            for result in results {
+                moc.delete(result)
+            }
+            try busDefault.fetchStationList(cityCode: .taipei)
+            try busDefault.fetchStationList(cityCode: .newTaipei)
+            CoreDataHelper.shared.saveContext()
+        } catch {
+            viewController.showAlertMessage(title: ErrorCode.jsonDecodeError.alertTitle,
+                                            message: ErrorCode.jsonDecodeError.alertMessage,
+                                            actionTitle: "OK")
+        }
+    }
+
+    func loadBusData() {
+        let moc = CoreDataHelper.shared.managedObjectContext()
+        let request = NSFetchRequest<BusStation>(entityName: "BusStation")
+        moc.performAndWait {
+            do {
+                self.busDatas = try moc.fetch(request)
+            } catch {
+                self.viewController.showAlertMessage(title: ErrorCode.coreDataError.alertTitle,
+                                                     message: ErrorCode.coreDataError.alertMessage,
+                                                     actionTitle: "OK")
+            }
+        }
     }
 
     func updateUbikeCoreData() {
@@ -89,8 +144,23 @@ class MainMapViewModel {
         let maxLng = center.longitude + region.span.longitudeDelta / 2
         let minLng = center.longitude - region.span.longitudeDelta / 2
         var annotations: [MKPointAnnotation] = []
+        //if mapType == .ubike early return. else do loading bus annotation for-roop
+        if mapType == .ubike {
+            for station in ubikeDatas {
+                if station.longitude > minLng && station.longitude < maxLng
+                    && station.latitude > minLat && station.latitude < maxLat {
+                    let annotation = MKPointAnnotation()
+                    annotation.coordinate.latitude = station.latitude
+                    annotation.coordinate.longitude = station.longitude
+                    annotation.title = station.name
+                    annotationMap.set(key: annotation, station: station)
+                    annotations.append(annotation)
+                }
+            }
+            return annotations
+        }
 
-        for station in ubikeDatas {
+        for station in busDatas {
             if station.longitude > minLng && station.longitude < maxLng
                 && station.latitude > minLat && station.latitude < maxLat {
                 let annotation = MKPointAnnotation()
@@ -130,7 +200,7 @@ class MainMapViewModel {
         let ubkieDefault = UbikeAPI()
         var subTitle = "確認網路狀態"
 
-        guard annotation != nil, let station = annotationMap.get(key: annotation!) else {
+        guard annotation != nil, let station = annotationMap.get(key: annotation!) as? UbikeStation else {
                viewController.showAlertMessage(title: "載入圖標失敗", message: "載入圖標失敗", actionTitle: "OK")
                 return subTitle
         }
@@ -152,10 +222,11 @@ class MainMapViewModel {
 }
 
 protocol BikeAndBusDelegate: class {
-    func setNavigationBarTitle(title: String)
+    func setNavigationBarTitle(mapType: MapType)
     func setAutoUpdatedButton(enable: Bool)
     func setSearchBarCollapsed(collapsed: Bool)
     func setLocationButton(enable: Bool)
+    func setMapTypeSegmentEnable(enable: Bool)
     func showAlertMessage(title: String, message: String, actionTitle: String)
     func moveMapCenter(center: CLLocationCoordinate2D)
     func closeKeyboard()
@@ -163,4 +234,5 @@ protocol BikeAndBusDelegate: class {
     func getRegion() -> MKCoordinateRegion
     func getCenterCoordinate() -> CLLocationCoordinate2D
     func updateAnnotations(annotations: [MKPointAnnotation])
+    func setMapTypeSegmentButton(type: MapType)
 }

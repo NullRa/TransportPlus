@@ -143,6 +143,7 @@
                         <outlet property="loadingView" destination="bQH-in-p2Z" id="Vrb-1p-Gco"/>
                         <outlet property="locationButton" destination="k5h-Is-m5K" id="aMN-pi-xPB"/>
                         <outlet property="mainMapView" destination="IcK-op-qVO" id="YxH-Tv-HK2"/>
+                        <outlet property="mapTypeSegment" destination="b8d-78-TLe" id="huM-mZ-2xc"/>
                         <outlet property="navigationBar" destination="bvu-GD-xHx" id="HGa-Hi-b6U"/>
                         <outlet property="refreshButton" destination="LCx-Jd-AL9" id="wUO-GD-yOe"/>
                         <outlet property="searchBar" destination="8u9-fL-luO" id="z8p-Hf-Mq2"/>
