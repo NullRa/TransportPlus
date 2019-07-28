@@ -15,8 +15,10 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="number" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <fetchRequest name="Fetch_bus_by_region" entity="BusStation" predicateString="longitude &gt; $minLng AND longitude &lt; $maxLng AND latitude &gt; $minLat AND latitude &lt; $maxLat"/>
+    <fetchRequest name="Fetch_ubike_by_region" entity="UbikeStation" predicateString="longitude &gt; $minLng AND longitude &lt; $maxLng AND latitude &gt; $minLat AND latitude &lt; $maxLat"/>
     <elements>
-        <element name="UbikeStation" positionX="0" positionY="0" width="128" height="120"/>
         <element name="BusStation" positionX="0" positionY="36" width="128" height="135"/>
+        <element name="UbikeStation" positionX="0" positionY="0" width="128" height="120"/>
     </elements>
 </model>
