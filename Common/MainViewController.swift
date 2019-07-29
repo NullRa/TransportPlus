@@ -42,8 +42,6 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
         mainMapView.delegate = self
         searchBar.delegate = self
         MapManager.shared.manager.delegate = self
-        // FIXME
-        searchBar.inputAccessoryView = addTextViewInputAccessoryView()
         autoUpdateButton.addTarget(self, action: #selector(onAutoSwitchButtonPressed(_:)),
                                    for: .valueChanged)
         toggleSearchBarButton.addTarget(self, action: #selector(onToggleSearchBarButtonPressed(_:)),
@@ -52,17 +50,6 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
         locationButton.addTarget(self, action: #selector(onLocationButtonPressed(_:)), for: .touchUpInside)
         mapTypeSegment.addTarget(self, action: #selector(onMapTypeSegmentChanged(_:)), for: .valueChanged)
         viewModel.onViewLoad()
-    }
-
-    //收起textView鍵盤的方法
-    func addTextViewInputAccessoryView() -> UIToolbar {
-        let textToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
-        textToolbar.items = [UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
-                                             target: nil, action: nil),
-                             UIBarButtonItem(title: "return", style: .done,
-                                             target: self, action: #selector(closeKeyboard))]
-
-        return textToolbar
     }
 
     @objc func onRefreshButtonPressed(_ sender: UIBarButtonItem) {
@@ -105,6 +92,15 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
     // MARK: searchBarDelegate
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         self.viewModel.searchLocation(text: searchBar.text!)
+    }
+
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(true, animated: true)
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
+        searchBar.endEditing(true)
     }
 
     // MARK: BikeAndBusDelegate
@@ -171,6 +167,8 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
 
     func clearSearchBarText() {
         searchBar.text = ""
+        searchBar.setShowsCancelButton(false, animated: true)
+        searchBar.endEditing(true)
     }
 
     func getRegion() -> MKCoordinateRegion {
