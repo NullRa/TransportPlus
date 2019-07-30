@@ -24,7 +24,6 @@ class MainMapViewModel {
         let annotations = getRegionStations()
         viewController.updateAnnotations(annotations: annotations)
         viewController.setNavigationBarTitle(mapType: mapType)
-        viewController.setNavigationBarTitle(mapType: mapType)
         viewController.setAutoUpdatedButton(enable: isAutoUpdate)
         viewController.setMapTypeSegmentButton(type: mapType)
         viewController.setSearchBarCollapsed(collapsed: isSearchBarCollapsed)
