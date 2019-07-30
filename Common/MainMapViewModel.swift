@@ -8,8 +8,6 @@ class MainMapViewModel {
     var center: CLLocationCoordinate2D?
     var isAutoUpdate = true
     var isSearchBarCollapsed = true
-    var isLocation = true
-    var isMayTypeSegment = true
     var mapType = MapType.ubike
 
     init(viewController: BikeAndBusDelegate) {
@@ -215,8 +213,6 @@ protocol BikeAndBusDelegate: class {
     func setNavigationBarTitle(mapType: MapType)
     func setAutoUpdatedButton(enable: Bool)
     func setSearchBarCollapsed(collapsed: Bool)
-    func setLocationButton(enable: Bool)
-    func setMapTypeSegmentEnable(enable: Bool)
     func showAlertMessage(title: String, message: String, actionTitle: String)
     func moveMapCenter(center: CLLocationCoordinate2D)
     func closeKeyboard()
