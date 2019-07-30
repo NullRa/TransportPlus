@@ -4,8 +4,6 @@ import CoreData
 
 class MainMapViewModel {
     var viewController: BikeAndBusDelegate
-    var ubikeDatas: [UbikeStation] = []
-    var busDatas: [BusStation] = []
     var annotationMap = AnnotationMap()
     var center: CLLocationCoordinate2D?
     var isAutoUpdate = true
@@ -19,8 +17,6 @@ class MainMapViewModel {
     }
 
     func onViewLoad() {
-        self.loadUbikeData()
-        self.loadBusData()
         let annotations = getRegionStations()
         viewController.updateAnnotations(annotations: annotations)
         viewController.setNavigationBarTitle(mapType: mapType)
@@ -59,16 +55,6 @@ class MainMapViewModel {
     }
 
     func updateBusData() {
-        updateBusCoreData()
-        loadBusData()
-    }
-
-    func updateUbikeData() {
-        updateUbikeCoreData()
-        loadUbikeData()
-    }
-
-    func updateBusCoreData() {
         let busDefault = BusAPI()
         let moc = CoreDataHelper.shared.managedObjectContext()
         let request = NSFetchRequest<BusStation>(entityName: "BusStation")
@@ -87,21 +73,7 @@ class MainMapViewModel {
         }
     }
 
-    func loadBusData() {
-        let moc = CoreDataHelper.shared.managedObjectContext()
-        let request = NSFetchRequest<BusStation>(entityName: "BusStation")
-        moc.performAndWait {
-            do {
-                self.busDatas = try moc.fetch(request)
-            } catch {
-                self.viewController.showAlertMessage(title: ErrorCode.coreDataError.alertTitle,
-                                                     message: ErrorCode.coreDataError.alertMessage,
-                                                     actionTitle: "OK")
-            }
-        }
-    }
-
-    func updateUbikeCoreData() {
+    func updateUbikeData() {
         let ubikeDefault = UbikeAPI()
         let moc = CoreDataHelper.shared.managedObjectContext()
         let request = NSFetchRequest<UbikeStation>(entityName: "UbikeStation")
@@ -110,8 +82,8 @@ class MainMapViewModel {
             for result in results {
                 moc.delete(result)
             }
-                try ubikeDefault.fetchStationList(cityCode: .taipei)
-                try ubikeDefault.fetchStationList(cityCode: .newTaipei)
+            try ubikeDefault.fetchStationList(cityCode: .taipei)
+            try ubikeDefault.fetchStationList(cityCode: .newTaipei)
             CoreDataHelper.shared.saveContext()
         } catch {
             viewController.showAlertMessage(title: ErrorCode.jsonDecodeError.alertTitle,
@@ -120,34 +92,40 @@ class MainMapViewModel {
         }
     }
 
-    func loadUbikeData() {
-        let moc = CoreDataHelper.shared.managedObjectContext()
-        let request = NSFetchRequest<UbikeStation>(entityName: "UbikeStation")
-        moc.performAndWait {
-            do {
-                 self.ubikeDatas = try moc.fetch(request)
-            } catch {
-                self.viewController.showAlertMessage(title: ErrorCode.coreDataError.alertTitle,
-                                                     message: ErrorCode.coreDataError.alertMessage,
-                                                     actionTitle: "OK")
-            }
-        }
-    }
-
     func getRegionStations() -> [MKPointAnnotation] {
         annotationMap.reset()
+        let model = CoreDataHelper.shared.persistentContainer.managedObjectModel
         let center = self.viewController.getCenterCoordinate()
         let region = self.viewController.getRegion()
         let maxLat = center.latitude + region.span.latitudeDelta / 2
         let minLat = center.latitude - region.span.latitudeDelta / 2
         let maxLng = center.longitude + region.span.longitudeDelta / 2
         let minLng = center.longitude - region.span.longitudeDelta / 2
+
+        if mapType == .ubike,
+            let fetchRequest = model.fetchRequestFromTemplate(
+                withName: "Fetch_ubike_by_region",
+                substitutionVariables: ["maxLng": maxLng, "minLng": minLng,
+                                        "maxLat": maxLat, "minLat": minLat]) {
+            return loadUbikeData(request: fetchRequest)
+        }
+        if let fetchRequest =
+            model.fetchRequestFromTemplate(
+                withName: "Fetch_bus_by_region",
+                substitutionVariables: ["maxLng": maxLng, "minLng": minLng,
+                                        "maxLat": maxLat, "minLat": minLat]) {
+            return loadBusData(request: fetchRequest)
+        }
+        return []
+    }
+
+    func loadUbikeData(request: NSFetchRequest<NSFetchRequestResult>) -> [MKPointAnnotation] {
         var annotations: [MKPointAnnotation] = []
-        //if mapType == .ubike early return. else do loading bus annotation for-roop
-        if mapType == .ubike {
-            for station in ubikeDatas {
-                if station.longitude > minLng && station.longitude < maxLng
-                    && station.latitude > minLat && station.latitude < maxLat {
+        let moc = CoreDataHelper.shared.managedObjectContext()
+        moc.performAndWait {
+            do {
+                let regionStations = try moc.fetch(request) as? [UbikeStation]
+                for station in regionStations! {
                     let annotation = MKPointAnnotation()
                     annotation.coordinate.latitude = station.latitude
                     annotation.coordinate.longitude = station.longitude
@@ -155,22 +133,35 @@ class MainMapViewModel {
                     annotationMap.set(key: annotation, station: station)
                     annotations.append(annotation)
                 }
-            }
-            return annotations
-        }
-
-        for station in busDatas {
-            if station.longitude > minLng && station.longitude < maxLng
-                && station.latitude > minLat && station.latitude < maxLat {
-                let annotation = MKPointAnnotation()
-                annotation.coordinate.latitude = station.latitude
-                annotation.coordinate.longitude = station.longitude
-                annotation.title = station.name
-                annotationMap.set(key: annotation, station: station)
-                annotations.append(annotation)
+            } catch {
+                self.viewController.showAlertMessage(title: ErrorCode.coreDataError.alertTitle,
+                                                     message: ErrorCode.coreDataError.alertMessage,
+                                                     actionTitle: "OK")
             }
         }
+        return annotations
+    }
 
+    func loadBusData(request: NSFetchRequest<NSFetchRequestResult>) -> [MKPointAnnotation] {
+        var annotations: [MKPointAnnotation] = []
+        let moc = CoreDataHelper.shared.managedObjectContext()
+        moc.performAndWait {
+            do {
+                let regionStations = try moc.fetch(request) as? [BusStation]
+                for station in regionStations! {
+                    let annotation = MKPointAnnotation()
+                    annotation.coordinate.latitude = station.latitude
+                    annotation.coordinate.longitude = station.longitude
+                    annotation.title = station.name
+                    annotationMap.set(key: annotation, station: station)
+                    annotations.append(annotation)
+                }
+            } catch {
+                self.viewController.showAlertMessage(title: ErrorCode.coreDataError.alertTitle,
+                                                     message: ErrorCode.coreDataError.alertMessage,
+                                                     actionTitle: "OK")
+            }
+        }
         return annotations
     }
 
