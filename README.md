@@ -25,7 +25,7 @@ Touch image into introduce on Youtube
  
  Screenshots
   
-<img src="https://github.com/NullRa/TransportPlus/blob/refactor-readme/img/ShowUbikeStationStatus.png?raw=true" width=33%><img src="https://github.com/NullRa/TransportPlus/blob/refactor-readme/img/ShowBusStationStatus.png?raw=true" width=33%><img src="https://github.com/NullRa/TransportPlus/blob/refactor-readme/img/ShowRouteDetailStatus.png?raw=true" width=33%>
+<img src="https://github.com/NullRa/TransportPlus/blob/master/img/ShowUbikeStationStatus.png?raw=true" width=33%><img src="https://github.com/NullRa/TransportPlus/blob/master/img/ShowBusStationStatus.png?raw=true" width=33%><img src="https://github.com/NullRa/TransportPlus/blob/master/img/ShowRouteDetailStatus.png" width=33%>
 
 ## *Special thanks*
 [@ender503](https://github.com/ender503) taught me many things. 
