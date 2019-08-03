@@ -192,6 +192,10 @@ extension MainViewController: MKMapViewDelegate {
 
     //點擊圖標的動作
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        if view.annotation?.coordinate.latitude == mainMapView.userLocation.coordinate.latitude &&
+            view.annotation?.coordinate.longitude == mainMapView.userLocation.coordinate.longitude {
+            return
+        }
         if monitor.currentPath.status == .satisfied {
             let annotation = view.annotation as? MKPointAnnotation
             annotation!.subtitle = viewModel.showStationStatus(annotation: annotation)
