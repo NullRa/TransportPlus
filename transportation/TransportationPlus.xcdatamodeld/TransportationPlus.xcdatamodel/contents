@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14492.1" systemVersion="18F132" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14492.1" systemVersion="18G87" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="BusStation" representedClassName=".BusStation" syncable="YES">
         <attribute name="busNumbers" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="cityName" optional="YES" attributeType="String" syncable="YES"/>
@@ -16,6 +16,7 @@
         <attribute name="number" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <fetchRequest name="Fetch_bus_by_region" entity="BusStation" predicateString="longitude &gt; $minLng AND longitude &lt; $maxLng AND latitude &gt; $minLat AND latitude &lt; $maxLat"/>
+    <fetchRequest name="Fetch_routeName_by_StopUID" entity="BusStation" predicateString="number == &quot;$stopID&quot;"/>
     <fetchRequest name="Fetch_ubike_by_region" entity="UbikeStation" predicateString="longitude &gt; $minLng AND longitude &lt; $maxLng AND latitude &gt; $minLat AND latitude &lt; $maxLat"/>
     <elements>
         <element name="BusStation" positionX="0" positionY="36" width="128" height="135"/>
