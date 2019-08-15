@@ -207,6 +207,12 @@ extension MainViewController: MKMapViewDelegate {
         }
     }
 
+    //scrolling beginning do
+    func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
+        viewModel.isSearchBarCollapsed = false
+        setSearchBarCollapsed(collapsed: viewModel.isSearchBarCollapsed)
+    }
+
     // 移動結束才會執行
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         self.viewModel.updateStations()
