@@ -99,24 +99,25 @@
 		6908C6CC22E41E7A000AB366 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				690A84C622AFC0D9009F4EC5 /* MainViewController.swift */,
-				6965F88222E2B75C00203FBE /* MainMapViewModel.swift */,
 				6948904622E946D3009B4875 /* LaunchScreenViewController.swift */,
+				6965F88222E2B75C00203FBE /* MainMapViewModel.swift */,
+				690A84C622AFC0D9009F4EC5 /* MainViewController.swift */,
 			);
 			name = ViewController;
+			path = ViewController;
 			sourceTree = "<group>";
 		};
 		690A84A622AFBE03009F4EC5 = {
 			isa = PBXGroup;
 			children = (
+				690A84CA22AFC2B4009F4EC5 /* Common */,
+				21FC21EE93AF9DEA8801359C /* Frameworks */,
+				9331364B8109695C063DDE3E /* Pods */,
+				690A84B022AFBE03009F4EC5 /* Products */,
+				690A84B122AFBE03009F4EC5 /* Transportation_PLUS */,
 				6968F91322E55ED100FB390E /* .gitattributes */,
 				6974B32622D5959B00A11B7D /* APIKey.xcconfig */,
 				6941055022E4A19A00D90E22 /* SecretKey.plist */,
-				690A84CA22AFC2B4009F4EC5 /* Common */,
-				690A84B122AFBE03009F4EC5 /* Transportation_PLUS */,
-				690A84B022AFBE03009F4EC5 /* Products */,
-				9331364B8109695C063DDE3E /* Pods */,
-				21FC21EE93AF9DEA8801359C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -132,12 +133,12 @@
 			isa = PBXGroup;
 			children = (
 				690A84B222AFBE03009F4EC5 /* AppDelegate.swift */,
-				690A84B422AFBE03009F4EC5 /* ViewController.swift */,
 				690A84B922AFBE05009F4EC5 /* Assets.xcassets */,
-				690A84BB22AFBE05009F4EC5 /* LaunchScreen.storyboard */,
-				690A84BE22AFBE05009F4EC5 /* Info.plist */,
-				69F8642622D2EB10003A268B /* GoogleService-Info.plist */,
 				69F8642822D2F847003A268B /* BridgingHeader.h */,
+				69F8642622D2EB10003A268B /* GoogleService-Info.plist */,
+				690A84BE22AFBE05009F4EC5 /* Info.plist */,
+				690A84BB22AFBE05009F4EC5 /* LaunchScreen.storyboard */,
+				690A84B422AFBE03009F4EC5 /* ViewController.swift */,
 			);
 			path = Transportation_PLUS;
 			sourceTree = "<group>";
@@ -145,13 +146,13 @@
 		690A84CA22AFC2B4009F4EC5 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				6941055222E4AB1200D90E22 /* Networking */,
-				6908C6CC22E41E7A000AB366 /* ViewController */,
-				6950B18222BA6D9000581822 /* View */,
 				6950B18122BA6D4900581822 /* Model */,
 				6950B18022BA6C5E00581822 /* Module */,
-				690A84ED22B0A438009F4EC5 /* TransportationPlus.xcdatamodeld */,
+				6941055222E4AB1200D90E22 /* Networking */,
+				6950B18222BA6D9000581822 /* View */,
+				6908C6CC22E41E7A000AB366 /* ViewController */,
 				69C3A6D522C3B43D00738EAA /* ErrorCode.swift */,
+				690A84ED22B0A438009F4EC5 /* TransportationPlus.xcdatamodeld */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -160,29 +161,31 @@
 			isa = PBXGroup;
 			children = (
 				6941055322E4AB4F00D90E22 /* FetchStruct */,
-				69BAC56022C725B200CA8CB3 /* UbikeAPI.swift */,
-				6943BF0522E6D603007E7793 /* BusAPI.swift */,
 				6943BF0722E6D665007E7793 /* BaseAPI.swift */,
+				6943BF0522E6D603007E7793 /* BusAPI.swift */,
 				6941055422E4ABBB00D90E22 /* CryptoAlgorithm.swift */,
+				69BAC56022C725B200CA8CB3 /* UbikeAPI.swift */,
 			);
 			name = Networking;
+			path = Networking;
 			sourceTree = "<group>";
 		};
 		6941055322E4AB4F00D90E22 /* FetchStruct */ = {
 			isa = PBXGroup;
 			children = (
-				6941056222E4ADDD00D90E22 /* UbikeStatusStruct.swift */,
-				6941056422E4AE9700D90E22 /* UbikeStationStruct.swift */,
 				6943BF0322E6D575007E7793 /* BusStationStruct.swift */,
+				6941056422E4AE9700D90E22 /* UbikeStationStruct.swift */,
+				6941056222E4ADDD00D90E22 /* UbikeStatusStruct.swift */,
 			);
 			name = FetchStruct;
+			path = FetchStruct;
 			sourceTree = "<group>";
 		};
 		6950B18022BA6C5E00581822 /* Module */ = {
 			isa = PBXGroup;
 			children = (
-				690A84F522B0A548009F4EC5 /* MapManager.swift */,
 				690A84EB22B0A40D009F4EC5 /* CoreDataHelper.swift */,
+				690A84F522B0A548009F4EC5 /* MapManager.swift */,
 			);
 			path = Module;
 			sourceTree = "<group>";
@@ -191,13 +194,14 @@
 			isa = PBXGroup;
 			children = (
 				6984A79A22D71EE10003EF2B /* AnnotationMap.swift */,
-				6925F9A522E828E000136ED8 /* MapType.swift */,
-				69BAC56222C7382400CA8CB3 /* CityType.swift */,
-				690A84F822B0A7B9009F4EC5 /* UbikeStation.swift */,
-				6943BEFF22E6B84E007E7793 /* BusStation.swift */,
 				6943BF0122E6BAA9007E7793 /* BusNumber.swift */,
+				6943BEFF22E6B84E007E7793 /* BusStation.swift */,
+				69BAC56222C7382400CA8CB3 /* CityType.swift */,
+				6925F9A522E828E000136ED8 /* MapType.swift */,
+				690A84F822B0A7B9009F4EC5 /* UbikeStation.swift */,
 			);
 			name = Model;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		6950B18222BA6D9000581822 /* View */ = {
@@ -206,6 +210,7 @@
 				690A84B622AFBE03009F4EC5 /* Main.storyboard */,
 			);
 			name = View;
+			path = View;
 			sourceTree = "<group>";
 		};
 		9331364B8109695C063DDE3E /* Pods */ = {
@@ -387,6 +392,7 @@
 				690A84B722AFBE03009F4EC5 /* Base */,
 			);
 			name = Main.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 		690A84BB22AFBE05009F4EC5 /* LaunchScreen.storyboard */ = {
@@ -395,6 +401,7 @@
 				690A84BC22AFBE05009F4EC5 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
