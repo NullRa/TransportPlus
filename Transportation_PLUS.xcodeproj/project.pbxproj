@@ -103,18 +103,16 @@
 				6965F88222E2B75C00203FBE /* MainMapViewModel.swift */,
 				690A84C622AFC0D9009F4EC5 /* MainViewController.swift */,
 			);
-			name = ViewController;
 			path = ViewController;
 			sourceTree = "<group>";
 		};
 		690A84A622AFBE03009F4EC5 = {
 			isa = PBXGroup;
 			children = (
-				690A84CA22AFC2B4009F4EC5 /* Common */,
+				690A84CA22AFC2B4009F4EC5 /* transportation */,
 				21FC21EE93AF9DEA8801359C /* Frameworks */,
 				9331364B8109695C063DDE3E /* Pods */,
 				690A84B022AFBE03009F4EC5 /* Products */,
-				690A84B122AFBE03009F4EC5 /* Transportation_PLUS */,
 				6968F91322E55ED100FB390E /* .gitattributes */,
 				6974B32622D5959B00A11B7D /* APIKey.xcconfig */,
 				6941055022E4A19A00D90E22 /* SecretKey.plist */,
@@ -129,21 +127,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		690A84B122AFBE03009F4EC5 /* Transportation_PLUS */ = {
-			isa = PBXGroup;
-			children = (
-				690A84B222AFBE03009F4EC5 /* AppDelegate.swift */,
-				690A84B922AFBE05009F4EC5 /* Assets.xcassets */,
-				69F8642822D2F847003A268B /* BridgingHeader.h */,
-				69F8642622D2EB10003A268B /* GoogleService-Info.plist */,
-				690A84BE22AFBE05009F4EC5 /* Info.plist */,
-				690A84BB22AFBE05009F4EC5 /* LaunchScreen.storyboard */,
-				690A84B422AFBE03009F4EC5 /* ViewController.swift */,
-			);
-			path = Transportation_PLUS;
-			sourceTree = "<group>";
-		};
-		690A84CA22AFC2B4009F4EC5 /* Common */ = {
+		690A84CA22AFC2B4009F4EC5 /* transportation */ = {
 			isa = PBXGroup;
 			children = (
 				6950B18122BA6D4900581822 /* Model */,
@@ -152,9 +136,16 @@
 				6950B18222BA6D9000581822 /* View */,
 				6908C6CC22E41E7A000AB366 /* ViewController */,
 				69C3A6D522C3B43D00738EAA /* ErrorCode.swift */,
+				690A84B222AFBE03009F4EC5 /* AppDelegate.swift */,
+				690A84B922AFBE05009F4EC5 /* Assets.xcassets */,
+				69F8642822D2F847003A268B /* BridgingHeader.h */,
+				69F8642622D2EB10003A268B /* GoogleService-Info.plist */,
+				690A84BE22AFBE05009F4EC5 /* Info.plist */,
+				690A84BB22AFBE05009F4EC5 /* LaunchScreen.storyboard */,
+				690A84B422AFBE03009F4EC5 /* ViewController.swift */,
 				690A84ED22B0A438009F4EC5 /* TransportationPlus.xcdatamodeld */,
 			);
-			path = Common;
+			path = transportation;
 			sourceTree = "<group>";
 		};
 		6941055222E4AB1200D90E22 /* Networking */ = {
@@ -166,7 +157,6 @@
 				6941055422E4ABBB00D90E22 /* CryptoAlgorithm.swift */,
 				69BAC56022C725B200CA8CB3 /* UbikeAPI.swift */,
 			);
-			name = Networking;
 			path = Networking;
 			sourceTree = "<group>";
 		};
@@ -177,7 +167,6 @@
 				6941056422E4AE9700D90E22 /* UbikeStationStruct.swift */,
 				6941056222E4ADDD00D90E22 /* UbikeStatusStruct.swift */,
 			);
-			name = FetchStruct;
 			path = FetchStruct;
 			sourceTree = "<group>";
 		};
@@ -200,7 +189,6 @@
 				6925F9A522E828E000136ED8 /* MapType.swift */,
 				690A84F822B0A7B9009F4EC5 /* UbikeStation.swift */,
 			);
-			name = Model;
 			path = Model;
 			sourceTree = "<group>";
 		};
@@ -209,7 +197,6 @@
 			children = (
 				690A84B622AFBE03009F4EC5 /* Main.storyboard */,
 			);
-			name = View;
 			path = View;
 			sourceTree = "<group>";
 		};
@@ -532,14 +519,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KH3PA94KG7;
-				INFOPLIST_FILE = Transportation_PLUS/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/transportation/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Rat.Transportation-PLUS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = ./Transportation_PLUS/BridgingHeader.h;
+				SWIFT_OBJC_BRIDGING_HEADER = ./transportation/BridgingHeader.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -552,14 +539,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KH3PA94KG7;
-				INFOPLIST_FILE = Transportation_PLUS/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/transportation/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Rat.Transportation-PLUS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = /Users/jay/Desktop/Transportation_PLUS/Transportation_PLUS/BridgingHeader.h;
+				SWIFT_OBJC_BRIDGING_HEADER = ./transportation/BridgingHeader.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
