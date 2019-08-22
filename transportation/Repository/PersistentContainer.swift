@@ -1,16 +1,7 @@
-import UIKit
+import Foundation
 import CoreData
 
-class CoreDataHelper: NSObject {
-    static let shared = CoreDataHelper()
-
-    override internal init() {
-    }
-
-    func managedObjectContext() -> NSManagedObjectContext {
-        return persistentContainer.viewContext
-    }
-
+class PersistentContainer {
     // MARK: - Core Data stack
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "TransportationPlus")//dataModel的名字
@@ -31,6 +22,10 @@ class CoreDataHelper: NSObject {
         return container
     }()
 
+    func getContext() -> NSManagedObjectContext {
+        return persistentContainer.viewContext
+    }
+    // MARK: - Core Data Saving support
     func saveContext () {
         let context = persistentContainer.viewContext
         if context.hasChanges {

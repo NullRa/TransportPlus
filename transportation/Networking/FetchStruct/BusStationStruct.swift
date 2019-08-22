@@ -1,7 +1,7 @@
 import Foundation
 
 // swiftlint:disable all
-struct BusStationJson: Codable {
+struct BusStationStruct: Codable {
     var StationUID: String
     var StationName: StationName
     var StationPosition: StationPosition
