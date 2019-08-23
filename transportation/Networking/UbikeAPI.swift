@@ -7,14 +7,8 @@ class UbikeAPI: BaseAPI {
         let data: Data = try self.fetchJsonData(apiURL: apiURL)
         let decoder = JSONDecoder()
         let dataList = try decoder.decode([UbikeStationStruct].self, from: data)
-        for ubikeStation in dataList {
-            let moc = CoreDataHelper.shared.managedObjectContext()
-            let station = UbikeStation(context: moc)
-            station.cityName = ubikeStation.AuthorityID
-            station.number = ubikeStation.StationUID
-            station.name = ubikeStation.StationName.Zh_tw
-            station.longitude = ubikeStation.StationPosition.PositionLon
-            station.latitude = ubikeStation.StationPosition.PositionLat
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            appDelegate.ubikeRepository?.saveUbikeStation(dataList: dataList)
         }
     }
 

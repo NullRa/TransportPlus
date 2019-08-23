@@ -1,24 +1,20 @@
-//
-//  AppDelegate.swift
-//  Transportation_PLUS
-//
-//  Created by Jay on 2019/6/11.
-//  Copyright © 2019 Null. All rights reserved.
-//
-
 import UIKit
 import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
     var window: UIWindow?
+    var busRepository: BusRespository?
+    var ubikeRepository: UbikeRepository?
+    var appDelegateContainer = PersistentContainer()
+
 // swiftlint:disable line_length
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
         guard let gai = GAI.sharedInstance() else {
             assert(false, "Google Analytics not configured correctly")
+            return false
         }
         gai.tracker(withTrackingId: "YOUR_TRACKING_ID")
         // Optional: automatically report uncaught exceptions.
@@ -26,8 +22,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Optional: set Logger to VERBOSE for debug information.
         // Remove before app release.
         gai.logger.logLevel = .verbose
+
+        // Initialize modules
+        self.busRepository = BusRespository(persistentContainer: appDelegateContainer)
+        self.ubikeRepository = UbikeRepository(persistentContainer: appDelegateContainer)
+
         return true
     }
+
+    func getBusRepository() -> BusRespository {
+        return self.busRepository!
+    }
+
+    func getUbikeRepository() -> UbikeRepository {
+        return self.ubikeRepository!
+    }
+
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
