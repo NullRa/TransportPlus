@@ -177,25 +177,38 @@ class MainMapViewModel {
     }
 
     func showStationStatus(annotation: MKPointAnnotation?) -> String {
-        let ubkieDefault = UbikeAPI()
         var subTitle = "確認網路狀態"
 
-        guard annotation != nil, let station = annotationMap.get(key: annotation!) as? UbikeStation else {
-            viewController.showAlertMessage(title: "載入圖標失敗", message: "載入圖標失敗", actionTitle: "OK")
-            return subTitle
-        }
-
-        do {
-            let ubState = try ubkieDefault.fetchStationStatus(cityName: station.cityName, stationID: station.number)
-            if ubState.ServieAvailable == 0 {
-                subTitle = "未營運"
-            } else {
-                subTitle = "可借\(ubState.AvailableRentBikes)台,可還\(ubState.AvailableReturnBikes)台"
+        if mapType == .ubike {
+            let ubkieDefault = UbikeAPI()
+            guard annotation != nil, let station = annotationMap.get(key: annotation!) as? UbikeStation else {
+                viewController.showAlertMessage(title: "載入圖標失敗", message: "載入圖標失敗", actionTitle: "OK")
+                return subTitle
             }
-        } catch {
-            self.viewController.showAlertMessage(title:
-                ErrorCode.jsonDecodeError.alertTitle, message:
-                ErrorCode.jsonDecodeError.alertMessage, actionTitle: "OK")
+            do {
+                let ubState = try ubkieDefault.fetchStationStatus(cityName: station.cityName, stationID: station.number)
+                if ubState.ServieAvailable == 0 {
+                    subTitle = "未營運"
+                } else {
+                    subTitle = "可借\(ubState.AvailableRentBikes)台,可還\(ubState.AvailableReturnBikes)台"
+                }
+            } catch {
+                self.viewController.showAlertMessage(title:
+                    ErrorCode.jsonDecodeError.alertTitle, message:
+                    ErrorCode.jsonDecodeError.alertMessage, actionTitle: "OK")
+            }
+        } else {
+            guard annotation != nil, let station = annotationMap.get(key: annotation!) as? BusStation else {
+                viewController.showAlertMessage(title: "載入圖標失敗", message: "載入圖標失敗", actionTitle: "OK")
+                return subTitle
+            }
+            subTitle = ""
+            for value in station.busNumbers {
+                subTitle += value.busName!
+                if value != station.busNumbers[station.busNumbers.count - 1] {
+                    subTitle += ", "
+                }
+            }
         }
         return subTitle
     }
