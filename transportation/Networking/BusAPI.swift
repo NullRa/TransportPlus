@@ -2,15 +2,11 @@ import Foundation
 
 class BusAPI: BaseAPI {
 
-    func fetchStationList(cityCode: CityCode) throws {
+    func fetchStationList(cityCode: CityCode) throws -> [BusStationStruct] {
         let apiURL = getStationListRequstURL(cityCode: cityCode)
         let data: Data = try self.fetchJsonData(apiURL: apiURL)
         let decoder = JSONDecoder()
-        let dataList = try decoder.decode([BusStationStruct].self, from: data)
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            appDelegate.busRepository?.saveBusStation(dataList: dataList)
-        }
-
+        return try decoder.decode([BusStationStruct].self, from: data)
     }
 
     private func getStationListRequstURL(cityCode: CityCode ) -> String {
