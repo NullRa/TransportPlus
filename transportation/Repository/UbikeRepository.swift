@@ -2,7 +2,7 @@ import Foundation
 import CoreData
 
 class UbikeRepository: BaseRepository {
-    func saveUbikeStation(dataList: [UbikeStationStruct]) {
+    func saveUbikeStation(dataList: [UbikeStationCodable]) {
         let context = getContext()
         for ubikeStation in dataList {
             let station = UbikeStation(context: context)

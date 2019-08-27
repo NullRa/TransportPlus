@@ -2,11 +2,11 @@ import Foundation
 
 class BusAPI: BaseAPI {
 
-    func fetchStationList(cityCode: CityCode) throws -> [BusStationStruct] {
+    func fetchStationList(cityCode: CityCode) throws -> [BusStationCodable] {
         let apiURL = getStationListRequstURL(cityCode: cityCode)
         let data: Data = try self.fetchJsonData(apiURL: apiURL)
         let decoder = JSONDecoder()
-        return try decoder.decode([BusStationStruct].self, from: data)
+        return try decoder.decode([BusStationCodable].self, from: data)
     }
 
     private func getStationListRequstURL(cityCode: CityCode ) -> String {

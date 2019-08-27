@@ -2,21 +2,21 @@ import Foundation
 
 class UbikeAPI: BaseAPI {
 
-    func fetchStationList(cityCode: CityCode) throws ->  [UbikeStationStruct] {
+    func fetchStationList(cityCode: CityCode) throws ->  [UbikeStationCodable] {
         let apiURL = getStationListRequstURL(cityCode: cityCode)
         let data: Data = try self.fetchJsonData(apiURL: apiURL)
         let decoder = JSONDecoder()
-        let dataList = try decoder.decode([UbikeStationStruct].self, from: data)
+        let dataList = try decoder.decode([UbikeStationCodable].self, from: data)
 
         return dataList
     }
 
-    func fetchStationStatus(cityName: String, stationID: String) throws -> UbikeStatusStruct {
+    func fetchStationStatus(cityName: String, stationID: String) throws -> UbikeStatusCodable {
         let cityCode: CityCode = cityName == "NWT" ? CityCode.newTaipei : CityCode.taipei
         let apiURL = self.getStationStatusRequestURL(cityCode: cityCode, stationID: stationID)
         let data = try self.fetchJsonData(apiURL: apiURL)
         let decoder = JSONDecoder()
-        let dataList = try decoder.decode([UbikeStatusStruct].self, from: data)
+        let dataList = try decoder.decode([UbikeStatusCodable].self, from: data)
 
         if dataList.count == 0 {
             throw ErrorCode.dataError

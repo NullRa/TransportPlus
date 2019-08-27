@@ -1,6 +1,6 @@
 import UIKit
 
-class LaunchScreenViewController: ViewController {
+class LaunchScreenView: ViewController {
     let logo = UIImageView()
 
     override func viewDidLoad() {

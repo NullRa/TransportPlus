@@ -2,7 +2,7 @@ import Foundation
 import MapKit
 import CoreData
 
-class MainMapViewModel {
+class MainModel {
     var viewController: BikeAndBusDelegate
     var busAPI: BusAPI
     var ubikeAPI: UbikeAPI

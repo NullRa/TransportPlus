@@ -4,10 +4,10 @@ import UIKit
 import CoreData
 import Network
 
-class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDelegate {
+class MainView: UIViewController, BikeAndBusDelegate, UISearchBarDelegate {
 
     let monitor = NWPathMonitor()
-    private var viewModel: MainMapViewModel!
+    private var viewModel: MainModel!
     @IBOutlet weak var mainMapView: MKMapView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var autoUpdateButton: UISwitch!
@@ -43,7 +43,7 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
         let busRepository = (UIApplication.shared.delegate as? AppDelegate)!.getBusRepository()
         let ubikeRepository = (UIApplication.shared.delegate as? AppDelegate)!.getUbikeRepository()
         viewModel =
-            MainMapViewModel(viewController: self,
+            MainModel(viewController: self,
                              ubikeAPI: ubikeAPI,
                              ubikeRepository: ubikeRepository,
                              busAPI: busAPI,
@@ -194,7 +194,7 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
     }
 }
 
-extension MainViewController: MKMapViewDelegate {
+extension MainView: MKMapViewDelegate {
 
     //點擊圖標的動作
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
@@ -229,7 +229,7 @@ extension MainViewController: MKMapViewDelegate {
     }
 }
 
-extension MainViewController: CLLocationManagerDelegate {
+extension MainView: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .notDetermined:

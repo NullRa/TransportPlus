@@ -41,7 +41,7 @@
         <!--地圖-->
         <scene sceneID="fFg-57-yT2">
             <objects>
-                <viewController id="AXg-Cj-T36" customClass="MainViewController" customModule="Transportation_PLUS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="AXg-Cj-T36" customClass="MainView" customModule="Transportation_PLUS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5xQ-Ss-Rlk">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -155,10 +155,10 @@
             </objects>
             <point key="canvasLocation" x="2000.625" y="128.87323943661971"/>
         </scene>
-        <!--Launch Screen View Controller-->
+        <!--Launch Screen View-->
         <scene sceneID="VJ2-24-fJG">
             <objects>
-                <viewController id="gTH-Hj-T5L" customClass="LaunchScreenViewController" customModule="Transportation_PLUS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="gTH-Hj-T5L" customClass="LaunchScreenView" customModule="Transportation_PLUS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="U1N-Cf-yjd">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
