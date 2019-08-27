@@ -38,7 +38,17 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
 
             return
         }
-        viewModel = MainMapViewModel(viewController: self)
+        let busAPI = BusAPI()
+        let ubikeAPI = UbikeAPI()
+        let busRepository = (UIApplication.shared.delegate as? AppDelegate)!.getBusRepository()
+        let ubikeRepository = (UIApplication.shared.delegate as? AppDelegate)!.getUbikeRepository()
+        viewModel =
+            MainMapViewModel(viewController: self,
+                             ubikeAPI: ubikeAPI,
+                             ubikeRepository: ubikeRepository,
+                             busAPI: busAPI,
+                             busRepository: busRepository)
+
         viewModel.onViewLoad()
         mainMapView.delegate = self
         searchBar.delegate = self

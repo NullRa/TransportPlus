@@ -4,13 +4,25 @@ import CoreData
 
 class MainMapViewModel {
     var viewController: BikeAndBusDelegate
+    var busAPI: BusAPI
+    var ubikeAPI: UbikeAPI
+    var busRepository: BusRespository
+    var ubikeRepository: UbikeRepository
+
     var annotationMap = AnnotationMap()
     var center: CLLocationCoordinate2D?
     var isAutoUpdate = true
     var isSearchBarCollapsed = true
     var mapType = MapType.ubike
-    init(viewController: BikeAndBusDelegate) {
+
+    init(viewController: BikeAndBusDelegate,
+         ubikeAPI: UbikeAPI, ubikeRepository: UbikeRepository,
+         busAPI: BusAPI, busRepository: BusRespository) {
         self.viewController = viewController
+        self.busAPI = busAPI
+        self.ubikeAPI = ubikeAPI
+        self.busRepository = busRepository
+        self.ubikeRepository = ubikeRepository
     }
 
     func onViewLoad() {
@@ -52,32 +64,32 @@ class MainMapViewModel {
     }
 
     func updateBusData() {
-        let busDefault = BusAPI()
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            do {
-                try appDelegate.getBusRepository().deleteAllBusData()
-                try busDefault.fetchStationList(cityCode: .taipei)
-                try busDefault.fetchStationList(cityCode: .newTaipei)
-            } catch {
-                viewController.showAlertMessage(title: ErrorCode.jsonDecodeError.alertTitle,
-                                                message: ErrorCode.jsonDecodeError.alertMessage,
-                                                actionTitle: "OK")
-            }
+        do {
+            try busRepository.deleteAllBusData()
+            let taipeiStations = try self.busAPI.fetchStationList(cityCode: .taipei)
+            busRepository.saveBusStation(dataList: taipeiStations)
+            let newTaipeiStations = try self.busAPI.fetchStationList(cityCode: .newTaipei)
+            busRepository.saveBusStation(dataList: newTaipeiStations)
+        } catch {
+            viewController.showAlertMessage(title: ErrorCode.jsonDecodeError.alertTitle,
+                                            message: ErrorCode.jsonDecodeError.alertMessage,
+                                            actionTitle: "OK")
         }
     }
 
     func updateUbikeData() {
-        let ubikeDefault = UbikeAPI()
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            do {
-                try appDelegate.getUbikeRepository().deleteAllUbikeData()
-                try ubikeDefault.fetchStationList(cityCode: .taipei)
-                try ubikeDefault.fetchStationList(cityCode: .newTaipei)
-            } catch {
-                viewController.showAlertMessage(title: ErrorCode.jsonDecodeError.alertTitle,
-                                                message: ErrorCode.jsonDecodeError.alertMessage,
-                                                actionTitle: "OK")
-            }
+        do {
+            try ubikeRepository.deleteAllUbikeData()
+            let taipeiStations = try self.ubikeAPI.fetchStationList(cityCode: .taipei)
+            ubikeRepository.saveUbikeStation(dataList: taipeiStations)
+
+            let newTaipeiStations = try self.ubikeAPI.fetchStationList(cityCode: .newTaipei)
+            ubikeRepository.saveUbikeStation(dataList: newTaipeiStations)
+
+        } catch {
+            viewController.showAlertMessage(title: ErrorCode.jsonDecodeError.alertTitle,
+                                            message: ErrorCode.jsonDecodeError.alertMessage,
+                                            actionTitle: "OK")
         }
     }
 

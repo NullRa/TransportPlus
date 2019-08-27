@@ -2,14 +2,13 @@ import Foundation
 
 class UbikeAPI: BaseAPI {
 
-    func fetchStationList(cityCode: CityCode) throws {
+    func fetchStationList(cityCode: CityCode) throws ->  [UbikeStationStruct] {
         let apiURL = getStationListRequstURL(cityCode: cityCode)
         let data: Data = try self.fetchJsonData(apiURL: apiURL)
         let decoder = JSONDecoder()
         let dataList = try decoder.decode([UbikeStationStruct].self, from: data)
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            appDelegate.ubikeRepository?.saveUbikeStation(dataList: dataList)
-        }
+
+        return dataList
     }
 
     func fetchStationStatus(cityName: String, stationID: String) throws -> UbikeStatusStruct {
