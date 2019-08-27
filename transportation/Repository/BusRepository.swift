@@ -2,7 +2,7 @@ import Foundation
 import CoreData
 
 class BusRespository: BaseRepository {
-    func saveBusStation(dataList: [BusStationStruct]) {
+    func saveBusStation(dataList: [BusStationCodable]) {
         let context = getContext()
         for busStation in dataList {
             let station = BusStation(context: context)

@@ -1,6 +1,6 @@
 import Foundation
 // swiftlint:disable identifier_name
-struct UbikeStatusStruct: Codable {
+struct UbikeStatusCodable: Codable {
     var ServieAvailable: Int
     var AvailableReturnBikes: Int
     var AvailableRentBikes: Int

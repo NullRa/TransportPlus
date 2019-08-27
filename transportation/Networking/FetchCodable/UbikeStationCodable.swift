@@ -1,7 +1,7 @@
 import Foundation
 
 // swiftlint:disable identifier_name
-struct UbikeStationStruct: Codable {
+struct UbikeStationCodable: Codable {
     var StationUID: String
     var AuthorityID: String
     var StationName: StationName
