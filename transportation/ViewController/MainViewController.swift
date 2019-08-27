@@ -67,11 +67,7 @@ class MainViewController: UIViewController, BikeAndBusDelegate, UISearchBarDeleg
         self.setLoading(enable: false)
         self.loadingView.startAnimating()
         DispatchQueue.global().async {
-            if self.viewModel.mapType == .ubike {
-                self.viewModel.updateUbikeData()
-            } else {
-                self.viewModel.updateBusData()
-            }
+            self.viewModel.updateData()
             DispatchQueue.main.async {
                 self.updateAnnotations(annotations: self.viewModel.getRegionStations())
                 self.loadingView.stopAnimating()

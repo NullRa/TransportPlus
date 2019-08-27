@@ -63,7 +63,15 @@ class MainMapViewModel {
         }
     }
 
-    func updateBusData() {
+    func updateData() {
+        if mapType == .ubike {
+            updateUbikeData()
+            return
+        }
+        updateBusData()
+    }
+
+    private func updateBusData() {
         do {
             try busRepository.deleteAllBusData()
             let taipeiStations = try self.busAPI.fetchStationList(cityCode: .taipei)
@@ -77,7 +85,7 @@ class MainMapViewModel {
         }
     }
 
-    func updateUbikeData() {
+    private func updateUbikeData() {
         do {
             try ubikeRepository.deleteAllUbikeData()
             let taipeiStations = try self.ubikeAPI.fetchStationList(cityCode: .taipei)
