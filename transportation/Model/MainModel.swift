@@ -63,42 +63,42 @@ class MainModel {
         }
     }
 
-    func updateData() {
+    func fetchStationArray() throws -> [Any] {
         if mapType == .ubike {
-            updateUbikeData()
+            return try fetchUbikeStationArray()
+        }
+        return try fetchBusStationArray()
+    }
+
+    func fetchBusStationArray() throws -> [BusStationCodable] {
+        let taipeiStations = try self.busAPI.fetchStationList(cityCode: .taipei)
+        let newTaipeiStations = try self.busAPI.fetchStationList(cityCode: .newTaipei)
+        return (taipeiStations+newTaipeiStations)
+    }
+
+    func fetchUbikeStationArray() throws -> [UbikeStationCodable] {
+        let taipeiStations = try self.ubikeAPI.fetchStationList(cityCode: .taipei)
+        let newTaipeiStations = try self.ubikeAPI.fetchStationList(cityCode: .newTaipei)
+        return (taipeiStations+newTaipeiStations)
+    }
+
+    func updateData(newStationArray: [Any]?) throws {
+        if mapType == .ubike, let ubikeArray = newStationArray as? [UbikeStationCodable] {
+            try updateUbikeData(ubikeArray: ubikeArray)
             return
+        } else if let busArray = newStationArray as? [BusStationCodable] {
+            try updateBusData(busArray: busArray)
         }
-        updateBusData()
     }
 
-    private func updateBusData() {
-        do {
+    private func updateBusData(busArray: [BusStationCodable]) throws {
             try busRepository.deleteAllBusData()
-            let taipeiStations = try self.busAPI.fetchStationList(cityCode: .taipei)
-            busRepository.saveBusStation(dataList: taipeiStations)
-            let newTaipeiStations = try self.busAPI.fetchStationList(cityCode: .newTaipei)
-            busRepository.saveBusStation(dataList: newTaipeiStations)
-        } catch {
-            viewController.showAlertMessage(title: ErrorCode.jsonDecodeError.alertTitle,
-                                            message: ErrorCode.jsonDecodeError.alertMessage,
-                                            actionTitle: "OK")
-        }
+            busRepository.saveBusStation(dataList: busArray)
     }
 
-    private func updateUbikeData() {
-        do {
+    private func updateUbikeData(ubikeArray: [UbikeStationCodable]) throws {
             try ubikeRepository.deleteAllUbikeData()
-            let taipeiStations = try self.ubikeAPI.fetchStationList(cityCode: .taipei)
-            ubikeRepository.saveUbikeStation(dataList: taipeiStations)
-
-            let newTaipeiStations = try self.ubikeAPI.fetchStationList(cityCode: .newTaipei)
-            ubikeRepository.saveUbikeStation(dataList: newTaipeiStations)
-
-        } catch {
-            viewController.showAlertMessage(title: ErrorCode.jsonDecodeError.alertTitle,
-                                            message: ErrorCode.jsonDecodeError.alertMessage,
-                                            actionTitle: "OK")
-        }
+            ubikeRepository.saveUbikeStation(dataList: ubikeArray)
     }
 
     func getRegionStations() -> [MKPointAnnotation] {
