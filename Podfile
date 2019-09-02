@@ -8,4 +8,5 @@ target 'Transportation_PLUS' do
   # Pods for Transportation_PLUS
 	pod 'Firebase/Core'
 	pod 'GoogleAnalytics'
+	pod 'MBProgressHUD', '~> 1.1.0'
 end

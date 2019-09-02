@@ -3,6 +3,7 @@ import MapKit
 import UIKit
 import CoreData
 import Network
+import MBProgressHUD
 
 class MainView: UIViewController, BikeAndBusDelegate, UISearchBarDelegate {
 
@@ -64,14 +65,26 @@ class MainView: UIViewController, BikeAndBusDelegate, UISearchBarDelegate {
     }
 
     @objc func onRefreshButtonPressed(_ sender: UIBarButtonItem) {
-        self.setLoading(enable: false)
-        self.loadingView.startAnimating()
+        let hub = MBProgressHUD.showAdded(to: self.view, animated: true)
+        var stations: [Any]?
         DispatchQueue.global().async {
-            self.viewModel.updateData()
+            do {
+                stations = try self.viewModel.fetchStationArray()
+            } catch {
+                self.showAlertMessage(title: ErrorCode.jsonDecodeError.alertTitle,
+                                     message: ErrorCode.jsonDecodeError.alertMessage,
+                                     actionTitle: "OK")
+            }
             DispatchQueue.main.async {
+                do {
+                    try self.viewModel.updateData(newStationArray: stations)
+                } catch {
+                    self.showAlertMessage(title: ErrorCode.coreDataError.alertTitle,
+                                          message: ErrorCode.coreDataError.alertMessage,
+                                          actionTitle: "OK")
+                }
                 self.updateAnnotations(annotations: self.viewModel.getRegionStations())
-                self.loadingView.stopAnimating()
-                self.setLoading(enable: true)
+                hub.hide(animated: true)
             }
         }
     }
@@ -121,20 +134,6 @@ class MainView: UIViewController, BikeAndBusDelegate, UISearchBarDelegate {
             return type == .ubike ? 0 : 1
         }
         mapTypeSegment.selectedSegmentIndex = index
-    }
-
-    func setLoading(enable: Bool) {
-        setSearchBarCollapsed(collapsed: enable)
-        autoUpdateButton.isEnabled = enable
-        locationButton.isEnabled = enable
-        mainMapView.isZoomEnabled = enable
-        mainMapView.isPitchEnabled = enable
-        mainMapView.isRotateEnabled = enable
-        mainMapView.isScrollEnabled = enable
-        mapTypeSegment.isEnabled = enable
-        refreshButton.isEnabled = enable
-        toggleSearchBarButton.isEnabled = enable
-        viewModel.isSearchBarCollapsed = enable
     }
 
     func setSearchBarCollapsed(collapsed: Bool) {

@@ -12,6 +12,7 @@ class UbikeRepository: BaseRepository {
             station.longitude = ubikeStation.StationPosition.PositionLon
             station.latitude = ubikeStation.StationPosition.PositionLat
         }
+
         saveContext()
     }
 
