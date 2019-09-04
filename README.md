@@ -15,15 +15,7 @@ Find Bike or Bus Stations around you.
 4. Change your GoogleServiceInfo.plist API_KEY with $(API_KEY). 
 
 ## Preview 
-Touch image into Demo on Youtube 
- 
-[![](http://img.youtube.com/vi/8ldS69XHQ40/0.jpg)](http://www.youtube.com/watch?v=8ldS69XHQ40 "") 
- 
-Touch image into introduce on Youtube 
- 
-[![](http://img.youtube.com/vi/wgsFT61uxLw/0.jpg)](http://www.youtube.com/watch?v=wgsFT61uxLw "")
- 
- Screenshots
+Screenshots
   
 <img src="https://github.com/NullRa/TransportPlus/blob/master/img/ShowUbikeStationStatus.png?raw=true" width=33%><img src="https://github.com/NullRa/TransportPlus/blob/master/img/ShowBusStationStatus.png?raw=true" width=33%><img src="https://github.com/NullRa/TransportPlus/blob/master/img/ShowRouteDetailStatus.png" width=33%>
 
