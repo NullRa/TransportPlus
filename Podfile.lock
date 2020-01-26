@@ -58,7 +58,7 @@ DEPENDENCIES:
   - MBProgressHUD (~> 1.1.0)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -80,6 +80,6 @@ SPEC CHECKSUMS:
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
 
-PODFILE CHECKSUM: 9f9ccd746ac3e307d8ae1c9a2ec8de44134590c6
+PODFILE CHECKSUM: a4313a77365de0f420f25aad7625289e3462b86a
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.8.4
