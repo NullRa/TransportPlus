@@ -137,12 +137,14 @@ class MainView: UIViewController, BikeAndBusDelegate, UISearchBarDelegate {
     }
 
     func setSearchBarCollapsed(collapsed: Bool) {
+        print("1: \(self.toggleSearchBarButton.titleLabel!.text)")
         if collapsed {
             toggleBtnConstraintTop.priority = UILayoutPriority(rawValue: 100)
             labelConstraintTop.priority = UILayoutPriority(rawValue: 100)
             DispatchQueue.main.async {
                 self.searchBar.isHidden = false
                 self.toggleSearchBarButton.titleLabel?.text = "收起"
+                print("收起: \(self.toggleSearchBarButton.titleLabel!.text)")
             }
         } else {
             toggleBtnConstraintTop.priority = UILayoutPriority(rawValue: 900)
@@ -150,8 +152,10 @@ class MainView: UIViewController, BikeAndBusDelegate, UISearchBarDelegate {
             DispatchQueue.main.async {
                 self.searchBar.isHidden = true
                 self.toggleSearchBarButton.titleLabel?.text = "展開"
+                print("展開: \(self.toggleSearchBarButton.titleLabel!.text)")
             }
         }
+        print("2: \(self.toggleSearchBarButton.titleLabel!.text)")
     }
 
     func showAlertMessage(title: String, message: String, actionTitle: String) {
@@ -219,7 +223,9 @@ extension MainView: MKMapViewDelegate {
     //scrolling beginning do
     func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
         viewModel.isSearchBarCollapsed = false
-        setSearchBarCollapsed(collapsed: viewModel.isSearchBarCollapsed)
+        DispatchQueue.main.async {
+            self.setSearchBarCollapsed(collapsed: self.viewModel.isSearchBarCollapsed)
+        }
     }
 
     // 移動結束才會執行
